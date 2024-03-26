@@ -25,15 +25,15 @@
          </children></Pane>
       <Pane layoutX="186.0" prefHeight="400.0" prefWidth="414.0" stylesheets="@loginUI.css">
          <children>
-            <ChoiceBox fx:id="selectRoleChoiceBox" layoutX="50.0" layoutY="72.0" prefWidth="150.0" style="-fx-background-color: #ECA539;" styleClass="dropdown-box" />
-            <TextField fx:id="usernameField" layoutX="51.0" layoutY="126.0" prefHeight="25.0" prefWidth="323.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #ECA539; -fx-border-width: 0px 0px 2px 0px;" />
+            <ChoiceBox fx:id="selectRoleChoiceBox" layoutX="50.0" layoutY="72.0" prefWidth="150.0" style="-fx-background-color: #354251;" styleClass="dropdown-box" />
+            <TextField fx:id="usernameField" layoutX="51.0" layoutY="126.0" prefHeight="25.0" prefWidth="323.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
             <Label layoutX="50.0" layoutY="45.0" prefHeight="27.0" prefWidth="90.0" text="Login As:">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Label>
-            <PasswordField fx:id="passwordfield" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #ECA539; -fx-border-width: 0px 0px 2px 0px;" />
-            <Button fx:id="loginButton" layoutX="85.0" layoutY="318.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #CF9234;" text="Login" textFill="WHITE">
+            <PasswordField fx:id="passwordfield" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
+            <Button fx:id="loginButton" layoutX="85.0" layoutY="318.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -48,13 +48,13 @@
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </CheckBox>
-            <TextField fx:id="showpasswordfield" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #ECA539; -fx-border-width: 0px 0px 2px 0px;" />
+            <TextField fx:id="showpasswordfield" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
             <Label fx:id="incorrectInfo" layoutX="51.0" layoutY="281.0" prefHeight="25.0" prefWidth="323.0" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <FontAwesomeIconView fill="#e58e0b" glyphName="USER" layoutX="30.0" layoutY="146.0" size="18" wrappingWidth="11.571428298950195" />
-            <FontAwesomeIconView fill="#e58e0b" glyphName="LOCK" layoutX="30.0" layoutY="186.0" size="18" />
+            <FontAwesomeIconView fill="#7a90a8" glyphName="USER" layoutX="30.0" layoutY="146.0" size="18" wrappingWidth="11.571428298950195" />
+            <FontAwesomeIconView fill="#7a90a8" glyphName="LOCK" layoutX="30.0" layoutY="186.0" size="18" />
          </children>
       </Pane>
    </children>

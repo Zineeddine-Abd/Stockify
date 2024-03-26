@@ -17,6 +17,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.*;
@@ -158,7 +159,9 @@ public class LoginController implements Initializable{
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		
-		stage.show();
+		centerStage(stage);
+
+        stage.show();
 	}
 	public void directTechnician(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource(fxmlTechnician));
@@ -184,4 +187,20 @@ public class LoginController implements Initializable{
 		
 		stage.show();
 	}
+	
+	
+	 private void centerStage(Stage stage) {
+	        double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+	        double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+	        double stageWidth = stage.getWidth();
+	        double stageHeight = stage.getHeight();
+
+	        // Calculate the center position
+	        double centerX = (screenWidth - stageWidth) / 2;
+	        double centerY = (screenHeight - stageHeight) / 2;
+
+	        // Set the stage position
+	        stage.setX(centerX);
+	        stage.setY(centerY);
+	    }
 }

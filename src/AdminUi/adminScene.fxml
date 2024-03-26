@@ -1,21 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AdminController">
-   <children>
-      <Button layoutX="232.0" layoutY="167.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #F6B047; -fx-cursor: hand;" text="log out">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Button>
-      <Label layoutX="161.0" layoutY="8.0" text="this is admin">
-         <font>
-            <Font size="50.0" />
-         </font>
-      </Label>
-   </children>
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AdminController" prefWidth="1280" prefHeight="720">
+
+    <left>
+        <VBox fx:id="sidebar" spacing="10" style="-fx-padding: 10px; -fx-border-color: #000000;">
+            <Button onAction="#showHardwareAssets" text="Hardware" />
+            <Button onAction="#showSoftwareAssets" text="Software" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox prefHeight="400.0" prefWidth="709.0" spacing="10" style="-fx-padding: 10px; -fx-border-color: #000000;">
+            <HBox spacing="10">
+                <TextField fx:id="assetTypeInput" promptText="Asset Type" />
+                <TextField fx:id="modelInput" promptText="Model" />
+                <TextField fx:id="statusInput" promptText="Status" />
+                <TextField fx:id="locationInput" promptText="Location" />
+                <Button onAction="#addAsset" text="Add" />
+            </HBox>
+            <HBox spacing="10">
+                <TextField fx:id="assetIdInput" promptText="Asset ID" />
+                <Button onAction="#removeAssetById" text="Remove" />
+                <Button onAction="#modifyAssetById" text="Modify" />
+            </HBox>
+        </VBox>
+    </center>
+
+    <right>
+        <TableView fx:id="assetsTable" prefHeight="400.0" prefWidth="533.0">
+            <columns>
+                <TableColumn fx:id="assetIdColumn" prefWidth="94.40002745389938" text="Asset ID" />
+                <TableColumn fx:id="assetTypeColumn" prefWidth="108.79998779296875" text="Asset Type" />
+                <TableColumn fx:id="modelColumn" prefWidth="110.39988708496094" text="Model" />
+                <TableColumn fx:id="statusColumn" prefWidth="103.2000732421875" text="Status" />
+                <TableColumn fx:id="locationColumn" prefWidth="119.99996948242188" text="Location" />
+            </columns>
+        </TableView>
+    </right>
+
+</BorderPane>

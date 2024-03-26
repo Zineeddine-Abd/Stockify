@@ -1,4 +1,4 @@
-package adminUI;
+package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,21 +73,21 @@ public class AdminController implements Initializable{
 		if(source.getText() == "Asset"){
 			fillFormula.setTitle("Create New Asset:");
 			try {
-				root = FXMLLoader.load(getClass().getResource("/adminUI/assetScene.fxml"));
+				root = FXMLLoader.load(getClass().getResource("/AdminUi/assetScene.fxml"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}else if(source.getText() == "User") {
 			fillFormula.setTitle("Create New User:");
 			try {
-				root = FXMLLoader.load(getClass().getResource("/adminUI/userScene.fxml"));
+				root = FXMLLoader.load(getClass().getResource("/AdminUi/userScene.fxml"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(this.getClass().getResource("/adminUI/admin.css").toExternalForm());
+		scene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
 		fillFormula.setScene(scene);
 		fillFormula.show();
 		

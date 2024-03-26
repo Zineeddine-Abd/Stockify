@@ -1,185 +1,150 @@
-package AdminUi;
+package adminUI;
 
-import Components.*;
-
+import java.io.IOException;
 import java.net.URL;
+import javafx.util.Duration;
 import java.util.ResourceBundle;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import LoginUi.LoginController;
 
 public class AdminController implements Initializable{
-
+	//sidebar mats:*****************
+	@FXML
+	private VBox sideBar;
+	@FXML
+	private BorderPane dashboard; // Main Border pane (holds all content here (dashboard for now))
+	@FXML
+	private Button collapser;
+	@FXML
+	//****************************
+	
+	//constant for easy manipulation on code:
+	private final String asset = "Asset";
+	private final String user = "User";
 	
 	@FXML
-    private TableView<Asset> assetsTable;
-
-    @FXML
-    private TableColumn<Asset, String> assetIdColumn;
-
-    @FXML
-    private TableColumn<Asset, String> assetTypeColumn;
-
-    @FXML
-    private TableColumn<Asset, String> modelColumn;
-
-    @FXML
-    private TableColumn<Asset, String> statusColumn;
-
-    @FXML
-    private TableColumn<Asset, String> locationColumn;
-    
-    @FXML
-    private TextField assetTypeInput;
-
-    @FXML
-    private TextField modelInput;
-
-    @FXML
-    private TextField statusInput;
-
-    @FXML
-    private TextField locationInput;
-    
-    @FXML
-    private TextField assetIdInput;
+	private MenuButton createNewMenuBox;
 	
-
+	private MenuItem[] newOptions = {new MenuItem(asset),new MenuItem(user)};
+	
+	//logging out mats:***********
+	private Stage stage;
+	private Scene loginScene;
+	private Parent root;
+	//****************************
+	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// Initialize table columns
-        assetIdColumn.setCellValueFactory(cellData -> cellData.getValue().assetIdProperty());
-        assetTypeColumn.setCellValueFactory(cellData -> cellData.getValue().assetTypeProperty());
-        modelColumn.setCellValueFactory(cellData -> cellData.getValue().modelProperty());
-        statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
-        locationColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
-       
+	public void initialize(URL args0,ResourceBundle bundle) {
+		createNewMenuBox.getItems().clear();
+		
+		for(MenuItem item : newOptions) {
+			
+			item.getStyleClass().add("menu-item");
+			item.setOnAction(event->createNew(event));
+			
+		}
+		
+		createNewMenuBox.getItems().addAll(newOptions);
+	}
+	
+	public void createNew(ActionEvent event){
+		Parent root = null;
+		Stage fillFormula = new Stage();
+		MenuItem source = (MenuItem)event.getSource();
+		
+		if(source.getText() == "Asset"){
+			fillFormula.setTitle("Create New Asset:");
+			try {
+				root = FXMLLoader.load(getClass().getResource("/adminUI/assetScene.fxml"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else if(source.getText() == "User") {
+			fillFormula.setTitle("Create New User:");
+			try {
+				root = FXMLLoader.load(getClass().getResource("/adminUI/userScene.fxml"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(this.getClass().getResource("/adminUI/admin.css").toExternalForm());
+		fillFormula.setScene(scene);
+		fillFormula.show();
 		
 	}
 	
-	public void showHardwareAssets() {
-        // Logic to populate the TableView with sample hardware assets
-        assetsTable.getItems().clear(); // Clear previous data
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void toggleSidebar(){
+        TranslateTransition openSidebar = new TranslateTransition(Duration.millis(500), sideBar);
+        openSidebar.setToX(0);
+        
+        TranslateTransition closeSidebar = new TranslateTransition(Duration.millis(500), sideBar);
 
-        // Add sample hardware assets
-        assetsTable.getItems().addAll(
-                new HardwareAsset("1", "PC", "Dell", "Working", "Room 101"),
-                new HardwareAsset("2", "Printer", "HP", "Needs Maintenance", "Room 103")
-                // Add more hardware assets as needed
-        );
-    }
-
-    public void showSoftwareAssets() {
-        // Logic to populate the TableView with sample software assets
-        assetsTable.getItems().clear(); // Clear previous data
-
-        // Add sample software assets
-        assetsTable.getItems().addAll(
-                new SoftwareAsset("1", "Operating System", "Windows 10", "Installed", "Room 101"),
-                new SoftwareAsset("2", "Office Suite", "Microsoft Office", "Installed", "Room 101")
-                // Add more software assets as needed
-        );
-    }
-
-    public void addAsset() {
-        // Get user input
-        String assetId = assetIdInput.getText().trim();
-        String assetType = assetTypeInput.getText().trim();
-        String model = modelInput.getText().trim();
-        String status = statusInput.getText().trim();
-        String location = locationInput.getText().trim();
-
-        // Check if ID field is empty
-        if (assetId.isEmpty()) {
-            // Display error message
-            displayErrorMessage("Error", "Please enter an asset ID.");
-            return;
-        }
-
-        // Check if entered ID already exists
-        for (Asset asset : assetsTable.getItems()) {
-            if (asset.getAssetId().equals(assetId)) {
-                // Display error message
-                displayErrorMessage("Error", "Asset with ID " + assetId + " already exists.");
-                return;
-            }
-        }
-
-        // Create and add new asset
-        Asset newAsset;
-        if (assetType.equals("Hardware")) {
-            newAsset = new HardwareAsset(assetId, assetType, model, status, location);
+        if (sideBar.getTranslateX() != 0) {
+            openSidebar.play();
         } else {
-            newAsset = new SoftwareAsset(assetId, assetType, model, status, location);
+            closeSidebar.setToX(-sideBar.getWidth());
+            closeSidebar.play();
         }
-        assetsTable.getItems().add(newAsset);
-
-        // Clear input fields
-        clearInputs();
+        
+        closeSidebar.setOnFinished(event->{
+        	collapser.setText("");
+        	collapser.setPrefWidth(22);
+        	dashboard.setLeft(null);
+        });
+        
+        collapser.setText("Menu");
+        collapser.setPrefWidth(202);
+        dashboard.setLeft(sideBar);
     }
-
-    private void displayErrorMessage(String title, String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    public void removeAssetById() {
-        String assetIdToRemove = assetIdInput.getText();
-        Asset assetToRemove = null;
-        for (Asset asset : assetsTable.getItems()) {
-            if (asset.getAssetId().equals(assetIdToRemove)) {
-                assetToRemove = asset;
-                break;
-            }
-        }
-        if (assetToRemove != null) {
-            assetsTable.getItems().remove(assetToRemove);
-        }
-    }
-
-    public void modifyAssetById() {
-        String assetIdToModify = assetIdInput.getText();
-        for (Asset asset : assetsTable.getItems()) {
-            if (asset.getAssetId().equals(assetIdToModify)) {
-                String assetType = assetTypeInput.getText();
-                String model = modelInput.getText();
-                String status = statusInput.getText();
-                String location = locationInput.getText();
-
-                // Update asset with new data
-                asset.setAssetType(assetType);
-                asset.setModel(model);
-                asset.setStatus(status);
-                asset.setLocation(location);
-
-                // Refresh TableView to reflect changes
-                assetsTable.refresh();
-                break;
-            }
-        }
-    }
-
-    private String generateAssetId() {
-        // Generate a new unique asset ID here, e.g., based on current timestamp
-        return String.valueOf(System.currentTimeMillis());
-    }
-
-    private void clearInputs() {
-        assetTypeInput.clear();
-        modelInput.clear();
-        statusInput.clear();
-        locationInput.clear();
-        assetIdInput.clear();
-    }
-
+	
+	
+	
+	
+	
+	
+	
+	public void LogOut(ActionEvent event) throws IOException {
+		
+		root = FXMLLoader.load(getClass().getResource(LoginController.fxmlLogin));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		loginScene = new Scene(root);
+		stage.setScene(loginScene);
+		stage.setTitle("Stockify - Login");
+		
+		stage.show();
+	}
+	
 }

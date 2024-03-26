@@ -33,7 +33,7 @@
 /*Choice box Style */
 
 .dropdown-box{
-	-fx-background-color:  #ECA539;
+	-fx-background-color:  #354251;
 	-fx-text-fill: black;
 	-fx-background-insets:0;
 	-fx-padding: 0px 0px;
@@ -43,13 +43,13 @@
 }
 
 .dropdown-box .context-menu{
-	-fx-background-color:  #ECA539;
+	-fx-background-color:  #354251;
 }
 .dropdown-box .context-menu .menu-item .label{
-	-fx-text-fill: black;
+	-fx-text-fill: white;
 }
 .dropdown-box .label{
-	-fx-text-fill: black;
+	-fx-text-fill: white;
 }
 
 
@@ -71,7 +71,7 @@
 }
 .check-box .box{
 	-fx-background-color: white;
-	-fx-border-color: #CF9234;
+	-fx-border-color: #354251;
 	-fx-border-width: 1px;
 }
 

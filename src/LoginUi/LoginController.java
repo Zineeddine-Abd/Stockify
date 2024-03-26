@@ -45,8 +45,6 @@ public class LoginController implements Initializable{
 	private String pass ;
 	@FXML
 	private Label incorrectInfo;
-	@FXML
-	private ChoiceBox<String> selectRoleChoiceBox;
 	//password text fields : 
 	@FXML
 	private PasswordField passwordfield;
@@ -67,7 +65,6 @@ public class LoginController implements Initializable{
 		
 		
 		//***********************************************************
-		selectRoleChoiceBox.getItems().addAll(roles);// drop down box
 		passwordfield.setVisible(true); // password field.
 		showpasswordfield.setVisible(false);//textPass field.
 		incorrectInfo.setVisible(true);//incorrect info label .
@@ -76,20 +73,10 @@ public class LoginController implements Initializable{
 	
 	//Database linking for each user.
 	private void assignUser(ActionEvent event) {
-		String role = selectRoleChoiceBox.getValue(); // get the selected dropdown box role.
 		try {
-			switch(role) {
-			case ADMIN:
-				directAdmin(event);
-				break;
-			case TECHNICIAN:
-				directTechnician(event);
-				break;
-			case PROFESSOR:
-				directProfessor(event);
-				break;
-			}
-		}catch(IOException e) {
+			directAdmin(event);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -117,15 +104,11 @@ public class LoginController implements Initializable{
 	
 	public void loginClicked(ActionEvent event) {
 		if(usernameField.getText().isBlank() || 
-		isPassBlank() || selectRoleChoiceBox.getValue() == null)
-		{	
-			if(selectRoleChoiceBox.getValue() == null) {				
-				incorrectInfo.setText("Choose your account type first!");
-			}else {
-				incorrectInfo.setText("Invalid username or password!");
-			}
+		isPassBlank())
+		{
+			incorrectInfo.setText("Invalid username or password!");
 			animatedIncorrectInfolabel();
-		}else {
+		}else {			
 			assignUser(event);
 		}
 	}

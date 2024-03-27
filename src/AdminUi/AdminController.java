@@ -85,6 +85,8 @@ public class AdminController implements Initializable{
 		
 		Parent root = null;
 		fillFormula = new Stage();
+		fillFormula.setResizable(false);
+		
 		MenuItem source = (MenuItem)event.getSource();
 		if(source.getText() == "Asset"){
 			fillFormula.setTitle("Create New Asset:");

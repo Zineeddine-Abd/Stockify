@@ -23,8 +23,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.animation.*;
 
@@ -162,9 +164,9 @@ public class LoginController{
 		stage.setScene(adminScene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
+		stage.initStyle(StageStyle.DECORATED);
 		
-		
-		 stage.show();
+		stage.show();
 		centerStage(stage);
 //		stage.setMaximized(true);
 
@@ -173,28 +175,38 @@ public class LoginController{
 	public void directTechnician(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource(fxmlTechnician));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.close();
+		
 		technicianScene = new Scene(root);
 		technicianScene.getStylesheets().add(this.getClass().getResource("/TechnicianUi/technician.css").toExternalForm());
+		
+		stage = new Stage();
 		stage.setScene(technicianScene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
-		
+		stage.initStyle(StageStyle.DECORATED);
 		
 //		stage.setMaximized(true);
 		stage.show();
+		centerStage(stage);
 	}
 	public void directProfessor(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource(fxmlProfessor));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.close();
+		
 		professorScene = new Scene(root);
 		professorScene.getStylesheets().add(this.getClass().getResource("/ProfessorUi/professor.css").toExternalForm());
 		
+		stage = new Stage();
 		stage.setScene(professorScene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
+		stage.initStyle(StageStyle.DECORATED);
 		
 //		stage.setMaximized(true);
 		stage.show();
+		centerStage(stage);
 	}
 	
 	
@@ -212,4 +224,22 @@ public class LoginController{
 	        stage.setX(centerX);
 	        stage.setY(centerY);
 	    }
+	 
+	 
+	 double x, y;
+	 public void getInitialMousePosition(MouseEvent event) {
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		x =  event.getScreenX() - stage.getX();
+		y =  event.getScreenY() - stage.getY();
+	 }
+	 
+	 public void setNewRootPosition(MouseEvent event) {
+		stage.setX(event.getScreenX() - x);
+		stage.setY(event.getScreenY() - y);
+	 }
+	 
+	 public void closeLoginScreen(MouseEvent event) {
+		 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		 stage.close();
+	 }
 }

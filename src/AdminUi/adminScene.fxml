@@ -50,7 +50,7 @@
                   <Button mnemonicParsing="false" text="Button" />
                </children>
             </HBox>
-            <Pane id="pan" fx:id="pan" onMouseClicked="#closeSideBar" opacity="0.5" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightblue;" visible="false" />
+            <Pane id="pan" fx:id="pan" onMouseClicked="#closeSideBar" opacity="0.5" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightGray;" visible="false" />
             <VBox fx:id="sideBar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="585.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="vbox" stylesheets="@admin.css" translateX="-200.0">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />

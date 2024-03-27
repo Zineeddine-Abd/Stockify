@@ -12,47 +12,66 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginUi.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setNewRootPosition" onMousePressed="#getInitialMousePosition" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginUi.LoginController">
    <children>
-      <Pane id="sidepanel" prefHeight="400.0" prefWidth="186.0" style="-fx-background-color: #1c232b;" stylesheets="@loginUI.css">
+      <Pane id="sidepanel" prefHeight="500.0" prefWidth="210.0" style="-fx-background-color: #1c232b;" stylesheets="@loginUI.css">
          <children>
-            <ImageView fitHeight="151.0" fitWidth="161.0" layoutX="18.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="186.0" fitWidth="177.0" layoutX="17.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Logo.jpg" />
                </image>
             </ImageView>
          </children></Pane>
-      <Pane layoutX="186.0" prefHeight="400.0" prefWidth="414.0" stylesheets="@loginUI.css">
+      <Pane layoutX="210.0" prefHeight="500.0" prefWidth="540.0" stylesheets="@loginUI.css">
          <children>
-            <TextField fx:id="usernameField" layoutX="51.0" layoutY="126.0" prefHeight="25.0" prefWidth="323.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
-            <PasswordField fx:id="passwordField" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
-            <Button fx:id="loginButton" layoutX="85.0" layoutY="318.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
+            <TextField fx:id="usernameField" layoutX="50.0" layoutY="167.0" prefHeight="37.0" prefWidth="460.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
+               <font>
+                  <Font size="16.0" />
+               </font></TextField>
+            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="232.0" prefHeight="37.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
+               <font>
+                  <Font size="16.0" />
+               </font></PasswordField>
+            <Button fx:id="loginButton" layoutX="142.0" layoutY="396.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <CheckBox fx:id="showPassBox" layoutX="50.0" layoutY="213.0" mnemonicParsing="false" onAction="#showPassword" prefHeight="25.0" prefWidth="151.0" text="Show Password">
+            <CheckBox fx:id="showPassBox" layoutX="50.0" layoutY="306.0" mnemonicParsing="false" onAction="#showPassword" prefHeight="25.0" prefWidth="167.0" text="Show Password">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="rememberMe" layoutX="50.0" layoutY="246.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Remember Me">
+            <CheckBox fx:id="rememberMe" layoutX="50.0" layoutY="346.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Remember Me">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </CheckBox>
-            <TextField fx:id="showPasswordField" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" visible="false" />
-            <Label fx:id="incorrectInfo" layoutX="51.0" layoutY="281.0" prefHeight="25.0" prefWidth="323.0" textAlignment="CENTER">
+            <TextField fx:id="showPasswordField" layoutX="50.0" layoutY="232.0" prefHeight="35.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" visible="false">
+               <font>
+                  <Font size="16.0" />
+               </font></TextField>
+            <Label fx:id="incorrectInfo" layoutX="14.0" layoutY="466.0" prefHeight="25.0" prefWidth="323.0" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <FontAwesomeIconView fill="#7a90a8" glyphName="USER" layoutX="30.0" layoutY="146.0" size="18" wrappingWidth="11.571428298950195" />
-            <FontAwesomeIconView fill="#7a90a8" glyphName="LOCK" layoutX="30.0" layoutY="186.0" size="18" />
-            <Label layoutX="108.0" layoutY="49.0" text="Welcome Back!">
+            <FontAwesomeIconView fill="#7a90a8" glyphName="USER" layoutX="30.0" layoutY="191.0" size="18" text="" wrappingWidth="11.571428298950195">
                <font>
-                  <Font name="Arial" size="30.0" />
+                  <Font size="14.0" />
+               </font></FontAwesomeIconView>
+            <FontAwesomeIconView fill="#7a90a8" glyphName="LOCK" layoutX="30.0" layoutY="256.0" size="18">
+               <font>
+                  <Font size="14.0" />
+               </font></FontAwesomeIconView>
+            <Label layoutX="108.0" layoutY="58.0" text="Welcome Back!">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="43.0" />
                </font>
             </Label>
+            <FontAwesomeIconView fx:id="closeIcon" fill="#1c232b" glyphName="CLOSE" layoutX="515.0" layoutY="25.0" onMouseClicked="#closeLoginScreen" size="18" wrappingWidth="11.571428298950195">
+               <font>
+                  <Font size="18.0" />
+               </font></FontAwesomeIconView>
          </children>
       </Pane>
    </children>

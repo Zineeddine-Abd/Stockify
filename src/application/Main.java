@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,7 +26,8 @@ public class Main extends Application {
 			primaryStage.setTitle("Stockify - Login");
 			primaryStage.getIcons().add(itAssetLogo);
 			
-			//primaryStage.initStyle(StageStyle.UNDECORATED);
+			
+			primaryStage.initStyle(StageStyle.UNDECORATED);
 			//connectToStockifyDB();
 			primaryStage.show();
 		} catch(Exception e) {

@@ -7,7 +7,7 @@
 	-fx-text-alignment: center;
 }
 /*login button */
-.button {
+#loginButton {
   -fx-border-radius: 4px;
   -fx-color: #fff;
   -fx-text-fill: #FFFFFF;
@@ -19,7 +19,7 @@
   -fx-min-width: 100px;
   -fx-padding: 16px 20px;
 }
-.button:hover {
+#loginButton:hover {
 	-fx-cursor: hand;
 	-fx-translate-y:-2;
  	-fx-background-color: #065dd8;
@@ -76,7 +76,9 @@
 }
 
 
-
+#closeIcon:hover{
+	-fx-fill:#C42B1C;
+}
 
 
 

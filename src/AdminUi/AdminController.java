@@ -2,30 +2,35 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+
 import javafx.util.Duration;
 import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import LoginUi.LoginController;
+import application.Main;
 
 public class AdminController implements Initializable{
+	
 	//sidebar mats:*****************
 	@FXML
 	private VBox sideBar;
@@ -33,17 +38,17 @@ public class AdminController implements Initializable{
 	private BorderPane dashboard; // Main Border pane (holds all content here (dashboard for now))
 	@FXML
 	private Button collapser;
-	@FXML
 	//****************************
 	
 	//constant for easy manipulation on code:
 	private final String asset = "Asset";
 	private final String user = "User";
+	//choosing user or asset for creation:*****
+	private MenuItem[] newOptions = {new MenuItem(asset),new MenuItem(user)};
 	
 	@FXML
 	private MenuButton createNewMenuBox;
-	
-	private MenuItem[] newOptions = {new MenuItem(asset),new MenuItem(user)};
+	//*****************************************
 	
 	//logging out mats:***********
 	private Stage stage;
@@ -51,25 +56,26 @@ public class AdminController implements Initializable{
 	private Parent root;
 	//****************************
 	
+	//creating new asset/user mats:********************
+	private Stage fillFormula;
+	private Scene createNewScene;
+	
+	//**********************all methods:*****************************************
+	
 	@Override
-	public void initialize(URL args0,ResourceBundle bundle) {
+	public void initialize(URL arg0, ResourceBundle arg1) {
 		createNewMenuBox.getItems().clear();
-		
-		for(MenuItem item : newOptions) {
-			
-			item.getStyleClass().add("menu-item");
+		for(MenuItem item : newOptions){
 			item.setOnAction(event->createNew(event));
-			
 		}
-		
 		createNewMenuBox.getItems().addAll(newOptions);
 	}
 	
 	public void createNew(ActionEvent event){
-		Parent root = null;
-		Stage fillFormula = new Stage();
-		MenuItem source = (MenuItem)event.getSource();
 		
+		Parent root = null;
+		fillFormula = new Stage();
+		MenuItem source = (MenuItem)event.getSource();
 		if(source.getText() == "Asset"){
 			fillFormula.setTitle("Create New Asset:");
 			try {
@@ -77,6 +83,7 @@ public class AdminController implements Initializable{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			AssetController.setStage(fillFormula);
 		}else if(source.getText() == "User") {
 			fillFormula.setTitle("Create New User:");
 			try {
@@ -84,25 +91,17 @@ public class AdminController implements Initializable{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			UserController.setStage(fillFormula);
 		}
 		
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-		fillFormula.setScene(scene);
+		createNewScene = new Scene(root);
+		createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+		
+		fillFormula.setScene(createNewScene);
+		fillFormula.getIcons().add(Main.itAssetLogo);
 		fillFormula.show();
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -146,5 +145,6 @@ public class AdminController implements Initializable{
 		
 		stage.show();
 	}
+
 	
 }

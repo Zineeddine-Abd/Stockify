@@ -1,0 +1,183 @@
+package AdminUi;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import Components.Asset;
+import javafx.animation.FadeTransition;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+public class AssetController implements Initializable{
+	
+    private static Stage stage;
+    
+    public static void setStage(Stage res) {
+        stage = res;
+    }
+	
+    
+    
+	private final String IN_INVENTORY = "In Inventory";
+	private final String READY_TO_USE = "Ready to use";
+	private final String WORKING = "Currently Working";
+	
+	private final String HARDWARE = "Hardware";
+	private final String SOFTWARE = "Software";
+	private final String ACCESSORY = "Accessory";
+	
+	private String[] categories = {HARDWARE,SOFTWARE,ACCESSORY};
+	private String[] hardware_type = {"Desktop" , "Laptop", "Projector", "Scanner", "Printer", "Switch" ,"Hub","Router","Modem"};
+	private String[] software_type = {"Anti-Virus","License"};
+	private String[] accessory_type = {"Keybaord","Mouse","Cable","HDD","SSD","RAM"};
+	private String[] statuses = {IN_INVENTORY,READY_TO_USE,WORKING};//all status for now , feel free to add any more statuses.
+	
+	//*******hardware models:*********************
+	private String[] desktop_laptop_models = {"HP","Dell","Lenovo","Acer","Apple","MSI","Razer"};
+	private String[] projector_scanner_printer_models = {"Canon" , "Epson" , "HP" , "Toshiba"};
+	private String[] networking_equipment_models = {"Dell EMC" , "Cisco Systems", "TP-Link" , "D-Link" , "Juniper Networks"};
+//	//*******software models:*********************
+//	private String[] desktop_models = {};
+//	private String[] desktop_models = {};
+//	private String[] desktop_models = {};
+//	private String[] desktop_models = {};
+	
+	//*******Accessory models:********************
+	private String[] keyboard_mouse_models = {"HP","Razer","Logitech"};
+	private String[] components_models = {"SanDisk","Samsung","Toshiba","GIGABYTE" , "Kingston Technology" , "ADATA Technology" , "Corsair"};
+	
+
+	@FXML
+	private ChoiceBox<String> categoryChoiceBox;
+	@FXML
+	private ChoiceBox<String> typeChoiceBox;	
+	@FXML
+	private ChoiceBox<String> modelChoiceBox;
+	@FXML
+	private ChoiceBox<String> statusChoiceBox;
+	
+	@FXML
+	private TextField field1,field2,field3,field4,field5;
+	@FXML
+	private Button submitButton;
+	@FXML
+	private Button cancelButton;
+	@FXML
+	private Label invalidInfo;
+
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		categoryChoiceBox.getItems().addAll(categories);
+		
+		categoryChoiceBox.setOnAction(event->{
+			typeChoiceBox.getItems().clear();
+			if(categoryChoiceBox.getValue() == HARDWARE) {
+				typeChoiceBox.getItems().addAll(hardware_type);
+				
+			}else if(categoryChoiceBox.getValue() == SOFTWARE) {
+				typeChoiceBox.getItems().addAll(software_type);
+				
+			}else if(categoryChoiceBox.getValue() == ACCESSORY) {
+				typeChoiceBox.getItems().addAll(accessory_type);
+			}
+		});
+		typeChoiceBox.setOnAction(event->{
+			modelChoiceBox.getItems().clear();
+			if(typeChoiceBox.getValue() == "Desktop" || typeChoiceBox.getValue() == "Laptop") {
+				modelChoiceBox.getItems().addAll(desktop_laptop_models);
+			}else if(typeChoiceBox.getValue() == "Projector" || typeChoiceBox.getValue() == "Scanner" || typeChoiceBox.getValue() == "Printer") {
+				modelChoiceBox.getItems().addAll(projector_scanner_printer_models);
+			}else if(typeChoiceBox.getValue() == "Hub" || typeChoiceBox.getValue() == "Switch" || typeChoiceBox.getValue() == "Router" || typeChoiceBox.getValue() == "Modem") {
+				modelChoiceBox.getItems().addAll(networking_equipment_models);
+			}else if(typeChoiceBox.getValue() == "Keyboard" || typeChoiceBox.getValue() == "Mouse") {
+				modelChoiceBox.getItems().addAll(keyboard_mouse_models);
+			}else if(typeChoiceBox.getValue() == "HDD" || typeChoiceBox.getValue() == "SSD" || typeChoiceBox.getValue() == "RAM") {
+				modelChoiceBox.getItems().addAll(components_models);
+			}
+		});
+		statusChoiceBox.getItems().addAll(statuses);
+	}
+	
+	public void validateInformation() {
+		if(categoryChoiceBox.getValue() == null) {
+			invalidInfo.setText("You must select a category!");//category
+			animatedInvalidInfolabel();
+			return;
+		}
+		if(typeChoiceBox.getValue() == null) {
+			invalidInfo.setText("You must select a type!");//type
+			animatedInvalidInfolabel();
+			return;
+		}
+		if(modelChoiceBox.getValue() == null && typeChoiceBox.getValue() != "Cable") {
+			invalidInfo.setText("You must select a model!");//model
+			animatedInvalidInfolabel();
+			return;
+		}
+		
+		if(!field1.getText().matches("[0-9]+$")) {//Serial Number.
+			invalidInfo.setText("Invalid Serial number!");
+			animatedInvalidInfolabel();
+			return;
+		}
+		
+		try {				
+			if(!field2.getText().matches("[0-9]") || Integer.parseInt(field2.getText()) < 0 ) {//warranty in months.
+				invalidInfo.setText("Invalid warranty value!");
+				animatedInvalidInfolabel();
+				return;
+			}
+		}catch(Exception e) {
+			//only triggered when parsing the text in warranty (in case the user enters a string and for the above comparaison statement this block is triggered)
+			invalidInfo.setText("Invalid warranty value!");
+			animatedInvalidInfolabel();
+			return;
+		}
+		
+		if(statusChoiceBox.getValue() == null) {//status
+			invalidInfo.setText("You must select a status!");
+			animatedInvalidInfolabel();
+			return;
+		}
+		
+		if(!field4.getText().matches("^[0-9A-Za-z]+$")) {//deplacement
+			invalidInfo.setText("Invalid Deplacement Location!");
+			animatedInvalidInfolabel();
+			return;
+		}
+		String id = "0";
+		String category = categoryChoiceBox.getValue();
+		String type = typeChoiceBox.getValue();
+		String model = modelChoiceBox.getValue();
+		String status = statusChoiceBox.getValue();
+		String deplacement = field4.getText();
+		String warranty = field2.getText();
+		String serial_number = field1.getText();
+		
+		Asset new_asset = new Asset(id,category,type,model,status,deplacement,warranty,serial_number);
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Success");
+		alert.setHeaderText("Successfully created new Asset but did not add it to database.check asset controller to implement it yourself - lokman ");
+		alert.showAndWait();
+		//add to database later.
+		//maybe consider all database operations last because we need to put it online for everyone to access it!.
+		
+	}
+	public void animatedInvalidInfolabel() {
+		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),invalidInfo);
+		fadetransition.setFromValue(1);
+		fadetransition.setToValue(0);
+		fadetransition.play();
+	}
+	public void disposeWindow() {
+		stage.close();
+	}
+
+}

@@ -37,13 +37,22 @@
     -fx-background-color: #8DA0B5; /* Change color when button is pressed */
 }
 
-#cancelButton{
-	-fx-background-color: white;
-	-fx-text-fill: #184179;
+
+
+/*cancel button :  */
+.cancelButton:hover{
+	-fx-background-color: #184179;
 }
-#cancelButton:pressed{
+.cancelButton{
+	-fx-background-color: white;
+	-fx-text-fill: #000000;
+}
+.cancelButton:pressed{
 	-fx-background-color: #8DA0B5;
 }
+/*cancel button end.... */
+
+
 
 /*create new / profile  */
 .dropdown-box{

@@ -1,80 +1,69 @@
 package Components;
 
+import java.time.LocalDate;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Asset {
-    private final StringProperty assetId;
-    private final StringProperty assetType;
-    private final StringProperty model;
-    private final StringProperty status;
-    private final StringProperty location;
+    private final StringProperty asset_id,asset_category,asset_type,asset_model,asset_status,asset_deplacement,asset_purchase_date,asset_warranty,asset_serial_number;
 
-    public Asset(String assetId, String assetType, String model, String status, String location) {
-        this.assetId = new SimpleStringProperty(assetId);
-        this.assetType = new SimpleStringProperty(assetType);
-        this.model = new SimpleStringProperty(model);
-        this.status = new SimpleStringProperty(status);
-        this.location = new SimpleStringProperty(location);
+
+    public Asset(String assetId,String asset_category, String assetType, String model, String status, String deplacement,String warranty,String serial_number) {
+        this.asset_id = new SimpleStringProperty(assetId);
+        this.asset_category = new SimpleStringProperty(asset_category);
+        this.asset_type = new SimpleStringProperty(assetType);
+        this.asset_model = new SimpleStringProperty(model);
+        this.asset_status = new SimpleStringProperty(status);
+        this.asset_deplacement = new SimpleStringProperty(deplacement);
+        this.asset_purchase_date = new SimpleStringProperty(LocalDate.now().toString());
+        this.asset_warranty = new SimpleStringProperty(warranty);
+        this.asset_serial_number = new SimpleStringProperty(serial_number);
     }
 
-    public String getAssetId() {
-        return assetId.get();
-    }
 
-    public StringProperty assetIdProperty() {
-        return assetId;
-    }
+	public StringProperty getAsset_id() {
+		return asset_id;
+	}
 
-    public void setAssetId(String assetId) {
-        this.assetId.set(assetId);
-    }
 
-    public String getAssetType() {
-        return assetType.get();
-    }
+	public StringProperty getAsset_category() {
+		return asset_category;
+	}
 
-    public StringProperty assetTypeProperty() {
-        return assetType;
-    }
 
-    public void setAssetType(String assetType) {
-        this.assetType.set(assetType);
-    }
+	public StringProperty getAsset_type() {
+		return asset_type;
+	}
 
-    public String getModel() {
-        return model.get();
-    }
 
-    public StringProperty modelProperty() {
-        return model;
-    }
+	public StringProperty getAsset_model() {
+		return asset_model;
+	}
 
-    public void setModel(String model) {
-        this.model.set(model);
-    }
 
-    public String getStatus() {
-        return status.get();
-    }
+	public StringProperty getAsset_status() {
+		return asset_status;
+	}
 
-    public StringProperty statusProperty() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status.set(status);
-    }
+	public StringProperty getAsset_deplacement() {
+		return asset_deplacement;
+	}
 
-    public String getLocation() {
-        return location.get();
-    }
 
-    public StringProperty locationProperty() {
-        return location;
-    }
+	public StringProperty getAsset_purchase_date() {
+		return asset_purchase_date;
+	}
 
-    public void setLocation(String location) {
-        this.location.set(location);
-    }
+
+	public StringProperty getAsset_warranty() {
+		return asset_warranty;
+	}
+
+
+	public StringProperty getAsset_serial_number() {
+		return asset_serial_number;
+	}
+
 }

@@ -3,6 +3,11 @@ import application.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -34,11 +40,16 @@ public class LoginController implements Initializable{
 	private Scene professorScene;
 	private Parent root;
 	
+	private static final String ADMIN = "Administrator";
+	private static final String TECHNICIAN = "Technician";
+	private static final String PROFESSOR = "Professor";
 	
-	private final String ADMIN = "Administrator";
-	private final String TECHNICIAN = "Technician";
-	private final String PROFESSOR = "Professor";
-	private String[] roles = {ADMIN,TECHNICIAN,PROFESSOR};
+	public static final String[] permissions = {ADMIN,TECHNICIAN,PROFESSOR};
+	
+	private Connection con;
+	private final String url = "jdbc:mysql://localhost:3306/stockifydb";
+	private final String db_username = "root";
+	private final String db_password = "lokman7777";
 	
 	@FXML
 	private Button loginButton;
@@ -52,8 +63,6 @@ public class LoginController implements Initializable{
 	private TextField usernameField;
 	@FXML
 	private TextField showpasswordfield;
-	
-	//Check boxes : 
 	@FXML
 	private CheckBox showPassBox;
 	@FXML
@@ -61,9 +70,6 @@ public class LoginController implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		
-		
 		//***********************************************************
 		passwordfield.setVisible(true); // password field.
 		showpasswordfield.setVisible(false);//textPass field.
@@ -75,8 +81,36 @@ public class LoginController implements Initializable{
 	private void assignUser(ActionEvent event) {
 		try {
 			directAdmin(event);
+			/*uncomment this when done setting up database.*/
+			
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//			con = DriverManager.getConnection(url ,db_username ,db_password);
+//			String password = "\"" + (showPassBox.isSelected() ? showpasswordfield.getText() : passwordfield.getText()) +"\"" ;
+//			String username = "\"" + usernameField.getText() + "\"";
+//	        String sql = "SELECT * FROM users WHERE username="+ username + " AND pass_word="+password + ";";
+//	        PreparedStatement statement = con.prepareStatement(sql);
+//	        ResultSet resultSet = statement.executeQuery();
+//	        
+//	        if(resultSet.next()) {
+//	        	switch(resultSet.getString("user_role")) {
+//	        		case ADMIN:
+//	        			directAdmin(event);
+//	        			break;
+//	        		case TECHNICIAN:
+//	        			directTechnician(event);
+//	        			break;
+//	        		case PROFESSOR:
+//	        			directProfessor(event);
+//	        			break;
+//	        		default:
+//	        			System.out.println("error!"); //idk what to put here - lokman.
+//	        	}
+//	        	return;
+//	        }else {
+//	        	incorrectInfo.setText("Invalid username or password!");
+//	        	animatedIncorrectInfolabel();
+//	        }
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -109,8 +143,9 @@ public class LoginController implements Initializable{
 			incorrectInfo.setText("Invalid username or password!");
 			animatedIncorrectInfolabel();
 		}else {			
-			assignUser(event);
+			assignUser(event);	
 		}
+		
 	}
 	private void animatedIncorrectInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),incorrectInfo);
@@ -143,6 +178,7 @@ public class LoginController implements Initializable{
 		stage.setTitle("Stockify");
 		
 		centerStage(stage);
+//		stage.setMaximized(true);
 
         stage.show();
 	}
@@ -151,11 +187,11 @@ public class LoginController implements Initializable{
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		technicianScene = new Scene(root);
 		technicianScene.getStylesheets().add(this.getClass().getResource("/TechnicianUi/technician.css").toExternalForm());
-		
 		stage.setScene(technicianScene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		
+//		stage.setMaximized(true);
 		stage.show();
 	}
 	public void directProfessor(ActionEvent event) throws IOException {
@@ -168,6 +204,7 @@ public class LoginController implements Initializable{
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		
+//		stage.setMaximized(true);
 		stage.show();
 	}
 	

@@ -25,7 +25,7 @@
       <Pane layoutX="186.0" prefHeight="400.0" prefWidth="414.0" stylesheets="@loginUI.css">
          <children>
             <TextField fx:id="usernameField" layoutX="51.0" layoutY="126.0" prefHeight="25.0" prefWidth="323.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
-            <PasswordField fx:id="passwordfield" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
+            <PasswordField fx:id="passwordField" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
             <Button fx:id="loginButton" layoutX="85.0" layoutY="318.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
                <font>
                   <Font size="18.0" />
@@ -41,7 +41,7 @@
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </CheckBox>
-            <TextField fx:id="showpasswordfield" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" />
+            <TextField fx:id="showPasswordField" layoutX="51.0" layoutY="166.0" prefHeight="25.0" prefWidth="323.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" visible="false" />
             <Label fx:id="incorrectInfo" layoutX="51.0" layoutY="281.0" prefHeight="25.0" prefWidth="323.0" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />

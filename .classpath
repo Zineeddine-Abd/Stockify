@@ -16,9 +16,9 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/MarkShop/Downloads/my downloads for eclipse/jar_files (1)/fontawesomefx-commons-9.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarkShop/Downloads/my downloads for eclipse/jar_files (1)/fontawesomefx-fontawesome-4.7.0-9.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarkShop/Downloads/mysql-connector-j-8.2.0/mysql-connector-j-8.2.0.jar">
+	<classpathentry kind="lib" path="D:/Eclipse Projects/Stockify/SUPER IMPORTANT JAR FILES FOR ICONS ADD TO CLASSPATH/fontawesomefx-commons-9.1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse Projects/Stockify/SUPER IMPORTANT JAR FILES FOR ICONS ADD TO CLASSPATH/fontawesomefx-fontawesome-4.7.0-9.1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse Projects/Stockify/SUPER IMPORTANT JAR FILES FOR ICONS ADD TO CLASSPATH/mysql-connector-j-8.2.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

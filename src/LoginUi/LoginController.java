@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.*;
 
-public class LoginController implements Initializable{
+public class LoginController{
 	public static final String fxmlAdmin = "/AdminUi/adminScene.fxml";
 	public static final String fxmlTechnician = "/TechnicianUi/technicianScene.fxml";
 	public static final String fxmlProfessor = "/ProfessorUi/professorScene.fxml";
@@ -53,28 +53,20 @@ public class LoginController implements Initializable{
 	
 	@FXML
 	private Button loginButton;
-	private String pass ;
 	@FXML
 	private Label incorrectInfo;
 	//password text fields : 
 	@FXML
-	private PasswordField passwordfield;
+	private PasswordField passwordField;
 	@FXML
 	private TextField usernameField;
 	@FXML
-	private TextField showpasswordfield;
+	private TextField showPasswordField;
 	@FXML
 	private CheckBox showPassBox;
 	@FXML
 	private CheckBox rememberMe;
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		//***********************************************************
-		passwordfield.setVisible(true); // password field.
-		showpasswordfield.setVisible(false);//textPass field.
-		incorrectInfo.setVisible(true);//incorrect info label .
-	}
 	
 	
 	//Database linking for each user.
@@ -116,20 +108,20 @@ public class LoginController implements Initializable{
 	}
 	
 	public void showPassword(ActionEvent event) {
+		String pass;
 		if(showPassBox.isSelected()) {
-			pass = passwordfield.getText();
-			showpasswordfield.setText(pass);
+			pass = passwordField.getText();
+			showPasswordField.setText(pass);
 			
-			showpasswordfield.setVisible(true);
-			passwordfield.setVisible(false);
+			showPasswordField.setVisible(true);
+			passwordField.setVisible(false);
 		}else {
-			pass = showpasswordfield.getText();
-			passwordfield.setText(pass);
+			pass = showPasswordField.getText();
+			passwordField.setText(pass);
 			
-			showpasswordfield.setVisible(false);
-			passwordfield.setVisible(true);
+			showPasswordField.setVisible(false);
+			passwordField.setVisible(true);
 		}
-
 	}
 	
 	public void rememberMe(ActionEvent event) {
@@ -155,32 +147,28 @@ public class LoginController implements Initializable{
 	}
 	
 	private boolean isPassBlank() {
-		if(passwordfield.getText().isBlank() && !showpasswordfield.getText().isBlank()) {
-			return false;
-		}
-		if(!passwordfield.getText().isBlank() && showpasswordfield.getText().isBlank()) {
-			return false;
-		}
-		if(!passwordfield.getText().isBlank() && !showpasswordfield.getText().isBlank()) {
-			return false;
-		}
-		return true;
+		return (passwordField.getText().isBlank() && showPasswordField.getText().isBlank());
 	}
 	
 	public void directAdmin(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource(fxmlAdmin));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.close();
+		
 		adminScene = new Scene(root);
 		adminScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
 		
+		stage = new Stage();
 		stage.setScene(adminScene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		
+		
+		 stage.show();
 		centerStage(stage);
 //		stage.setMaximized(true);
 
-        stage.show();
+       
 	}
 	public void directTechnician(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource(fxmlTechnician));
@@ -190,6 +178,7 @@ public class LoginController implements Initializable{
 		stage.setScene(technicianScene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
+		
 		
 //		stage.setMaximized(true);
 		stage.show();

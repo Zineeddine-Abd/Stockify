@@ -39,6 +39,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -191,6 +192,15 @@ public class AdminController implements Initializable{
         assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_warranty"));
         assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_serial_number"));
         
+        //assetIdColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        assetCategoryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        assetTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        modelColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        statusColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        assetPurchaseDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        
         
         assetsTable.setItems(data);
         
@@ -250,7 +260,11 @@ public class AdminController implements Initializable{
     }
    
 
-    
+    // Method to delete selected rows from the TableView
+    public void deleteSelectedAssets() {
+        ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
+        assetsTable.getItems().removeAll(selectedAssets);
+    }
     
     
 	public void createNewUser(ActionEvent event) {

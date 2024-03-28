@@ -200,6 +200,7 @@ public class AdminController implements Initializable{
         assetTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         modelColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         statusColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        locationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         assetPurchaseDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());

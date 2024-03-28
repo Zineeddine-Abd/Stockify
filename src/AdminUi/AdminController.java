@@ -47,17 +47,29 @@ public class AdminController implements Initializable{
 	private Pane pan;
 	@FXML
 	private FontAwesomeIconView menuIcon;
-	@FXML
-	private MenuButton createNewMenuBox;
 	//****************************
+	
+	//All Assets Section Mats:******************/
+	@FXML
+	private Button AllAssetsButton;
+	@FXML
+	private Button AllUsersButton;
+	//*****************************************/
 	
 	//constant for easy manipulation on code:
 	private final String asset = "Asset";
 	private final String user = "User";
 	//choosing user or asset for creation:*****
 	private MenuItem[] newOptions = {new MenuItem(asset),new MenuItem(user)};
+	@FXML
+	private VBox allAssetsPane;
+	@FXML
+	private Button newAssetButton;
 	
-	
+	@FXML
+	private VBox allUsersPane;
+	@FXML
+	private Button newUserButton;
 	//*****************************************
 	
 	//logging out mats:***********
@@ -74,21 +86,16 @@ public class AdminController implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		createNewMenuBox.getItems().clear();
-		for(MenuItem item : newOptions){
-			item.setOnAction(event->createNew(event));
-		}
-		createNewMenuBox.getItems().addAll(newOptions);
+		//All Assets VBox Visibility set to false:
+		allAssetsPane.setVisible(false);
+		allUsersPane.setVisible(false);
 	}
 	
-	public void createNew(ActionEvent event){
+	public void createNewAsset(ActionEvent event){
 		
 		Parent root = null;
 		fillFormula = new Stage();
 		fillFormula.setResizable(false);
-		
-		MenuItem source = (MenuItem)event.getSource();
-		if(source.getText() == "Asset"){
 			fillFormula.setTitle("Create New Asset:");
 			try {
 				root = FXMLLoader.load(getClass().getResource("/AdminUi/assetScene.fxml"));
@@ -96,7 +103,19 @@ public class AdminController implements Initializable{
 				e.printStackTrace();
 			}
 			AssetController.setStage(fillFormula);
-		}else if(source.getText() == "User") {
+			
+		createNewScene = new Scene(root);
+		createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+		
+		fillFormula.setScene(createNewScene);
+		fillFormula.getIcons().add(Main.itAssetLogo);
+		fillFormula.show();
+	}
+	public void createNewUser(ActionEvent event) {
+		
+		Parent root = null;
+		fillFormula = new Stage();
+		fillFormula.setResizable(false);
 			fillFormula.setTitle("Create New User:");
 			try {
 				root = FXMLLoader.load(getClass().getResource("/AdminUi/userScene.fxml"));
@@ -104,8 +123,7 @@ public class AdminController implements Initializable{
 				e.printStackTrace();
 			}
 			UserController.setStage(fillFormula);
-		}
-		
+			
 		createNewScene = new Scene(root);
 		createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
 		
@@ -173,8 +191,6 @@ private boolean isOpenedSideBar = false;
 		
 	}
 	
-	
-	
 	public void LogOut(ActionEvent event) throws IOException {
 		
 		root = FXMLLoader.load(getClass().getResource(LoginController.fxmlLogin));
@@ -184,6 +200,21 @@ private boolean isOpenedSideBar = false;
 		stage.setTitle("Stockify - Login");
 		
 		stage.show();
+	}
+	
+	public void triggerAssetPane(ActionEvent event) {
+		//set all visiblity to false.
+		allUsersPane.setVisible(false);
+		allAssetsPane.setVisible(true);
+		
+		closeSideBar();
+	}
+	public void triggerUserPane(ActionEvent event) {
+		//set all panes visiblity to false 
+		allAssetsPane.setVisible(false);
+		allUsersPane.setVisible(true);
+		
+		closeSideBar();
 	}
 
 	

@@ -35,7 +35,7 @@ public class AssetController implements Initializable{
 	private final String ACCESSORY = "Accessory";
 	
 	private String[] categories = {HARDWARE,SOFTWARE,ACCESSORY};
-	private String[] hardware_type = {"Desktop" , "Laptop", "Projector", "Scanner", "Printer", "Switch" ,"Hub","Router","Modem"};
+	private String[] hardware_type = {"Desktop" , "Laptop", "Projector", "Scanner", "Printer", "Switch" ,"Hub","Router","Modem" };
 	private String[] software_type = {"Anti-Virus","License"};
 	private String[] accessory_type = {"Keybaord","Mouse","Cable","HDD","SSD","RAM"};
 	private String[] statuses = {IN_INVENTORY,READY_TO_USE,WORKING};//all status for now , feel free to add any more statuses.
@@ -43,7 +43,7 @@ public class AssetController implements Initializable{
 	//*******hardware models:*********************
 	private String[] desktop_laptop_models = {"HP","Dell","Lenovo","Acer","Apple","MSI","Razer"};
 	private String[] projector_scanner_printer_models = {"Canon" , "Epson" , "HP" , "Toshiba"};
-	private String[] networking_equipment_models = {"Dell EMC" , "Cisco Systems", "TP-Link" , "D-Link" , "Juniper Networks"};
+	private String[] networking_equipment_models = {"Dell EMC" , "Cisco Systems", "TP-Link" , "D-Link" , "Juniper Networks" , "None of the Above"};
 //	//*******software models:*********************
 //	private String[] desktop_models = {};
 //	private String[] desktop_models = {};
@@ -129,7 +129,7 @@ public class AssetController implements Initializable{
 		}
 		
 		try {				
-			if(!field2.getText().matches("[0-9]") || Integer.parseInt(field2.getText()) < 0 ) {//warranty in months.
+			if(!field2.getText().matches("[0-9]+$") || Integer.parseInt(field2.getText()) < 0 ) {//warranty in months.
 				invalidInfo.setText("Invalid warranty value!");
 				animatedInvalidInfolabel();
 				return;
@@ -147,7 +147,7 @@ public class AssetController implements Initializable{
 			return;
 		}
 		
-		if(!field4.getText().matches("^[0-9A-Za-z]+$")) {//deplacement
+		if(!field4.getText().matches("^[0-9A-Za-z]+$")) {//Location
 			invalidInfo.setText("Invalid Deplacement Location!");
 			animatedInvalidInfolabel();
 			return;
@@ -157,11 +157,11 @@ public class AssetController implements Initializable{
 		String type = typeChoiceBox.getValue();
 		String model = modelChoiceBox.getValue();
 		String status = statusChoiceBox.getValue();
-		String deplacement = field4.getText();
+		String location = field4.getText();
 		String warranty = field2.getText();
 		String serial_number = field1.getText();
 		
-		Asset new_asset = new Asset(id,category,type,model,status,deplacement,warranty,serial_number);
+		Asset new_asset = new Asset(id,category,type,model,status,location,warranty,serial_number);
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Success");
 		alert.setHeaderText("Successfully created new Asset but did not add it to database.check asset controller to implement it yourself - lokman ");

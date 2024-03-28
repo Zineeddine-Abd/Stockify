@@ -1,11 +1,13 @@
 package AdminUi;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import Components.Asset;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -105,7 +107,7 @@ public class AssetController implements Initializable{
 		statusChoiceBox.getItems().addAll(statuses);
 	}
 	
-	public void validateInformation() {
+	public void validateInformation() throws IOException {
 		if(categoryChoiceBox.getValue() == null) {
 			invalidInfo.setText("You must select a category!");//category
 			animatedInvalidInfolabel();
@@ -162,14 +164,15 @@ public class AssetController implements Initializable{
 		String serial_number = field1.getText();
 		
 		Asset new_asset = new Asset(id,category,type,model,status,location,warranty,serial_number);
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Success");
-		alert.setHeaderText("Successfully created new Asset but did not add it to database.check asset controller to implement it yourself - lokman ");
-		alert.showAndWait();
-		//add to database later.
-		//maybe consider all database operations last because we need to put it online for everyone to access it!.
+		// Obtain a reference to the AdminController
+	    AdminController adminController = (AdminController) stage.getUserData();
+	    
+	    // Call the addAsset method in AdminController to add the new asset to the table
+	    adminController.addAsset(new_asset);
+
 		
 	}
+	
 	public void animatedInvalidInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),invalidInfo);
 		fadetransition.setFromValue(1);

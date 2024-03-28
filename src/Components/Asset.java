@@ -9,13 +9,13 @@ public class Asset {
     private final StringProperty asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number;
 
 
-    public Asset(String assetId,String asset_category, String assetType, String model, String status, String deplacement,String warranty,String serial_number) {
+    public Asset(String assetId,String asset_category, String assetType, String model, String status, String location, String warranty,String serial_number) {
         this.asset_id = new SimpleStringProperty(assetId);
         this.asset_category = new SimpleStringProperty(asset_category);
         this.asset_type = new SimpleStringProperty(assetType);
         this.asset_model = new SimpleStringProperty(model);
         this.asset_status = new SimpleStringProperty(status);
-        this.asset_location = new SimpleStringProperty(deplacement);
+        this.asset_location = new SimpleStringProperty(location);
         this.asset_purchase_date = new SimpleStringProperty(LocalDate.now().toString());
         this.asset_warranty = new SimpleStringProperty(warranty);
         this.asset_serial_number = new SimpleStringProperty(serial_number);

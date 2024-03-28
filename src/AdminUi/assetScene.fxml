@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <VBox prefHeight="532.0" prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AssetController">
    <children>
       <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Asset">
@@ -51,7 +52,7 @@
             <Insets left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field1">
+      <TextField fx:id="serialField">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -61,7 +62,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field2" prefHeight="26.0" prefWidth="157.0">
+      <TextField fx:id="warrantyField" prefHeight="26.0" prefWidth="157.0">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -81,7 +82,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field4">
+      <TextField fx:id="locationField">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>

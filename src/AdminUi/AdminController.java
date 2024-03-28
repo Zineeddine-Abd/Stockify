@@ -28,13 +28,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -71,6 +75,13 @@ public class AdminController implements Initializable{
 	private Button AllUsersButton;
 	//*****************************************/
 	
+	//User and Asset Loaders
+	FXMLLoader newUserLoader;
+	FXMLLoader newAssetLoader;
+	//
+	
+	
+	
 	//constant for easy manipulation on code:
 	private final String asset = "Asset";
 	private final String user = "User";
@@ -86,12 +97,25 @@ public class AdminController implements Initializable{
 	@FXML
 	private Button newUserButton;
 	
+	//temporary make views array and views' constants compatible
+	private Pane dashboardView;
+	//Array of panes
+	Pane[] views;
+	//Set only one sence (constants)
+	
+	public static int DASHBOARD_VIEW = 0;
+	public static int USERS_VIEW = 1;
+	public static int ASSETS_VIEW = 2;
+	public static int SETTING_VIEW = 3;
+	public static int BACKUP_VIEW = 4;
+	
+	
 	//Table_View components:********************
 	@FXML
     private TableView<Asset> assetsTable;
 
     @FXML
-    private TableColumn<Asset, String> assetIdColumn;
+    private TableColumn<Asset, Integer> assetIdColumn;
 
     @FXML
     private TableColumn<Asset, String> assetCategoryColumn;
@@ -117,33 +141,7 @@ public class AdminController implements Initializable{
     @FXML
     private TableColumn<Asset, String> assetSerialNumberColumn;
     
-    @FXML
-    private TextField assetIdInput;
-    
-    @FXML
-    private TextField assetCategoryInput;
-    
-    @FXML
-    private TextField assetTypeInput;
 
-    @FXML
-    private TextField modelInput;
-
-    @FXML
-    private TextField statusInput;
-
-    @FXML
-    private TextField locationInput;
-    
-    @FXML
-    private TextField assetPurchaseDateInput;
-    
-    @FXML
-    private TextField assetWarrantyInput;
-    
-    @FXML
-    private TextField assetSerialNumberInput;
-    
     
 	
 	//logging out mats:***********
@@ -160,6 +158,15 @@ public class AdminController implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		//initialize views array
+		dashboardView = new Pane();
+		views = new Pane[]{dashboardView ,allUsersPane, allAssetsPane};
+		
+		// --> here we will set the default view (dashboardview) 
+		     //
+		//
+		
+		
 		//All Assets VBox Visibility set to false:
 		allAssetsPane.setVisible(false);
 		allUsersPane.setVisible(false);
@@ -167,56 +174,73 @@ public class AdminController implements Initializable{
 		// Set the cell value factories for each column
 		 // Create sample data
         List<Asset> sampleData = Arrays.asList(
-                new Asset("1", "Category A", "Type A", "Model 1", "Active", "Location 1", "1 year", "SN001"),
-                new Asset("2", "Category B", "Type B", "Model 2", "Inactive", "Location 2", "2 years", "SN002"),
-                new Asset("3", "Category C", "Type C", "Model 3", "Maintenance", "Location 3", "3 years", "SN003")
+                new Asset(1, "Category A", "Type A", "Model 1", "Active", "Location 1", "1 year", "SN001"),
+                new Asset(2, "Category B", "Type B", "Model 2", "Inactive", "Location 2", "2 years", "SN002"),
+                new Asset(3, "Category C", "Type C", "Model 3", "Maintenance", "Location 3", "3 years", "SN003")
         );
         // Convert sample data to observable list
         ObservableList<Asset> data = FXCollections.observableArrayList(sampleData);
-        assetsTable = new TableView<>();
         // Set the data to the TableView
+        assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
+        assetCategoryColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_category"));
+        assetTypeColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_type"));
+        modelColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_model"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_status"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_location"));
+        assetPurchaseDateColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_purchase_date"));
+        assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_warranty"));
+        assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_serial_number"));
+        
+        
         assetsTable.setItems(data);
         
-        assetIdColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_id());
-        assetCategoryColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_category());
-        assetTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_type());
-        modelColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_model());
-        statusColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_status());
-        locationColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_location());
-        assetPurchaseDateColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_purchase_date());
-        assetWarrantyColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_warranty());
-        assetSerialNumberColumn.setCellValueFactory(cellData -> cellData.getValue().getAsset_serial_number());
+       
 	}
 	
 	public void createNewAsset(ActionEvent event){
 		
-		Parent root = null;
-		fillFormula = new Stage();
-		fillFormula.setResizable(false);
-			fillFormula.setTitle("Create New Asset:");
+		Parent root;
+		
+			
 			try {
-				root = FXMLLoader.load(getClass().getResource("/AdminUi/assetScene.fxml"));
+				newAssetLoader =new FXMLLoader(getClass().getResource("/AdminUi/assetScene.fxml"));
+				
+				root = newAssetLoader.load();
+				((AssetController)newAssetLoader.getController()).setAdminController(this);
+				
+				fillFormula = new Stage();
+				fillFormula.setResizable(false);
+				
+				fillFormula.setTitle("Create New Asset:");
+				
+				//AssetController.setStage(fillFormula);
+				createNewScene = new Scene(root);
+				createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+		
+				fillFormula.setScene(createNewScene);
+				fillFormula.getIcons().add(Main.itAssetLogo);
+				fillFormula.show();
+				
+				
+//				Dialog<ButtonType> dialog = new Dialog<>();
+//				dialog.setDialogPane((DialogPane)root);
+//				dialog.show();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			AssetController.setStage(fillFormula);
 			
-		createNewScene = new Scene(root);
-		createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+			
 		
-		fillFormula.setScene(createNewScene);
-		fillFormula.getIcons().add(Main.itAssetLogo);
-		fillFormula.show();
+		
 	}
 	
 	public void addAsset(Asset newAsset) {
-        
         assetsTable.getItems().add(newAsset);
-
         // Clear input fields
-        clearInputs();
+       // clearInputs();
     }
 
+	
     private void displayErrorMessage(String title, String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
@@ -226,35 +250,41 @@ public class AdminController implements Initializable{
     }
    
 
-    private void clearInputs() {
-        assetTypeInput.clear();
-        modelInput.clear();
-        statusInput.clear();
-        locationInput.clear();
-        assetIdInput.clear();
-    }
+    
     
     
 	public void createNewUser(ActionEvent event) {
-		
-		Parent root = null;
-		fillFormula = new Stage();
-		fillFormula.setResizable(false);
-			fillFormula.setTitle("Create New User:");
-			try {
-				root = FXMLLoader.load(getClass().getResource("/AdminUi/userScene.fxml"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			UserController.setStage(fillFormula);
+		Parent root;
+		try {
+			newUserLoader = new FXMLLoader(getClass().getResource("/AdminUi/userScene.fxml"));
+			root = newUserLoader.load();
+			((UserController)newUserLoader.getController()).setAdminController(this);
 			
-		createNewScene = new Scene(root);
-		createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-		
-		fillFormula.setScene(createNewScene);
-		fillFormula.getIcons().add(Main.itAssetLogo);
-		fillFormula.show();
-		
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+				fillFormula.setTitle("Create New User:");
+	//			try {
+	//				root = FXMLLoader.load(getClass().getResource("/AdminUi/userScene.fxml"));
+	//			} catch (IOException e) {
+	//				e.printStackTrace();
+	//			}
+				
+				//UserController.setStage(fillFormula);
+				
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+			
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//((Stage)((Node)event.getSource()).getScene().getWindow()).set
+			
+			fillFormula.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	
@@ -315,6 +345,7 @@ private boolean isOpenedSideBar = false;
 		
 	}
 	
+	//not now !
 	public void LogOut(ActionEvent event) throws IOException {
 		
 		root = FXMLLoader.load(getClass().getResource(LoginController.fxmlLogin));
@@ -325,21 +356,29 @@ private boolean isOpenedSideBar = false;
 		
 		stage.show();
 	}
+	//
 	
 	public void triggerAssetPane(ActionEvent event) {
 		//set all visiblity to false.
-		allUsersPane.setVisible(false);
-		allAssetsPane.setVisible(true);
+		selectView(ASSETS_VIEW);
 		
 		closeSideBar();
 	}
 	public void triggerUserPane(ActionEvent event) {
 		//set all panes visiblity to false 
-		allAssetsPane.setVisible(false);
-		allUsersPane.setVisible(true);
+		selectView(USERS_VIEW);
 		
 		closeSideBar();
 	}
 
 	
+	public void selectView(int view) {
+		for(int i = 0; i < views.length; i++) {
+			if(i != view) {
+				views[i].setVisible(false);
+			}else {
+				views[i].setVisible(true);
+			}
+		}
+	}
 }

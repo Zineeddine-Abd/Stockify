@@ -31,7 +31,52 @@
    <center>
       <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
          <children>
-            <Pane id="pan" fx:id="pan" onMouseClicked="#closeSideBar" opacity="0.5" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightGray;" visible="false" />
+            <VBox fx:id="allAssetsPane" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#createNewAsset" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" top="15.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Delete">
+                           <HBox.margin>
+                              <Insets bottom="15.0" left="4.0" right="15.0" top="15.0" />
+                           </HBox.margin>
+                        </Button>
+                        <TextField prefHeight="28.0" prefWidth="250.0" promptText="Search" style="-fx-background-color: f4f4f4;">
+                           <HBox.margin>
+                              <Insets left="60.0" top="20.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="79.0" style="-fx-font-size: 15px; -fx-min-height: 0px; -fx-min-width: 0px;" styleClass="cancelButton" stylesheets="@admin.css" text="Search">
+                           <HBox.margin>
+                              <Insets left="5.0" top="16.0" />
+                           </HBox.margin>
+                        </Button>
+                        <ChoiceBox prefHeight="32.0" prefWidth="150.0" styleClass="dropdown-box" stylesheets="@admin.css">
+                           <HBox.margin>
+                              <Insets left="5.0" right="15.0" top="15.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                     </children>
+                  </HBox>
+                  <TableView fx:id="assetsTable" prefHeight="554.0" prefWidth="802.0">
+                     <columns>
+                        <TableColumn fx:id="assetIdColumn" prefWidth="75.0" text="asset_id" />
+                        <TableColumn fx:id="assetCategoryColumn" prefWidth="92.800048828125" text="asset_category" />
+                        <TableColumn fx:id="assetTypeColumn" prefWidth="74.39996337890625" text="asset_type" />
+                        <TableColumn fx:id="modelColumn" prefWidth="80.00001525878906" text="asset_model" />
+                        <TableColumn fx:id="statusColumn" prefWidth="80.79998779296875" text="asset_status" />
+                        <TableColumn fx:id="locationColumn" prefWidth="88.79998779296875" text="asset_location" />
+                        <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="134.39996337890625" text="asset_purchase_date" />
+                        <TableColumn fx:id="assetWarrantyColumn" minWidth="0.0" prefWidth="99.199951171875" text="asset_warranty" />
+                        <TableColumn fx:id="assetSerialNumberColumn" prefWidth="74.39993896484373" text="asset_serial_number" />
+                     </columns>
+                  </TableView>
+               </children>
+            </VBox>
             <VBox fx:id="allUsersPane">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0">
@@ -75,6 +120,7 @@
                   </TableView>
                </children>
             </VBox>
+            <Pane id="pan" fx:id="pan" onMouseClicked="#closeSideBar" opacity="0.5" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightGray;" visible="false" />
             <VBox fx:id="sideBar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="585.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="vbox" stylesheets="@admin.css" translateX="-200.0">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -153,52 +199,6 @@
                         <FontAwesomeIconView fill="#67809c" glyphName="LOCK" size="25" />
                      </graphic>
                   </Button>
-               </children>
-            </VBox>
-            <VBox fx:id="allAssetsPane" layoutX="10.0" layoutY="10.0">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#createNewAsset" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
-                           <HBox.margin>
-                              <Insets left="15.0" right="15.0" top="15.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Delete">
-                           <HBox.margin>
-                              <Insets bottom="15.0" left="4.0" right="15.0" top="15.0" />
-                           </HBox.margin>
-                        </Button>
-                        <TextField prefHeight="28.0" prefWidth="250.0" promptText="Search" style="-fx-background-color: f4f4f4;">
-                           <HBox.margin>
-                              <Insets left="60.0" top="20.0" />
-                           </HBox.margin>
-                        </TextField>
-                        <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="79.0" style="-fx-font-size: 15px; -fx-min-height: 0px; -fx-min-width: 0px;" styleClass="cancelButton" stylesheets="@admin.css" text="Search">
-                           <HBox.margin>
-                              <Insets left="5.0" top="16.0" />
-                           </HBox.margin>
-                        </Button>
-                        <ChoiceBox prefHeight="32.0" prefWidth="150.0" styleClass="dropdown-box" stylesheets="@admin.css">
-                           <HBox.margin>
-                              <Insets left="5.0" right="15.0" top="15.0" />
-                           </HBox.margin>
-                        </ChoiceBox>
-                     </children>
-                  </HBox>
-                  <TableView fx:id="assetsTable" prefHeight="554.0" prefWidth="802.0">
-                     <columns>
-                        <TableColumn fx:id="assetIdColumn" prefWidth="75.0" text="asset_id" />
-                        <TableColumn fx:id="assetCategoryColumn" prefWidth="92.800048828125" text="asset_category" />
-                        <TableColumn fx:id="assetTypeColumn" prefWidth="74.39996337890625" text="asset_type" />
-                        <TableColumn fx:id="modelColumn" prefWidth="80.00001525878906" text="asset_model" />
-                        <TableColumn fx:id="statusColumn" prefWidth="80.79998779296875" text="asset_status" />
-                        <TableColumn fx:id="locationColumn" prefWidth="88.79998779296875" text="asset_location" />
-                        <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="134.39996337890625" text="asset_purchase_date" />
-                        <TableColumn fx:id="assetWarrantyColumn" minWidth="0.0" prefWidth="99.199951171875" text="asset_warranty" />
-                        <TableColumn fx:id="assetSerialNumberColumn" prefWidth="74.39993896484373" text="asset_serial_number" />
-                     </columns>
-                  </TableView>
                </children>
             </VBox>
          </children>

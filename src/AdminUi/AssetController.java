@@ -6,9 +6,11 @@ import java.util.ResourceBundle;
 
 import Components.Asset;
 import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -20,14 +22,24 @@ import javafx.util.Duration;
 
 public class AssetController implements Initializable{
 	
-    private static Stage stage;
+  //  private static Stage stage;
+    private AdminController adminController;
     
-    public static void setStage(Stage res) {
-        stage = res;
-    }
+//    public static void setStage(Stage res) {
+//        stage = res;
+//    }
 	
     
-    
+	public AdminController getAdminController() {
+		return adminController;
+	}
+
+	public void setAdminController(AdminController adminController) {
+		this.adminController = adminController;
+	}
+
+
+
 	private final String IN_INVENTORY = "In Inventory";
 	private final String READY_TO_USE = "Ready to use";
 	private final String WORKING = "Currently Working";
@@ -67,7 +79,7 @@ public class AssetController implements Initializable{
 	private ChoiceBox<String> statusChoiceBox;
 	
 	@FXML
-	private TextField field1,field2,field3,field4,field5;
+	private TextField serialField,warrantyField,locationField;
 	@FXML
 	private Button submitButton;
 	@FXML
@@ -107,7 +119,7 @@ public class AssetController implements Initializable{
 		statusChoiceBox.getItems().addAll(statuses);
 	}
 	
-	public void validateInformation() throws IOException {
+	public void validateInformation(ActionEvent event) throws IOException {
 		if(categoryChoiceBox.getValue() == null) {
 			invalidInfo.setText("You must select a category!");//category
 			animatedInvalidInfolabel();
@@ -124,14 +136,14 @@ public class AssetController implements Initializable{
 			return;
 		}
 		
-		if(!field1.getText().matches("[0-9]+$")) {//Serial Number.
+		if(!serialField.getText().matches("[0-9]+$")) {//Serial Number.
 			invalidInfo.setText("Invalid Serial number!");
 			animatedInvalidInfolabel();
 			return;
 		}
 		
 		try {				
-			if(!field2.getText().matches("[0-9]+$") || Integer.parseInt(field2.getText()) < 0 ) {//warranty in months.
+			if(!warrantyField.getText().matches("[0-9]+$") || Integer.parseInt(warrantyField.getText()) < 0 ) {//warranty in months.
 				invalidInfo.setText("Invalid warranty value!");
 				animatedInvalidInfolabel();
 				return;
@@ -149,29 +161,38 @@ public class AssetController implements Initializable{
 			return;
 		}
 		
-		if(!field4.getText().matches("^[0-9A-Za-z]+$")) {//Location
+		if(!locationField.getText().matches("^[0-9A-Za-z]+$")) {//Location
 			invalidInfo.setText("Invalid Deplacement Location!");
 			animatedInvalidInfolabel();
 			return;
 		}
-		String id = "0";
+		int id = 0;
 		String category = categoryChoiceBox.getValue();
 		String type = typeChoiceBox.getValue();
 		String model = modelChoiceBox.getValue();
 		String status = statusChoiceBox.getValue();
-		String location = field4.getText();
-		String warranty = field2.getText();
-		String serial_number = field1.getText();
+		String location = locationField.getText();
+		String warranty = warrantyField.getText();
+		String serial_number = serialField.getText();
 		
 		Asset new_asset = new Asset(id,category,type,model,status,location,warranty,serial_number);
 		// Obtain a reference to the AdminController
-	    AdminController adminController = (AdminController) stage.getUserData();
+	   // AdminController adminController = (AdminController) stage.getUserData();
 	    
 	    // Call the addAsset method in AdminController to add the new asset to the table
 	    adminController.addAsset(new_asset);
 
-		
+		disposeWindow(event);
 	}
+	
+	private void clearInputs() {
+		//	assetTypeInput.clear();
+//        modelInput.clear();
+        serialField.clear();
+        locationField.clear();
+        warrantyField.clear();
+    }
+	
 	
 	public void animatedInvalidInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),invalidInfo);
@@ -179,7 +200,8 @@ public class AssetController implements Initializable{
 		fadetransition.setToValue(0);
 		fadetransition.play();
 	}
-	public void disposeWindow() {
+	public void disposeWindow(ActionEvent event) {
+		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
 	}
 

@@ -2,6 +2,9 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Components.Asset;
@@ -172,14 +175,12 @@ public class AssetController implements Initializable{
 		String model = modelChoiceBox.getValue();
 		String status = statusChoiceBox.getValue();
 		String location = locationField.getText();
-		String warranty = warrantyField.getText();
-		String serial_number = serialField.getText();
+		int warranty = Integer.parseInt(warrantyField.getText());
+		int serial_number = Integer.parseInt(serialField.getText());
 		
-		Asset new_asset = new Asset(id,category,type,model,status,location,warranty,serial_number);
-		// Obtain a reference to the AdminController
-	   // AdminController adminController = (AdminController) stage.getUserData();
-	    
-	    // Call the addAsset method in AdminController to add the new asset to the table
+		Date date = java.sql.Date.valueOf(LocalDate.now());
+		
+		Asset new_asset = new Asset(id,category,type,model,status,location,date,warranty,serial_number);
 	    adminController.addAsset(new_asset);
 
 		disposeWindow(event);

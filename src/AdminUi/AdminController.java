@@ -4,6 +4,12 @@ import Components.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 import javafx.util.Duration;
@@ -52,6 +58,8 @@ import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -81,7 +89,6 @@ public class AdminController implements Initializable{
 	FXMLLoader newUserLoader;
 	FXMLLoader newAssetLoader;
 	//
-	
 	
 	
 	//constant for easy manipulation on code:
@@ -135,13 +142,13 @@ public class AdminController implements Initializable{
     private TableColumn<Asset, String> locationColumn;
     
     @FXML
-    private TableColumn<Asset, String> assetPurchaseDateColumn;
+    private TableColumn<Asset, Date> assetPurchaseDateColumn;
 
     @FXML
-    private TableColumn<Asset, String> assetWarrantyColumn;
+    private TableColumn<Asset, Integer> assetWarrantyColumn;
 
     @FXML
-    private TableColumn<Asset, String> assetSerialNumberColumn;
+    private TableColumn<Asset, Integer> assetSerialNumberColumn;
     
 
     
@@ -173,41 +180,59 @@ public class AdminController implements Initializable{
 		allAssetsPane.setVisible(false);
 		allUsersPane.setVisible(false);
 		// Initialize table columns
-		// Set the cell value factories for each column
-		 // Create sample data
-        List<Asset> sampleData = Arrays.asList(
-                new Asset(1, "Category A", "Type A", "Model 1", "Active", "Location 1", "1 year", "SN001"),
-                new Asset(2, "Category B", "Type B", "Model 2", "Inactive", "Location 2", "2 years", "SN002"),
-                new Asset(3, "Category C", "Type C", "Model 3", "Maintenance", "Location 3", "3 years", "SN003")
-        );
-        // Convert sample data to observable list
-        ObservableList<Asset> data = FXCollections.observableArrayList(sampleData);
-        
-        assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        // Set the data to the TableView
-        assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
-        assetCategoryColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_category"));
-        assetTypeColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_type"));
-        modelColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_model"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_status"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_location"));
-        assetPurchaseDateColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_purchase_date"));
-        assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_warranty"));
-        assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_serial_number"));
-        
-        //assetIdColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assetCategoryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assetTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        modelColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        statusColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        locationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assetPurchaseDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        
-        
-        assetsTable.setItems(data);
-        
+		//estalish a connection to the SupaBase Database.
+		try {
+			ArrayList<Asset> bufferList = new ArrayList<Asset>();
+			Class.forName("org.postgresql.Driver");
+			Connection con = DriverManager.getConnection(LoginController.url);
+			String getAllAssetsQuery = "SELECT * FROM assets";
+			PreparedStatement ps = con.prepareStatement(getAllAssetsQuery);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {//while the reader still has a next row read it:
+				int asset_id = rs.getInt("asset_id");
+				String asset_category = rs.getString("asset_category");
+				String asset_type = rs.getString("asset_type");
+				String asset_model = rs.getString("asset_model");
+				String asset_status = rs.getString("asset_status");
+				String asset_location = rs.getString("asset_location");
+				Date asset_purchase_date = rs.getDate("asset_purchase_date");
+				int asset_warranty = rs.getInt("asset_warranty");
+				int asset_serial_number = rs.getInt("asset_serial_number");
+				
+				Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number);
+				bufferList.add(asset);
+			}
+		
+			assetsTable.getItems().addAll(bufferList);
+			
+	        assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	        
+	        assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
+	        assetCategoryColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_category"));
+	        assetTypeColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_type"));
+	        modelColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_model"));
+	        statusColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_status"));
+	        locationColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_location"));
+	        assetPurchaseDateColumn.setCellValueFactory(new PropertyValueFactory<Asset, Date>("asset_purchase_date"));
+	        assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_warranty"));
+	        assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_serial_number"));
+	        
+	        //assetIdColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+	        assetCategoryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+	        assetTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+	        modelColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+	        statusColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+	        locationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+	        
+//	        assetPurchaseDateColumn.setCellFactory(DatePickerTableCell.forTableColumn());
+//	        assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+//	        assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+	        
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
        
 	}
 	

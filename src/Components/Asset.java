@@ -1,5 +1,6 @@
 package Components;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -8,63 +9,93 @@ import javafx.beans.property.StringProperty;
 public class Asset {
 	
 	private int asset_id;
-    private String asset_category, asset_type, asset_model, asset_status, asset_location, asset_purchase_date, asset_warranty, asset_serial_number;
-
-    public Asset(int assetId,String asset_category, String assetType, String model, String status, String location, String warranty,String serial_number) {
+    private String asset_category, asset_type, asset_model, asset_status, asset_location;
+    Date asset_purchase_date;
+    private int asset_warranty, asset_serial_number;
+    
+    public Asset(int assetId,String asset_category, String assetType, String model, String status, String location,Date purchase_date, int warranty,int serial_number) {
         this.asset_id = assetId;
         this.asset_category = asset_category;
         this.asset_type = assetType;
         this.asset_model = model;
         this.asset_status = status;
         this.asset_location = location;
-        this.asset_purchase_date = LocalDate.now().toString();
+        this.asset_purchase_date = purchase_date;
         this.asset_warranty = warranty;
         this.asset_serial_number = serial_number;
     }
-
 
 	public int getAsset_id() {
 		return asset_id;
 	}
 
+	public void setAsset_id(int asset_id) {
+		this.asset_id = asset_id;
+	}
 
 	public String getAsset_category() {
 		return asset_category;
 	}
 
+	public void setAsset_category(String asset_category) {
+		this.asset_category = asset_category;
+	}
 
 	public String getAsset_type() {
 		return asset_type;
 	}
 
+	public void setAsset_type(String asset_type) {
+		this.asset_type = asset_type;
+	}
 
 	public String getAsset_model() {
 		return asset_model;
 	}
 
+	public void setAsset_model(String asset_model) {
+		this.asset_model = asset_model;
+	}
 
 	public String getAsset_status() {
 		return asset_status;
 	}
 
+	public void setAsset_status(String asset_status) {
+		this.asset_status = asset_status;
+	}
 
 	public String getAsset_location() {
 		return asset_location;
 	}
 
+	public void setAsset_location(String asset_location) {
+		this.asset_location = asset_location;
+	}
 
-	public String getAsset_purchase_date() {
+	public Date getAsset_purchase_date() {
 		return asset_purchase_date;
 	}
 
+	public void setAsset_purchase_date(Date asset_purchase_date) {
+		this.asset_purchase_date = asset_purchase_date;
+	}
 
-	public String getAsset_warranty() {
+	public int getAsset_warranty() {
 		return asset_warranty;
 	}
 
+	public void setAsset_warranty(int asset_warranty) {
+		this.asset_warranty = asset_warranty;
+	}
 
-	public String getAsset_serial_number() {
+	public int getAsset_serial_number() {
 		return asset_serial_number;
 	}
+
+	public void setAsset_serial_number(int asset_serial_number) {
+		this.asset_serial_number = asset_serial_number;
+	}
+
 
 }

@@ -49,9 +49,7 @@ public class LoginController{
 	public static final String[] permissions = {ADMIN,TECHNICIAN,PROFESSOR};
 	
 	private Connection con;
-	private final String url = "jdbc:mysql://localhost:3306/stockifydb";
-	private final String db_username = "root";
-	private final String db_password = "lokman7777";
+	public static final String url = "jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:5432/postgres?user=postgres.hjtaojbdkclkvvgfvzvh&password=ThisIsMyDatabasePassword";
 	
 	@FXML
 	private Button loginButton;
@@ -74,37 +72,45 @@ public class LoginController{
 	//Database linking for each user.
 	private void assignUser(ActionEvent event) {
 		try {
-			directAdmin(event);
-			/*uncomment this when done setting up database.*/
+//			directAdmin(event);
 			
-//			Class.forName("com.mysql.cj.jdbc.Driver");
-//			con = DriverManager.getConnection(url ,db_username ,db_password);
-//			String password = "\"" + (showPassBox.isSelected() ? showpasswordfield.getText() : passwordfield.getText()) +"\"" ;
-//			String username = "\"" + usernameField.getText() + "\"";
-//	        String sql = "SELECT * FROM users WHERE username="+ username + " AND pass_word="+password + ";";
-//	        PreparedStatement statement = con.prepareStatement(sql);
-//	        ResultSet resultSet = statement.executeQuery();
-//	        
-//	        if(resultSet.next()) {
-//	        	switch(resultSet.getString("user_role")) {
-//	        		case ADMIN:
-//	        			directAdmin(event);
-//	        			break;
-//	        		case TECHNICIAN:
-//	        			directTechnician(event);
-//	        			break;
-//	        		case PROFESSOR:
-//	        			directProfessor(event);
-//	        			break;
-//	        		default:
-//	        			System.out.println("error!"); //idk what to put here - lokman.
-//	        	}
-//	        	return;
-//	        }else {
-//	        	incorrectInfo.setText("Invalid username or password!");
-//	        	animatedIncorrectInfolabel();
-//	        }
+			//Changes based on the driver and type of sqlDatabase used:
+			
+			Class.forName("org.postgresql.Driver");
+	        Connection con = DriverManager.getConnection(url);
+			
+			String password = "'" + (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText()) +"'" ;
+			String username = "'" + usernameField.getText() + "'" ;
+			
+	        String sql = "SELECT * FROM users WHERE username=" + username + " AND pass_word="+password + " ;";
+	        PreparedStatement statement = con.prepareStatement(sql);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        if(resultSet.next()) {
+	        	switch(resultSet.getString("user_role")) {
+	        		case ADMIN:
+	        			directAdmin(event);
+	        			break;
+	        		case TECHNICIAN:
+	        			directTechnician(event);
+	        			break;
+	        		case PROFESSOR:
+	        			directProfessor(event);
+	        			break;
+	        		default:
+	        			System.out.println("error!"); //idk what to put here - lokman.
+	        	}
+	        	return;
+	        }else {
+	        	incorrectInfo.setText("Invalid username or password!");
+	        	animatedIncorrectInfolabel();
+	        }
+	        
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

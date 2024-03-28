@@ -35,6 +35,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -181,6 +182,8 @@ public class AdminController implements Initializable{
         );
         // Convert sample data to observable list
         ObservableList<Asset> data = FXCollections.observableArrayList(sampleData);
+        
+        assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         // Set the data to the TableView
         assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
         assetCategoryColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_category"));

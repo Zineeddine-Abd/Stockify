@@ -31,7 +31,7 @@
             <Insets left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field1">
+      <TextField fx:id="fullNameField">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -41,7 +41,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field2" prefHeight="26.0" prefWidth="157.0">
+      <TextField fx:id="emailField" prefHeight="26.0" prefWidth="157.0">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -51,7 +51,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field3" prefHeight="26.0" prefWidth="292.0">
+      <TextField fx:id="usernameField" prefHeight="26.0" prefWidth="292.0">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -61,7 +61,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field4">
+      <TextField fx:id="passwordField">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -71,7 +71,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="field5" layoutX="25.0" layoutY="324.0">
+      <TextField fx:id="confirmPasswordField" layoutX="25.0" layoutY="324.0">
          <VBox.margin>
             <Insets left="15.0" />
          </VBox.margin>
@@ -99,5 +99,13 @@
             <Insets top="30.0" />
          </VBox.margin>
       </HBox>
+      <Label fx:id="invalidInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="72.0" prefWidth="315.0" textFill="#ff0303">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
    </children>
 </VBox>

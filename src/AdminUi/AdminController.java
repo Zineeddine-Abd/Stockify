@@ -119,7 +119,7 @@ public class AdminController implements Initializable{
 	public static int BACKUP_VIEW = 4;
 	
 	
-	//Table_View components:********************
+	//Table_View assets components:********************
 	@FXML
     private TableView<Asset> assetsTable;
 
@@ -150,7 +150,27 @@ public class AdminController implements Initializable{
     @FXML
     private TableColumn<Asset, Integer> assetSerialNumberColumn;
     
+    //Table_view users Components:******************************
+    @FXML
+    private TableView<User> usersTable;
 
+    @FXML
+    private TableColumn<User, Integer> user_idColumn;
+
+    @FXML
+    private TableColumn<User, String> usernameColumn;
+    
+    @FXML
+    private TableColumn<User, String> pass_wordColumn;
+
+    @FXML
+    private TableColumn<User, String> emailColumn;
+
+    @FXML
+    private TableColumn<User, String> full_nameColumn;
+
+    @FXML
+    private TableColumn<User, String> user_roleColumn;
     
 	
 	//logging out mats:***********
@@ -184,14 +204,19 @@ public class AdminController implements Initializable{
 		allAssetsPane.setVisible(false);
 		allUsersPane.setVisible(false);
 		// Initialize table columns
-		//estalish a connection to the SupaBase Database.
+		
+		//estalish a connection to the SupaBase Database For :
+		
 		try {
-			ArrayList<Asset> bufferList = new ArrayList<Asset>();
+			ArrayList<Asset> bufferListAssets = new ArrayList<Asset>();
+			ArrayList<User> bufferListUsers = new ArrayList<User>();
+			
 			Class.forName("org.postgresql.Driver");
 			Connection con = DriverManager.getConnection(LoginController.url);
 			String getAllAssetsQuery = "SELECT * FROM assets";
 			PreparedStatement ps = con.prepareStatement(getAllAssetsQuery);
 			ResultSet rs = ps.executeQuery();
+			//Assets:
 			while(rs.next()) {//while the reader still has a next row read it:
 				int asset_id = rs.getInt("asset_id");
 				String asset_category = rs.getString("asset_category");
@@ -202,15 +227,33 @@ public class AdminController implements Initializable{
 				Date asset_purchase_date = rs.getDate("asset_purchase_date");
 				int asset_warranty = rs.getInt("asset_warranty");
 				int asset_serial_number = rs.getInt("asset_serial_number");
-				
 				Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number);
-				bufferList.add(asset);
+				bufferListAssets.add(asset);
 			}
-		
-			assetsTable.getItems().addAll(bufferList);
+			assetsTable.getItems().addAll(bufferListAssets);
+			bufferListAssets.clear();
+			
+			String getAllUsersQuery = "SELECT * FROM users";
+			PreparedStatement ps2 = con.prepareStatement(getAllUsersQuery);
+			ResultSet userResultSet = ps2.executeQuery();
+			//Users:
+			while(userResultSet.next()) {//while the reader still has a next row read it:
+				int user_id = userResultSet.getInt("user_id");
+				String username = userResultSet.getString("username");
+				String pass_word = userResultSet.getString("pass_word");
+				String email = userResultSet.getString("email");
+				String full_name = userResultSet.getString("full_name");
+				String user_role = userResultSet.getString("user_role");
+				
+				User newuser = new User(user_id,username,pass_word,email,full_name,user_role);
+				
+				bufferListUsers.add(newuser);
+			}
+			
+			usersTable.getItems().addAll(bufferListUsers);
+			bufferListUsers.clear();
 			
 	        assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-	        
 	        assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
 	        assetCategoryColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_category"));
 	        assetTypeColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_type"));
@@ -232,12 +275,21 @@ public class AdminController implements Initializable{
 //	        assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 //	        assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 	        
+	        //Users table:
+	        usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	        user_idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("user_id"));
+	        usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
+	        pass_wordColumn.setCellValueFactory(new PropertyValueFactory<User, String>("pass_word"));
+	        emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
+	        full_nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("full_name"));
+	        user_roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("user_role"));
+	        
+	        
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-       
 	}
 	
 	public void createNewAsset(ActionEvent event){
@@ -277,6 +329,11 @@ public class AdminController implements Initializable{
         newAsset.setAsset_id(last_id);
         assetsTable.getItems().add(newAsset);
     }
+	public void addUser(User newuser) {
+		DatabaseUtilities.insertItemIntoDatabase(newuser);
+        newuser.setUser_id(last_id);
+        usersTable.getItems().add(newuser);
+	}
 
 	
     private void displayErrorMessage(String title, String message) {
@@ -314,9 +371,7 @@ public class AdminController implements Initializable{
     		}
     		
     		assetsTable.getItems().removeAll(selectedAssets);
-    		
     	}
-    	
     }
     
     
@@ -353,9 +408,7 @@ public class AdminController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
-	
 	
 	
 private boolean isOpenedSideBar = false;

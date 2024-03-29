@@ -3,6 +3,7 @@ package AdminUi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Components.User;
 import LoginUi.LoginController;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -36,18 +37,24 @@ public class UserController implements Initializable{
 		this.adminController = adminController;
 	}
 	
-	
 	@FXML
 	private ChoiceBox<String> permissions;
 	@FXML
-	private TextField field1,field2,field3,field4,field5;
+	private TextField fullNameField;
+	@FXML
+	private TextField emailField;
+	@FXML
+	private TextField usernameField;
+	@FXML
+	private TextField passwordField;
+	@FXML
+	private TextField confirmPasswordField;
 	@FXML
 	private Button submitButton;
 	@FXML
 	private Button cancelButton;
 	@FXML
-	private Label invalidInfo;
-	
+	private Label invalidInfo;	
 	
 	//*********************all methods:***********************
 
@@ -57,14 +64,45 @@ public class UserController implements Initializable{
 	
 	public void validateInformation(ActionEvent event) {
 		//validate info of user here .
-		//someone implement the logic im lazy the text fields above are corresponding to each in the scene one by order.except permissions which is a choice box.
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Success");
-		alert.setHeaderText("Successfully created new User but did not add it to database. check userController to implement it yourself - lokmam");
-		alert.showAndWait();
+		if(permissions.getValue() == null) {
+			invalidInfo.setText("You must select Permissions for this user!");
+			animatedInvalidInfolabel();
+			return;
+		}
+		if(!usernameField.getText().matches("^[0-9A-Za-z]+$")) {
+			invalidInfo.setText("Invalid username! No Special Characters allowed!");
+			animatedInvalidInfolabel();
+			return;
+		}
+//		if(!fullNameField.getText().matches("")) {
+//			invalidInfo.setText("Invalid name! no digits/special characters allowed!");
+//			animatedInvalidInfolabel();
+//			return;
+//		}
+		if(!emailField.getText().matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
+			invalidInfo.setText("Invalid email Format!");
+			animatedInvalidInfolabel();
+			return;
+		}
+//		if(confirmPasswordField.getText() != passwordField.getText()) {
+//			invalidInfo.setText("Passwords Do Not match!");
+//			animatedInvalidInfolabel();
+//			return;
+//		}
+		
+		int id=0;
+		String username = usernameField.getText();
+		String pass_word = passwordField.getText();
+		String email = emailField.getText();
+		String full_name = fullNameField.getText();
+		String user_role = permissions.getValue();
+		
+		User newuser = new User(id,username,pass_word,email,full_name,user_role);
+		adminController.addUser(newuser);
 		
 		disposeWindow(event);
 	}
+	
 	public void animatedInvalidInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),invalidInfo);
 		fadetransition.setFromValue(1);

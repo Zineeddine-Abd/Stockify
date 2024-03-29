@@ -62,14 +62,14 @@
                         </ChoiceBox>
                      </children>
                   </HBox>
-                  <TableView prefHeight="554.0" prefWidth="802.0">
+                  <TableView fx:id="usersTable" prefHeight="554.0" prefWidth="802.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="user_id" />
-                      <TableColumn prefWidth="92.800048828125" text="username" />
-                        <TableColumn prefWidth="74.39996337890625" text="pass_word" />
-                        <TableColumn prefWidth="74.39996337890625" text="email" />
-                        <TableColumn prefWidth="74.39996337890625" text="full_name" />
-                        <TableColumn prefWidth="74.39996337890625" text="user_role" />
+                      <TableColumn fx:id="user_idColumn" prefWidth="75.0" text="user_id" />
+                      <TableColumn fx:id="usernameColumn" prefWidth="92.800048828125" text="username" />
+                        <TableColumn fx:id="pass_wordColumn" prefWidth="74.39996337890625" text="pass_word" />
+                        <TableColumn fx:id="emailColumn" prefWidth="74.39996337890625" text="email" />
+                        <TableColumn fx:id="full_nameColumn" prefWidth="74.39996337890625" text="full_name" />
+                        <TableColumn fx:id="user_roleColumn" prefWidth="74.39996337890625" text="user_role" />
                     </columns>
                   </TableView>
                </children>

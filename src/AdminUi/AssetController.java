@@ -63,9 +63,7 @@ public class AssetController implements Initializable{
 	private String[] networking_equipment_models = {"Dell EMC" , "Cisco Systems", "TP-Link" , "D-Link" , "Juniper Networks" , "None of the Above"};
 	//*******software models:*********************
 	private String[] anti_virus_models = {"Kasperky","AVG","Avast"};
-//	private String[] desktop_models = {};
-//	private String[] desktop_models = {};
-//	private String[] desktop_models = {};
+
 	
 	//*******Accessory models:********************
 	private String[] keyboard_mouse_models = {"HP","Razer","Logitech"};

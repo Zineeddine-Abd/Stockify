@@ -39,7 +39,7 @@ public class DatabaseUtilities {
 				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 			         if (generatedKeys.next()) {
 			             int lastInsertedId = generatedKeys.getInt(1);
-			             //set the actual asset id :
+			             //set the actual asset id:
 			             AdminController.last_id = lastInsertedId;
 			         } else {
 			             System.out.println("Failed to retrieve last inserted ID.");
@@ -47,7 +47,25 @@ public class DatabaseUtilities {
 			    }
 				
 			}else if(item instanceof User) {
+				User user = (User)item;
+				String insertUser = "INSERT INTO users (username,pass_word,email,full_name,user_role) VALUES(?,?,?,?,?);";
+				PreparedStatement ps = con.prepareStatement(insertUser,Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, user.getUsername());
+				ps.setString(2, user.getPass_word());
+				ps.setString(3, user.getEmail());
+				ps.setString(4, user.getFull_name());
+				ps.setString(5, user.getUser_role());
+				ps.executeUpdate();
 				
+				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+			         if (generatedKeys.next()) {
+			             int lastInsertedId = generatedKeys.getInt(1);
+			             //set the actual user id:
+			             AdminController.last_id = lastInsertedId;
+			         } else {
+			             System.out.println("Failed to retrieve last inserted ID.");
+			         }
+			    }
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

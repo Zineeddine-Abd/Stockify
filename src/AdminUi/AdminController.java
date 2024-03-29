@@ -195,25 +195,17 @@ public class AdminController implements Initializable{
 		dashboardView = new Pane();
 		views = new Pane[]{dashboardView ,allUsersPane, allAssetsPane};
 		
-		// --> here we will set the default view (dashboardview) 
-		     //
-		//
-		
+		// --> here we will set the default view (dashboardview) 	
 		
 		//All Assets VBox Visibility set to false:
 		allAssetsPane.setVisible(false);
 		allUsersPane.setVisible(false);
 		// Initialize table columns
-<<<<<<< HEAD
-		
 		//estalish a connection to the SupaBase Database For :
 		
-=======
-		//estalish a connection to the SupaBase Database.
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
->>>>>>> 6f95ec010fa0424cffb9d0f3e0ffd7d448d12a1a
 		try {
 			ArrayList<Asset> bufferListAssets = new ArrayList<Asset>();
 			ArrayList<User> bufferListUsers = new ArrayList<User>();
@@ -221,14 +213,13 @@ public class AdminController implements Initializable{
 			Class.forName("org.postgresql.Driver");
 			con = DriverManager.getConnection(LoginController.url);
 			String getAllAssetsQuery = "SELECT * FROM assets";
-<<<<<<< HEAD
-			PreparedStatement ps = con.prepareStatement(getAllAssetsQuery);
-			ResultSet rs = ps.executeQuery();
-			//Assets:
-=======
 			ps = con.prepareStatement(getAllAssetsQuery);
 			rs = ps.executeQuery();
->>>>>>> 6f95ec010fa0424cffb9d0f3e0ffd7d448d12a1a
+			//Assets:
+
+			ps = con.prepareStatement(getAllAssetsQuery);
+			rs = ps.executeQuery();
+
 			while(rs.next()) {//while the reader still has a next row read it:
 				int asset_id = rs.getInt("asset_id");
 				String asset_category = rs.getString("asset_category");

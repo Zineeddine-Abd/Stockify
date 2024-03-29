@@ -53,7 +53,7 @@ public class DatabaseUtilities {
 			}else if(item instanceof User) {
 				User user = (User)item;
 				String insertUser = "INSERT INTO users (username,pass_word,email,full_name,user_role) VALUES(?,?,?,?,?);";
-				PreparedStatement ps = con.prepareStatement(insertUser,Statement.RETURN_GENERATED_KEYS);
+				ps = con.prepareStatement(insertUser,Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, user.getUsername());
 				ps.setString(2, user.getPass_word());
 				ps.setString(3, user.getEmail());

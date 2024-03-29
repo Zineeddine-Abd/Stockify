@@ -204,19 +204,31 @@ public class AdminController implements Initializable{
 		allAssetsPane.setVisible(false);
 		allUsersPane.setVisible(false);
 		// Initialize table columns
+<<<<<<< HEAD
 		
 		//estalish a connection to the SupaBase Database For :
 		
+=======
+		//estalish a connection to the SupaBase Database.
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+>>>>>>> 6f95ec010fa0424cffb9d0f3e0ffd7d448d12a1a
 		try {
 			ArrayList<Asset> bufferListAssets = new ArrayList<Asset>();
 			ArrayList<User> bufferListUsers = new ArrayList<User>();
 			
 			Class.forName("org.postgresql.Driver");
-			Connection con = DriverManager.getConnection(LoginController.url);
+			con = DriverManager.getConnection(LoginController.url);
 			String getAllAssetsQuery = "SELECT * FROM assets";
+<<<<<<< HEAD
 			PreparedStatement ps = con.prepareStatement(getAllAssetsQuery);
 			ResultSet rs = ps.executeQuery();
 			//Assets:
+=======
+			ps = con.prepareStatement(getAllAssetsQuery);
+			rs = ps.executeQuery();
+>>>>>>> 6f95ec010fa0424cffb9d0f3e0ffd7d448d12a1a
 			while(rs.next()) {//while the reader still has a next row read it:
 				int asset_id = rs.getInt("asset_id");
 				String asset_category = rs.getString("asset_category");
@@ -289,6 +301,10 @@ public class AdminController implements Initializable{
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DatabaseUtilities.closeResultSet(rs);
+			DatabaseUtilities.closePreparedStatement(ps);
+			DatabaseUtilities.closeConnnection(con);
 		}
 	}
 	

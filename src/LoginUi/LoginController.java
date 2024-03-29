@@ -74,18 +74,22 @@ public class LoginController{
 	private void assignUser(ActionEvent event) throws IOException {
 		directAdmin(event);
 		return;
+		
+//		Connection con = null;
+//		PreparedStatement statement = null;
+//		ResultSet resultSet = null;
 //		try {
 //			//Changes based on the driver and type of sqlDatabase used:
 //			
 //			Class.forName("org.postgresql.Driver");
-//	        Connection con = DriverManager.getConnection(url);
+//	        con = DriverManager.getConnection(url);
 //			
 //			String password = "'" + (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText()) +"'" ;
 //			String username = "'" + usernameField.getText() + "'" ;
 //			
 //	        String sql = "SELECT * FROM users WHERE username=" + username + " AND pass_word="+password + " ;";
-//	        PreparedStatement statement = con.prepareStatement(sql);
-//	        ResultSet resultSet = statement.executeQuery();
+//	        statement = con.prepareStatement(sql);
+//	        resultSet = statement.executeQuery();
 //	        
 //	        if(resultSet.next()) {
 //	        	switch(resultSet.getString("user_role")) {
@@ -110,13 +114,9 @@ public class LoginController{
 //		} catch (IOException | SQLException | ClassNotFoundException e) {
 //			displayErrorMessage("Error",e.getMessage());
 //		}finally {
-//			if (con != null) {
-//                try {
-//					con.close();
-//				} catch (SQLException e) {
-//					displayErrorMessage("Error",e.getMessage());
-//				}
-//            }
+//			DatabaseUtilities.closeResultSet(resultSet);
+//			DatabaseUtilities.closePreparedStatement(statement);
+//			DatabaseUtilities.closeConnnection(con);
 //		}
 	}
 	

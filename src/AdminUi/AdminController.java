@@ -185,13 +185,16 @@ public class AdminController implements Initializable{
 		allUsersPane.setVisible(false);
 		// Initialize table columns
 		//estalish a connection to the SupaBase Database.
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ArrayList<Asset> bufferList = new ArrayList<Asset>();
 			Class.forName("org.postgresql.Driver");
-			Connection con = DriverManager.getConnection(LoginController.url);
+			con = DriverManager.getConnection(LoginController.url);
 			String getAllAssetsQuery = "SELECT * FROM assets";
-			PreparedStatement ps = con.prepareStatement(getAllAssetsQuery);
-			ResultSet rs = ps.executeQuery();
+			ps = con.prepareStatement(getAllAssetsQuery);
+			rs = ps.executeQuery();
 			while(rs.next()) {//while the reader still has a next row read it:
 				int asset_id = rs.getInt("asset_id");
 				String asset_category = rs.getString("asset_category");
@@ -236,6 +239,10 @@ public class AdminController implements Initializable{
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DatabaseUtilities.closeResultSet(rs);
+			DatabaseUtilities.closePreparedStatement(ps);
+			DatabaseUtilities.closeConnnection(con);
 		}
        
 	}

@@ -11,20 +11,24 @@ import AdminUi.AdminController;
 import Components.Asset;
 import Components.User;
 import LoginUi.LoginController;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class DatabaseUtilities {
 	
 	static Connection con;
 	
 	public static void insertItemIntoDatabase(Object item) {
+		PreparedStatement ps = null;
 		try {
 			Class.forName("org.postgresql.Driver");
 			con = DriverManager.getConnection(LoginController.url);
 			
+			
 			if(item instanceof Asset) {
 				Asset asset = (Asset)item;
 				String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number) VALUES (?,?,?,?,?,?,?,?)";
-				PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS);
+				ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS);
 //				ps.setInt(1, 0);
 				ps.setString(1,asset.getAsset_category());
 				ps.setString(2,asset.getAsset_type());
@@ -54,13 +58,8 @@ public class DatabaseUtilities {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if(con != null) {
-				try {
-					con.close();
-				}catch(SQLException e) {
-					
-				}
-			}
+			closePreparedStatement(ps);
+			closeConnnection(con);
 		}
 	}
 	
@@ -71,6 +70,7 @@ public class DatabaseUtilities {
 	
 	
 	public static void deleteItemFromDatabase(Object target) {
+		PreparedStatement ps = null;
 		try {
 			Class.forName("org.postgresql.Driver");
 			con = DriverManager.getConnection(LoginController.url);
@@ -78,7 +78,7 @@ public class DatabaseUtilities {
 			if(target instanceof Asset) {
 				Asset asset = (Asset)target;
 				String deleteAsset = "DELETE FROM assets WHERE asset_id=?";
-				PreparedStatement ps = con.prepareStatement(deleteAsset);
+				ps = con.prepareStatement(deleteAsset);
 				ps.setInt(1, asset.getAsset_id());
 				ps.executeUpdate();
 				//reset the sequence if data:
@@ -94,13 +94,8 @@ public class DatabaseUtilities {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if(con != null) {
-				try {
-					con.close();
-				}catch(SQLException e) {
-					
-				}
-			}
+			closePreparedStatement(ps);
+			closeConnnection(con);
 		}
 	}
 	
@@ -134,4 +129,46 @@ public class DatabaseUtilities {
 		return false;
 	}
 	
+	
+	public static void closeConnnection(Connection connection) {
+		if(connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				displaySQLErrorMessage("Error", e.getMessage());
+			}
+		}
+	}
+	
+	public static void closePreparedStatement(PreparedStatement preparedStatement) {
+		if(preparedStatement != null) {
+			try {
+				preparedStatement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				displaySQLErrorMessage("Error", e.getMessage());
+			}
+		}
+	}
+	
+	public static void closeResultSet(ResultSet resultSet) {
+		if(resultSet != null) {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				displaySQLErrorMessage("Error", e.getMessage());
+			}
+		}
+	}
+	
+	
+	 private static void displaySQLErrorMessage(String title, String message) {
+		 Alert alert = new Alert(AlertType.ERROR);
+		 alert.setTitle(title);
+		 alert.setHeaderText(null);
+		 alert.setContentText(message);
+	     alert.showAndWait();
+	 }
 }

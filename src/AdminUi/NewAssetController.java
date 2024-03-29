@@ -23,7 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class AssetController implements Initializable{
+public class NewAssetController implements Initializable{
 	
   //  private static Stage stage;
     private AdminController adminController;

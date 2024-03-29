@@ -9,80 +9,69 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox prefHeight="532.0" prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AssetController">
+<VBox prefHeight="532.0" prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.NewUserController">
    <children>
-      <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Asset">
+      <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New User:">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label text="Select Category:">
+      <Label text="Select Permission:">
          <VBox.margin>
             <Insets left="15.0" />
          </VBox.margin>
       </Label>
-      <ChoiceBox fx:id="categoryChoiceBox" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
+      <ChoiceBox fx:id="permissions" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
       </ChoiceBox>
-      <Label text="Select Type:">
-         <VBox.margin>
-            <Insets left="15.0" top="15.0" />
-         </VBox.margin>
-      </Label>
-      <ChoiceBox fx:id="typeChoiceBox" layoutX="25.0" layoutY="81.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
-         <VBox.margin>
-            <Insets left="15.0" right="15.0" />
-         </VBox.margin>
-      </ChoiceBox>
-      <Label layoutX="25.0" layoutY="122.0" text="Select model:">
-         <VBox.margin>
-            <Insets left="15.0" top="15.0" />
-         </VBox.margin>
-      </Label>
-      <ChoiceBox fx:id="modelChoiceBox" layoutX="25.0" layoutY="140.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
-         <VBox.margin>
-            <Insets left="15.0" right="15.0" />
-         </VBox.margin>
-      </ChoiceBox>
-      <Label text="Serial number:">
+      <Label text="Full Name:">
          <VBox.margin>
             <Insets left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="serialField">
+      <TextField fx:id="fullNameField">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
       </TextField>
-      <Label text="Warranty:">
+      <Label text="Email:">
          <VBox.margin>
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="warrantyField" prefHeight="26.0" prefWidth="157.0">
+      <TextField fx:id="emailField">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
       </TextField>
-      <Label text="Status:">
+      <Label text="Username:">
          <VBox.margin>
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <ChoiceBox fx:id="statusChoiceBox" layoutX="25.0" layoutY="82.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
+      <TextField fx:id="usernameField">
          <VBox.margin>
-            <Insets bottom="15.0" left="15.0" right="15.0" />
+            <Insets left="15.0" right="15.0" />
          </VBox.margin>
-      </ChoiceBox>
-      <Label text="Location:">
+      </TextField>
+      <Label text="Password:">
          <VBox.margin>
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="locationField">
+      <TextField fx:id="passwordField">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </TextField>
+      <Label layoutX="25.0" layoutY="306.0" text="Confirm Password:">
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="confirmPasswordField">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -97,7 +86,7 @@
                   <Insets left="15.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="cancelButton" layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#disposeWindow" prefHeight="51.0" prefWidth="166.0" styleClass="cancelButton" text="Cancel">
+            <Button fx:id="cancelButton" layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#disposeWindow" prefHeight="51.0" prefWidth="166.0" styleClass="cancelButton" stylesheets="@admin.css" text="Cancel">
                <font>
                   <Font size="24.0" />
                </font>
@@ -110,12 +99,12 @@
             <Insets top="30.0" />
          </VBox.margin>
       </HBox>
-      <Label fx:id="invalidInfo" alignment="CENTER" prefHeight="45.0" prefWidth="315.0" style="-fx-text-fill: red;">
+      <Label fx:id="invalidInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="72.0" prefWidth="315.0" textFill="#ff0303">
          <font>
-            <Font size="20.0" />
+            <Font size="18.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </Label>
    </children>

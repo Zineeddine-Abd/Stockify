@@ -18,15 +18,17 @@
 
 <BorderPane fx:id="dashboard" prefHeight="638.0" prefWidth="802.0" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AdminController">
    <top>
-      <AnchorPane prefHeight="26.0" prefWidth="802.0" style="-fx-background-color: white;" stylesheets="@admin.css" BorderPane.alignment="CENTER">
+      <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="collapser" layoutY="3.0" mnemonicParsing="false" onAction="#toggleSidebar" prefHeight="14.0" prefWidth="200.0" styleClass="collapser" stylesheets="@admin.css" text="Menu" translateX="-160.0">
+            <AnchorPane style="-fx-background-color: white;" />
+            <Pane fx:id="topBar" onMouseClicked="#closeWithBar" opacity="0.5" style="-fx-background-color: lightGray;" visible="false" />
+            <Button fx:id="collapser" mnemonicParsing="false" onAction="#toggleSidebar" prefWidth="200.0" styleClass="collapser" stylesheets="@admin.css" text="Menu" translateX="-160.0">
                <graphic>
                   <FontAwesomeIconView fx:id="menuIcon" fill="#67809c" glyphName="BARS" size="25" translateX="108.0" />
-               </graphic></Button>
-            <AnchorPane layoutX="651.0" layoutY="1.0" prefHeight="48.0" prefWidth="150.0" AnchorPane.rightAnchor="0.0" />
+               </graphic>
+            </Button>
          </children>
-      </AnchorPane>
+      </StackPane>
    </top>
    <center>
       <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
@@ -74,7 +76,6 @@
                   </TableView>
                </children>
             </VBox>
-            <Pane id="pan" fx:id="pan" onMouseClicked="#closeSideBar" opacity="0.5" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightGray;" visible="false" />
             <VBox fx:id="allAssetsPane" layoutX="10.0" layoutY="10.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0">
@@ -121,6 +122,7 @@
                   </TableView>
                </children>
             </VBox>
+            <Pane id="pan" fx:id="bar" onMouseClicked="#closeWithBar" opacity="0.5" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightGray;" visible="false" />
             <VBox fx:id="sideBar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="585.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="vbox" stylesheets="@admin.css" translateX="-200.0">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />

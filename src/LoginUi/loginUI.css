@@ -78,6 +78,8 @@
 
 #closeIcon:hover{
 	-fx-fill:#C42B1C;
+	-fx-translate-y:-1;
+  	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
 }
 
 

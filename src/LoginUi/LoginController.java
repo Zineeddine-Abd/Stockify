@@ -242,16 +242,17 @@ public class LoginController{
 	    }
 	 
 	 
+	 Stage draggableStage;
 	 double x, y;
 	 public void getInitialMousePosition(MouseEvent event) {
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		x =  event.getScreenX() - stage.getX();
-		y =  event.getScreenY() - stage.getY();
+		draggableStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		x =  event.getScreenX() - draggableStage.getX();
+		y =  event.getScreenY() - draggableStage.getY();
 	 }
 	 
 	 public void setNewRootPosition(MouseEvent event) {
-		stage.setX(event.getScreenX() - x);
-		stage.setY(event.getScreenY() - y);
+		draggableStage.setX(event.getScreenX() - x);
+		draggableStage.setY(event.getScreenY() - y);
 	 }
 	 
 	 public void closeLoginScreen(MouseEvent event) {

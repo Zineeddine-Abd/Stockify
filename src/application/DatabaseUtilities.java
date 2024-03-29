@@ -118,13 +118,16 @@ public class DatabaseUtilities {
 	}
 	
 	private static void resetSequenceTo1() {
+		Statement stmt = null;
         try {
-        	Statement stmt = con.createStatement();
+        	stmt = con.createStatement();
         	String sequenceName = "public.assets_asset_id_seq";
         	String alterSequenceQuery = "ALTER SEQUENCE " + sequenceName + " RESTART WITH 1";
 			stmt.executeUpdate(alterSequenceQuery);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			closeStatement(stmt);
 		}
 	}
 	
@@ -143,6 +146,8 @@ public class DatabaseUtilities {
 			    }
 			} catch (SQLException e) {
 			    e.printStackTrace();
+			}finally {
+				//closeConnnection(con);
 			}
 		return false;
 	}
@@ -163,6 +168,17 @@ public class DatabaseUtilities {
 		if(preparedStatement != null) {
 			try {
 				preparedStatement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				displaySQLErrorMessage("Error", e.getMessage());
+			}
+		}
+	}
+	
+	public static void closeStatement(Statement statement) {
+		if(statement != null) {
+			try {
+				statement.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				displaySQLErrorMessage("Error", e.getMessage());

@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import Components.Asset;
 import Components.HardwareAsset;
 import Components.SoftwareAsset;
+import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -75,7 +76,9 @@ public class AdminController implements Initializable{
 	@FXML
 	private Button collapser;
 	@FXML
-	private Pane pan;
+	private Pane bar;
+	@FXML
+	private Pane topBar;
 	@FXML
 	private FontAwesomeIconView menuIcon;
 	//****************************
@@ -304,10 +307,10 @@ public class AdminController implements Initializable{
 		Parent root;
 			
 			try {
-				newAssetLoader =new FXMLLoader(getClass().getResource("/AdminUi/assetScene.fxml"));
+				newAssetLoader =new FXMLLoader(getClass().getResource("/AdminUi/newAssetScene.fxml"));
 				
 				root = newAssetLoader.load();
-				((AssetController)newAssetLoader.getController()).setAdminController(this);
+				((NewAssetController)newAssetLoader.getController()).setAdminController(this);
 				
 				fillFormula = new Stage();
 				fillFormula.setResizable(false);
@@ -387,9 +390,9 @@ public class AdminController implements Initializable{
 	public void createNewUser(ActionEvent event) {
 		Parent root;
 		try {
-			newUserLoader = new FXMLLoader(getClass().getResource("/AdminUi/userScene.fxml"));
+			newUserLoader = new FXMLLoader(getClass().getResource("/AdminUi/newUserScene.fxml"));
 			root = newUserLoader.load();
-			((UserController)newUserLoader.getController()).setAdminController(this);
+			((NewUserController)newUserLoader.getController()).setAdminController(this);
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -418,36 +421,42 @@ public class AdminController implements Initializable{
 	}
 	
 	
-private boolean isOpenedSideBar = false;
+	private boolean isOpenedSideBar = false;
+	
+	private Timeline openTimeLine;
+	private Timeline closeTimeLine;
 	
 	public void toggleSidebar(){	
 		if(isOpenedSideBar) {
+			if(openTimeLine != null) {
+				openTimeLine.stop();
+			}
 			closeSideBar();
 		}else {
+			if(closeTimeLine != null) {
+				closeTimeLine.stop();
+			}
 			openSideBar();
 		}
     }
 	
 	public void openSideBar() {
 		
-		pan.setVisible(true);
+		bar.setVisible(true);
+		topBar.setVisible(true);
 		//open
 		isOpenedSideBar = true;
 		KeyValue collapOpenKeyVal = new KeyValue(collapser.translateXProperty(), 0);
 		KeyValue sideBarOpenKeyVal = new KeyValue(sideBar.translateXProperty(), 0);
-		KeyValue panOpenVal = new KeyValue(pan.opacityProperty(), 0.5);
+		KeyValue barOpenVal = new KeyValue(bar.opacityProperty(), 0.5);
+		KeyValue topBarOpenVal = new KeyValue(topBar.opacityProperty(), 0.5);
 		
-		KeyFrame openSideBarFrame = new KeyFrame(Duration.millis(300), collapOpenKeyVal, sideBarOpenKeyVal, panOpenVal);
+		KeyFrame openSideBarFrame = new KeyFrame(Duration.millis(300), collapOpenKeyVal, sideBarOpenKeyVal, barOpenVal, topBarOpenVal);
 		KeyFrame openMenuIconFrame = new KeyFrame(Duration.millis(50), e -> {
 			if(isOpenedSideBar)
 				menuIcon.translateXProperty().set(0);
 		});
-		
-		Timeline openTimeLine = new Timeline(openSideBarFrame, openMenuIconFrame);
-		openTimeLine.setOnFinished(e -> {
-			if(isOpenedSideBar)
-				pan.setVisible(true);
-		});
+		openTimeLine = new Timeline(openSideBarFrame, openMenuIconFrame);
 		openTimeLine.play();
 	}
 	
@@ -460,18 +469,28 @@ private boolean isOpenedSideBar = false;
 		isOpenedSideBar = false;
 		KeyValue collapCloseKeyVal = new KeyValue(collapser.translateXProperty(), -collapser.getWidth()+closedCollapWidth);
 		KeyValue sideBarCloseKeyVal = new KeyValue(sideBar.translateXProperty(), -sideBar.getWidth());
-		KeyValue panCloseVal = new KeyValue(pan.opacityProperty(), 0);
+		KeyValue barCloseVal = new KeyValue(bar.opacityProperty(), 0);
+		KeyValue topBarCloseVal = new KeyValue(topBar.opacityProperty(), 0);
 		
-		KeyFrame closeSideBarFrame = new KeyFrame(Duration.millis(300), collapCloseKeyVal, sideBarCloseKeyVal, panCloseVal); //add dashboardSpace
+		KeyFrame closeSideBarFrame = new KeyFrame(Duration.millis(300), collapCloseKeyVal, sideBarCloseKeyVal, barCloseVal, topBarCloseVal); //add dashboardSpace
 		KeyFrame closeMenuIconFrame = new KeyFrame(Duration.millis(350), e -> {
 			if(!isOpenedSideBar)
 				menuIcon.translateXProperty().set(shiftedMenuIconX);
 		});
 		
-		Timeline closeTimeLine = new Timeline(closeSideBarFrame, closeMenuIconFrame);
-		closeTimeLine.setOnFinished(e -> pan.setVisible(false));
+		closeTimeLine = new Timeline(closeSideBarFrame, closeMenuIconFrame);
+		closeTimeLine.setOnFinished(e -> {
+			bar.setVisible(false);
+			topBar.setVisible(false);
+		});
 		closeTimeLine.play();
 		
+	}
+	
+	public void closeWithBar() {
+		if(closeTimeLine != null && closeTimeLine.getStatus() != Status.RUNNING) {
+			closeSideBar();
+		}
 	}
 	
 	//not now !

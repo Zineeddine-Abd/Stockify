@@ -19,7 +19,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class UserController implements Initializable{
+public class NewUserController implements Initializable{
 	
 //	private static Stage stage;
 	

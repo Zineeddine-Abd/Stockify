@@ -182,7 +182,7 @@ public class AssetController implements Initializable{
 		
 		Asset new_asset = new Asset(id,category,type,model,status,location,date,warranty,serial_number);
 	    adminController.addAsset(new_asset);
-
+	    
 		disposeWindow(event);
 	}
 	

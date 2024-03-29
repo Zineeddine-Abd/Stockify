@@ -54,6 +54,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import LoginUi.LoginController;
+import application.DatabaseUtilities;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
@@ -88,8 +89,6 @@ public class AdminController implements Initializable{
 	//User and Asset Loaders
 	FXMLLoader newUserLoader;
 	FXMLLoader newAssetLoader;
-	//
-	
 	
 	//constant for easy manipulation on code:
 	private final String asset = "Asset";
@@ -239,7 +238,6 @@ public class AdminController implements Initializable{
 	public void createNewAsset(ActionEvent event){
 		
 		Parent root;
-		
 			
 			try {
 				newAssetLoader =new FXMLLoader(getClass().getResource("/AdminUi/assetScene.fxml"));
@@ -267,16 +265,11 @@ public class AdminController implements Initializable{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			
-		
-		
 	}
 	
 	public void addAsset(Asset newAsset) {
         assetsTable.getItems().add(newAsset);
-        // Clear input fields
-       // clearInputs();
+        DatabaseUtilities.insertItemIntoDatabase(newAsset);
     }
 
 	
@@ -293,6 +286,10 @@ public class AdminController implements Initializable{
     public void deleteSelectedAssets() {
         ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
         assetsTable.getItems().removeAll(selectedAssets);
+        
+        for(Asset item : selectedAssets) {
+        	DatabaseUtilities.deleteItemFromDatabase(item);
+        }
     }
     
     

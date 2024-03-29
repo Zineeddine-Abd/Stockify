@@ -23,6 +23,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -106,12 +107,16 @@ public class LoginController{
 	        	animatedIncorrectInfolabel();
 	        }
 	        
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (IOException | SQLException | ClassNotFoundException e) {
+			displayErrorMessage("Error",e.getMessage());
+		}finally {
+			if (con != null) {
+                try {
+					con.close();
+				} catch (SQLException e) {
+					displayErrorMessage("Error",e.getMessage());
+				}
+            }
 		}
 	}
 	
@@ -248,4 +253,13 @@ public class LoginController{
 		 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		 stage.close();
 	 }
+	 
+	 private void displayErrorMessage(String title, String message) {
+		 Alert alert = new Alert(AlertType.ERROR);
+		 alert.setTitle(title);
+		 alert.setHeaderText(null);
+		 alert.setContentText(message);
+	     alert.showAndWait();
+	 }
+	   
 }

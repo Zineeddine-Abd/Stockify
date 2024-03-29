@@ -3,33 +3,49 @@ package application;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
+import AdminUi.AdminController;
 import Components.Asset;
 import Components.User;
 import LoginUi.LoginController;
 
 public class DatabaseUtilities {
 	
+	static Connection con;
+	
 	public static void insertItemIntoDatabase(Object item) {
 		try {
 			Class.forName("org.postgresql.Driver");
-			Connection con = DriverManager.getConnection(LoginController.url);
+			con = DriverManager.getConnection(LoginController.url);
 			
 			if(item instanceof Asset) {
 				Asset asset = (Asset)item;
-				String getAllAssetsQuery = "INSERT INTO assets (asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number) VALUES (?,?,?,?,?,?,?,?,?)";
-				PreparedStatement ps = con.prepareStatement(getAllAssetsQuery);
-				ps.setInt(1, 0);
-				ps.setString(2,asset.getAsset_category());
-				ps.setString(3,asset.getAsset_type());
-				ps.setString(4,asset.getAsset_model());
-				ps.setString(5,asset.getAsset_status());
-				ps.setString(6,asset.getAsset_location());
-				ps.setDate(7,asset.getAsset_purchase_date());
-				ps.setInt(8,asset.getAsset_warranty());
-				ps.setInt(9,asset.getAsset_serial_number());
-
+				String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number) VALUES (?,?,?,?,?,?,?,?)";
+				PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS);
+//				ps.setInt(1, 0);
+				ps.setString(1,asset.getAsset_category());
+				ps.setString(2,asset.getAsset_type());
+				ps.setString(3,asset.getAsset_model());
+				ps.setString(4,asset.getAsset_status());
+				ps.setString(5,asset.getAsset_location());
+				ps.setDate(6,asset.getAsset_purchase_date());
+				ps.setInt(7,asset.getAsset_warranty());
+				ps.setInt(8,asset.getAsset_serial_number());
+				ps.executeUpdate();
+				
+				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+			         if (generatedKeys.next()) {
+			             int lastInsertedId = generatedKeys.getInt(1);
+			             //set the actual asset id :
+			             AdminController.last_id = lastInsertedId;
+			         } else {
+			             System.out.println("Failed to retrieve last inserted ID.");
+			         }
+			    }
+				
 			}else if(item instanceof User) {
 				
 			}
@@ -37,6 +53,14 @@ public class DatabaseUtilities {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if(con != null) {
+				try {
+					con.close();
+				}catch(SQLException e) {
+					
+				}
+			}
 		}
 	}
 	
@@ -49,22 +73,65 @@ public class DatabaseUtilities {
 	public static void deleteItemFromDatabase(Object target) {
 		try {
 			Class.forName("org.postgresql.Driver");
-			Connection con = DriverManager.getConnection(LoginController.url);
+			con = DriverManager.getConnection(LoginController.url);
 			
 			if(target instanceof Asset) {
 				Asset asset = (Asset)target;
-				String getAllAssetsQuery = "DELETE FROM assets WHERE asset_id="+asset.getAsset_id();
-				PreparedStatement ps = con.prepareStatement(getAllAssetsQuery);
+				String deleteAsset = "DELETE FROM assets WHERE asset_id=?";
+				PreparedStatement ps = con.prepareStatement(deleteAsset);
+				ps.setInt(1, asset.getAsset_id());
 				ps.executeUpdate();
+				//reset the sequence if data:
+				if(isTableEmpty("assets")) {					
+					resetSequenceTo1();
+				}
 			}else if(target instanceof User) {
-				
+				//delete user , not implemented yet
 			}
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if(con != null) {
+				try {
+					con.close();
+				}catch(SQLException e) {
+					
+				}
+			}
 		}
+	}
+	
+	private static void resetSequenceTo1() {
+        try {
+        	Statement stmt = con.createStatement();
+        	String sequenceName = "public.assets_asset_id_seq";
+        	String alterSequenceQuery = "ALTER SEQUENCE " + sequenceName + " RESTART WITH 1";
+			stmt.executeUpdate(alterSequenceQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static boolean isTableEmpty(String table) {
+		try (Connection con = DriverManager.getConnection(LoginController.url);
+			    Statement stmt = con.createStatement()) {
+			    String countQuery = "SELECT COUNT(*) FROM " + table;
+			    try (ResultSet rs = stmt.executeQuery(countQuery)) {
+			        rs.next();
+			        int rowCount = rs.getInt(1);
+			        if (rowCount == 0) {
+			        	return true;
+			        } else {
+			            return false;
+			        }
+			    }
+			} catch (SQLException e) {
+			    e.printStackTrace();
+			}
+		return false;
 	}
 	
 }

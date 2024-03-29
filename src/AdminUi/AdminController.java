@@ -15,6 +15,7 @@ import java.text.ParseException;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Components.Asset;
@@ -161,6 +162,10 @@ public class AdminController implements Initializable{
 	//creating new asset/user mats:********************
 	private Stage fillFormula;
 	private Scene createNewScene;
+	//*************************************************
+	
+	//attribute to retrieve the last id inserted into the DB.
+	public static int last_id=0;
 	
 	//**********************all methods:*****************************************
 	
@@ -268,8 +273,9 @@ public class AdminController implements Initializable{
 	}
 	
 	public void addAsset(Asset newAsset) {
-        assetsTable.getItems().add(newAsset);
         DatabaseUtilities.insertItemIntoDatabase(newAsset);
+        newAsset.setAsset_id(last_id);
+        assetsTable.getItems().add(newAsset);
     }
 
 	
@@ -280,17 +286,40 @@ public class AdminController implements Initializable{
         alert.setContentText(message);
         alert.showAndWait();
     }
+    
+    private boolean displayConfirmMessge(String message,String content) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText(message);
+        alert.setContentText(content);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+        	return true;
+        } else {
+        	return false;
+        }
+    }
    
 
     // Method to delete selected rows from the TableView
     public void deleteSelectedAssets() {
-        ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
-        assetsTable.getItems().removeAll(selectedAssets);
-        
-        for(Asset item : selectedAssets) {
-        	DatabaseUtilities.deleteItemFromDatabase(item);
-        }
+    	
+    	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
+    	
+    	if(displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
+    		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 
+    		for(Asset item : selectedAssets) {
+    			DatabaseUtilities.deleteItemFromDatabase(item);
+    		}
+    		
+    		assetsTable.getItems().removeAll(selectedAssets);
+    		
+    	}
+    	
     }
+    
+    
     
     
 	public void createNewUser(ActionEvent event) {

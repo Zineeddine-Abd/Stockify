@@ -54,15 +54,15 @@ public class AssetController implements Initializable{
 	private String[] categories = {HARDWARE,SOFTWARE,ACCESSORY};
 	private String[] hardware_type = {"Desktop" , "Laptop", "Projector", "Scanner", "Printer", "Switch" ,"Hub","Router","Modem" };
 	private String[] software_type = {"Anti-Virus","License"};
-	private String[] accessory_type = {"Keybaord","Mouse","Cable","HDD","SSD","RAM"};
+	private String[] accessory_type = {"Keyboard","Mouse","Cable","HDD","SSD","RAM"};
 	private String[] statuses = {IN_INVENTORY,READY_TO_USE,WORKING};//all status for now , feel free to add any more statuses.
 	
 	//*******hardware models:*********************
 	private String[] desktop_laptop_models = {"HP","Dell","Lenovo","Acer","Apple","MSI","Razer"};
 	private String[] projector_scanner_printer_models = {"Canon" , "Epson" , "HP" , "Toshiba"};
 	private String[] networking_equipment_models = {"Dell EMC" , "Cisco Systems", "TP-Link" , "D-Link" , "Juniper Networks" , "None of the Above"};
-//	//*******software models:*********************
-//	private String[] desktop_models = {};
+	//*******software models:*********************
+	private String[] anti_virus_models = {"Kasperky","AVG","Avast"};
 //	private String[] desktop_models = {};
 //	private String[] desktop_models = {};
 //	private String[] desktop_models = {};
@@ -117,6 +117,8 @@ public class AssetController implements Initializable{
 				modelChoiceBox.getItems().addAll(keyboard_mouse_models);
 			}else if(typeChoiceBox.getValue() == "HDD" || typeChoiceBox.getValue() == "SSD" || typeChoiceBox.getValue() == "RAM") {
 				modelChoiceBox.getItems().addAll(components_models);
+			}else if(typeChoiceBox.getValue() == "Anti-Virus") {
+				modelChoiceBox.getItems().addAll(anti_virus_models);
 			}
 		});
 		statusChoiceBox.getItems().addAll(statuses);
@@ -133,7 +135,7 @@ public class AssetController implements Initializable{
 			animatedInvalidInfolabel();
 			return;
 		}
-		if(modelChoiceBox.getValue() == null && typeChoiceBox.getValue() != "Cable") {
+		if(modelChoiceBox.getValue() == null && (typeChoiceBox.getValue() != "Cable" && typeChoiceBox.getValue() != "License")) {
 			invalidInfo.setText("You must select a model!");//model
 			animatedInvalidInfolabel();
 			return;

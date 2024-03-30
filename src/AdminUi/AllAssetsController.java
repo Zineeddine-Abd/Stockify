@@ -111,7 +111,7 @@ public class AllAssetsController implements Initializable{
 //	    assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		
         
-     // Initialize search criteria ComboBox
+        // Initialize search criteria ComboBox
         searchCriteriaComboBox.getItems().addAll("Asset Category", "Asset Type", "Model", "Status", "Location");
         searchCriteriaComboBox.setValue("Asset Category");
         allAssets = assetsTable.getItems();
@@ -152,11 +152,11 @@ public class AllAssetsController implements Initializable{
 	public void addAsset(Asset newAsset) {
         DatabaseUtilities.insertItemIntoDatabase(newAsset);
         newAsset.setAsset_id(last_id);
-        assetsTable.getItems().add(newAsset);
-        //allAssets.add(newAsset);
+        allAssets.add(newAsset);
+        assetsTable.setItems(allAssets);
     }
 	
-	 // Method to delete selected assets from assetsTable
+	 
     public void deleteSelectedAssets() {
     	
     	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
@@ -171,6 +171,7 @@ public class AllAssetsController implements Initializable{
     	}
     	
     	allAssets.removeAll(selectedAssets);
+    	assetsTable.setItems(allAssets);
     }
     
     
@@ -227,7 +228,7 @@ public class AllAssetsController implements Initializable{
 	                }
 	            }
 	            break;
-	        // Add cases for other criteria
+	        
 	    }
 
 	    // Update TableView with filtered list

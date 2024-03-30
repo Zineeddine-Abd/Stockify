@@ -122,6 +122,11 @@ public class AdminController implements Initializable{
 	private Parent root;
 	//****************************
 	
+	//SideBar Attributes*******************
+	private boolean isOpenedSideBar = false;
+	
+	private Timeline openTimeLine;
+	private Timeline closeTimeLine;
 	
 	
 	@Override
@@ -203,13 +208,6 @@ public class AdminController implements Initializable{
 	}
 	
 	
-
-	
-	private boolean isOpenedSideBar = false;
-	
-	private Timeline openTimeLine;
-	private Timeline closeTimeLine;
-	
 	public void toggleSidebar(){	
 		if(isOpenedSideBar) {
 			if(openTimeLine != null) {
@@ -246,6 +244,7 @@ public class AdminController implements Initializable{
 	
 	
 	public void closeSideBar() {
+		
 		double closedCollapWidth = 40;
 		double shiftedMenuIconX = collapser.getWidth()-menuIcon.getLayoutX()-closedCollapWidth+9;
 		
@@ -272,6 +271,7 @@ public class AdminController implements Initializable{
 	}
 	
 	public void closeWithBar() {
+		
 		if(closeTimeLine != null && closeTimeLine.getStatus() != Status.RUNNING) {
 			closeSideBar();
 		}
@@ -288,7 +288,6 @@ public class AdminController implements Initializable{
 		
 		stage.show();
 	}
-	//
 	
 	public void triggerDashBoardPane(ActionEvent event) {
 		//set all visiblity to false.

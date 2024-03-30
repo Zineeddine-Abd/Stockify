@@ -332,7 +332,7 @@ public class AdminController implements Initializable{
         DatabaseUtilities.insertItemIntoDatabase(newAsset);
         newAsset.setAsset_id(last_id);
         assetsTable.getItems().add(newAsset);
-        allAssets.add(newAsset);
+        //allAssets.add(newAsset);
     }
 	public void addUser(User newuser) {
 		DatabaseUtilities.insertItemIntoDatabase(newuser);

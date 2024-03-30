@@ -95,7 +95,7 @@
                               <Insets left="60.0" top="20.0" />
                            </HBox.margin>
                         </TextField>
-                        <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="79.0" style="-fx-font-size: 15px; -fx-min-height: 0px; -fx-min-width: 0px;" styleClass="cancelButton" stylesheets="@admin.css" text="Search">
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchAction" prefHeight="31.0" prefWidth="79.0" style="-fx-font-size: 15px; -fx-min-height: 0px; -fx-min-width: 0px;" styleClass="cancelButton" stylesheets="@admin.css" text="Search">
                            <HBox.margin>
                               <Insets left="5.0" top="16.0" />
                            </HBox.margin>

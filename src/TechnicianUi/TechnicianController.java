@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import LoginUi.LoginController;
+import application.Helper;
 
 public class TechnicianController {
 	private Stage stage;
@@ -17,7 +17,8 @@ public class TechnicianController {
 	
 	//logging out of admin:
 	public void LogOut(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource(LoginController.fxmlLogin));
+		Helper.currentLoginLoader = new FXMLLoader(getClass().getResource(Helper.fxmlLogin));
+		root = Helper.currentLoginLoader.load();
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		loginScene = new Scene(root);
 		stage.setScene(loginScene);

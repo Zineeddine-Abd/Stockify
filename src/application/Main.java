@@ -1,17 +1,15 @@
 package application;
 
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 
 public class Main extends Application {
+	
 	public final static Image itAssetLogo = new Image(Main.class.getResourceAsStream("/Logo.jpg"));
 	
 	@Override

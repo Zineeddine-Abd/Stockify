@@ -3,19 +3,16 @@ package AdminUi;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Components.Asset;
+import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -25,22 +22,6 @@ import javafx.util.Duration;
 
 public class NewAssetController implements Initializable{
 	
-  //  private static Stage stage;
-    private AdminController adminController;
-    
-//    public static void setStage(Stage res) {
-//        stage = res;
-//    }
-	
-    
-	public AdminController getAdminController() {
-		return adminController;
-	}
-
-	public void setAdminController(AdminController adminController) {
-		this.adminController = adminController;
-	}
-
 
 
 	private final String IN_INVENTORY = "In Inventory";
@@ -181,7 +162,7 @@ public class NewAssetController implements Initializable{
 		Date date = java.sql.Date.valueOf(LocalDate.now());
 		
 		Asset new_asset = new Asset(id,category,type,model,status,location,date,warranty,serial_number);
-	    adminController.addAsset(new_asset);
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addAsset(new_asset);
 	    
 		disposeWindow(event);
 	}

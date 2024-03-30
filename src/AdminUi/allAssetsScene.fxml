@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AllAssetsController">
+   <center>
+     <TableView fx:id="assetsTable" editable="true">
+        <columns>
+           <TableColumn fx:id="assetIdColumn" prefWidth="75.0" text="asset_id" />
+           <TableColumn fx:id="assetCategoryColumn" prefWidth="92.800048828125" text="asset_category" />
+           <TableColumn fx:id="assetTypeColumn" prefWidth="74.39996337890625" text="asset_type" />
+           <TableColumn fx:id="modelColumn" prefWidth="80.00001525878906" text="asset_model" />
+           <TableColumn fx:id="statusColumn" prefWidth="80.79998779296875" text="asset_status" />
+           <TableColumn fx:id="locationColumn" prefWidth="88.79998779296875" text="asset_location" />
+           <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="134.39996337890625" text="asset_purchase_date" />
+           <TableColumn fx:id="assetWarrantyColumn" minWidth="0.0" prefWidth="99.199951171875" text="asset_warranty" />
+           <TableColumn fx:id="assetSerialNumberColumn" prefWidth="74.39993896484373" text="asset_serial_number" />
+        </columns>
+     </TableView>
+   </center>
+   <top>
+     <HBox BorderPane.alignment="CENTER">
+        <children>
+           <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#createNewAsset" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
+              <HBox.margin>
+                 <Insets left="15.0" right="15.0" top="15.0" />
+              </HBox.margin>
+           </Button>
+           <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#deleteSelectedAssets" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Delete">
+              <HBox.margin>
+                 <Insets bottom="15.0" left="4.0" right="15.0" top="15.0" />
+              </HBox.margin>
+           </Button>
+           <TextField fx:id="searchTextField" prefHeight="28.0" prefWidth="250.0" promptText="Search" style="-fx-background-color: f4f4f4;">
+              <HBox.margin>
+                 <Insets left="60.0" top="20.0" />
+              </HBox.margin>
+           </TextField>
+           <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchAction" prefHeight="31.0" prefWidth="79.0" style="-fx-font-size: 15px; -fx-min-height: 0px; -fx-min-width: 0px;" styleClass="cancelButton" stylesheets="@admin.css" text="Search">
+              <HBox.margin>
+                 <Insets left="5.0" top="16.0" />
+              </HBox.margin>
+           </Button>
+           <ChoiceBox fx:id="searchCriteriaComboBox" prefHeight="32.0" prefWidth="150.0" styleClass="dropdown-box" stylesheets="@admin.css">
+              <HBox.margin>
+                 <Insets left="5.0" right="15.0" top="15.0" />
+              </HBox.margin>
+           </ChoiceBox>
+        </children>
+     </HBox>
+   </top>
+</BorderPane>

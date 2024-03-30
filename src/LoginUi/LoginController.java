@@ -32,10 +32,6 @@ import javafx.util.Duration;
 import javafx.animation.*;
 
 public class LoginController{
-	public static final String fxmlAdmin = "/AdminUi/adminScene.fxml";
-	public static final String fxmlTechnician = "/TechnicianUi/technicianScene.fxml";
-	public static final String fxmlProfessor = "/ProfessorUi/professorScene.fxml";
-	public static final String fxmlLogin = "/LoginUi/loginScene.fxml";
 	
 	private Stage stage;
 	private Scene adminScene;
@@ -169,45 +165,23 @@ public class LoginController{
 	}
 	
 	public void directAdmin(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource(fxmlAdmin));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		stage.close();
-		
-		adminScene = new Scene(root);
-		adminScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-		
-		stage = new Stage();
-		stage.setScene(adminScene);
-		stage.getIcons().add(Main.itAssetLogo);
-		stage.setTitle("Stockify");
-		stage.initStyle(StageStyle.DECORATED);
-		
-		stage.show();
-		centerStage(stage);
-//		stage.setMaximized(true);
-
-       
+		Helper.currentAdminLoader = new FXMLLoader(getClass().getResource(Helper.fxmlAdmin));
+		root = Helper.currentAdminLoader.load();
+		newStage(event, root);
 	}
 	public void directTechnician(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource(fxmlTechnician));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		stage.close();
-		
-		technicianScene = new Scene(root);
-		technicianScene.getStylesheets().add(this.getClass().getResource("/TechnicianUi/technician.css").toExternalForm());
-		
-		stage = new Stage();
-		stage.setScene(technicianScene);
-		stage.getIcons().add(Main.itAssetLogo);
-		stage.setTitle("Stockify");
-		stage.initStyle(StageStyle.DECORATED);
-		
-//		stage.setMaximized(true);
-		stage.show();
-		centerStage(stage);
+		Helper.currentTechnicianLoader = new FXMLLoader(getClass().getResource(Helper.fxmlTechnician));
+		root = Helper.currentTechnicianLoader.load();
+		newStage(event, root);
 	}
 	public void directProfessor(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource(fxmlProfessor));
+		Helper.currentProfessorLoader = new FXMLLoader(getClass().getResource(Helper.fxmlProfessor));
+		root = Helper.currentProfessorLoader.load();
+		newStage(event, root);
+	}
+	
+	
+	private void newStage(ActionEvent event, Parent root) {
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
 		
@@ -225,21 +199,24 @@ public class LoginController{
 		centerStage(stage);
 	}
 	
+	private void newStage(Parent root) {
+		
+	}
 	
 	 private void centerStage(Stage stage) {
-	        double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
-	        double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
-	        double stageWidth = stage.getWidth();
-	        double stageHeight = stage.getHeight();
+        double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+        double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+        double stageWidth = stage.getWidth();
+        double stageHeight = stage.getHeight();
 
-	        // Calculate the center position
-	        double centerX = (screenWidth - stageWidth) / 2;
-	        double centerY = (screenHeight - stageHeight) / 2;
+        // Calculate the center position
+        double centerX = (screenWidth - stageWidth) / 2;
+        double centerY = (screenHeight - stageHeight) / 2;
 
-	        // Set the stage position
-	        stage.setX(centerX);
-	        stage.setY(centerY);
-	    }
+        // Set the stage position
+        stage.setX(centerX);
+        stage.setY(centerY);
+    }
 	 
 	 
 	 Stage draggableStage;

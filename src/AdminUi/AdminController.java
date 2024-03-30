@@ -25,28 +25,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import LoginUi.LoginController;
 import application.DatabaseUtilities;
-import application.Main;
+import application.Helper;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -57,8 +44,10 @@ public class AdminController implements Initializable{
 	//sidebar mats:*****************
 	@FXML
 	private VBox sideBar;
-	@FXML
-	private BorderPane dashboard; // Main Border pane (holds all content here (dashboard for now))
+	
+//	@FXML
+//	private BorderPane dashboard; // Main Border pane (holds all content here (dashboard for now))
+	
 	@FXML
 	private Button collapser;
 	@FXML
@@ -74,24 +63,47 @@ public class AdminController implements Initializable{
 	private Button AllAssetsButton;
 	@FXML
 	private Button AllUsersButton;
+	@FXML
+	private Button dashboardButton;
 	//*****************************************/
 	
 	//User and Asset Loaders
-	FXMLLoader newUserLoader;
-	FXMLLoader newAssetLoader;
+	public static final String fxmlNewAsset = "/AdminUi/newAssetScene.fxml";
+	public static final String fxmlNewUser = "/AdminUi/newUserScene.fxml";
+	public static FXMLLoader currentNewAssetLoader;
+	public static FXMLLoader currentNewUserLoader;
+	
+	
+	//Scenes***********************************/
 	
 	@FXML
-	private VBox allAssetsPane;
+	private BorderPane allAssetsView;
 	@FXML
-	private Button newAssetButton;
+	private AllAssetsController allAssetsViewController;
+	
+	public AllAssetsController getAllAssetsViewController() {
+		return allAssetsViewController;
+	}
 	
 	@FXML
-	private VBox allUsersPane;
+	private BorderPane allUsersView;
 	@FXML
-	private Button newUserButton;
+	private AllUsersController allUsersViewController;
 	
-	//temporary make views array and views' constants compatible
-	private Pane dashboardView;
+	public AllUsersController getAllUsersViewController() {
+		return allUsersViewController;
+	}
+	
+	@FXML
+	private BorderPane dashboardView;
+	@FXML
+	private DashboardController dashboardViewController;
+	
+	public DashboardController getDashboardViewController() {
+		return dashboardViewController;
+	}
+	//*****************************************/
+	
 	//Array of panes
 	Pane[] views;
 	//Set only one sence (constants)
@@ -103,66 +115,6 @@ public class AdminController implements Initializable{
 	public static int BACKUP_VIEW = 4;
 	
 	
-	//Table_View assets components:********************
-	@FXML
-    private TableView<Asset> assetsTable;
-
-    @FXML
-    private TableColumn<Asset, Integer> assetIdColumn;
-
-    @FXML
-    private TableColumn<Asset, String> assetCategoryColumn;
-    
-    @FXML
-    private TableColumn<Asset, String> assetTypeColumn;
-
-    @FXML
-    private TableColumn<Asset, String> modelColumn;
-
-    @FXML
-    private TableColumn<Asset, String> statusColumn;
-
-    @FXML
-    private TableColumn<Asset, String> locationColumn;
-    
-    @FXML
-    private TableColumn<Asset, Date> assetPurchaseDateColumn;
-
-    @FXML
-    private TableColumn<Asset, Integer> assetWarrantyColumn;
-
-    @FXML
-    private TableColumn<Asset, Integer> assetSerialNumberColumn;
-    
-    //Table_view users Components:******************************
-    @FXML
-    private TableView<User> usersTable;
-
-    @FXML
-    private TableColumn<User, Integer> user_idColumn;
-
-    @FXML
-    private TableColumn<User, String> usernameColumn;
-    
-    @FXML
-    private TableColumn<User, String> pass_wordColumn;
-
-    @FXML
-    private TableColumn<User, String> emailColumn;
-
-    @FXML
-    private TableColumn<User, String> full_nameColumn;
-
-    @FXML
-    private TableColumn<User, String> user_roleColumn;
-    
-    @FXML
-    private TextField searchTextField;
-
-    @FXML
-    private ChoiceBox<String> searchCriteriaComboBox;
-    
-    ObservableList<Asset> allAssets;
     
 	//logging out mats:***********
 	private Stage stage;
@@ -170,27 +122,18 @@ public class AdminController implements Initializable{
 	private Parent root;
 	//****************************
 	
-	//creating new asset/user mats:********************
-	private Stage fillFormula;
-	private Scene createNewScene;
-	//*************************************************
 	
-	//attribute to retrieve the last id inserted into the DB.
-	public static int last_id=0;
-	
-	//**********************all methods:*****************************************
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//initialize views array
-		dashboardView = new Pane();
-		views = new Pane[]{dashboardView ,allUsersPane, allAssetsPane};
+		views = new Pane[]{dashboardView ,allUsersView, allAssetsView};
 		
 		// --> here we will set the default view (dashboardview) 	
 		
 		//All Assets VBox Visibility set to false:
-		allAssetsPane.setVisible(false);
-		allUsersPane.setVisible(false);
+		selectView(DASHBOARD_VIEW);
+		
 		// Initialize table columns
 		//estalish a connection to the SupaBase Database For :
 		
@@ -224,7 +167,7 @@ public class AdminController implements Initializable{
 				Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number);
 				bufferListAssets.add(asset);
 			}
-			assetsTable.getItems().addAll(bufferListAssets);
+			allAssetsViewController.getAssetsTable().getItems().addAll(bufferListAssets);
 			bufferListAssets.clear();
 			
 			String getAllUsersQuery = "SELECT * FROM users";
@@ -244,45 +187,8 @@ public class AdminController implements Initializable{
 				bufferListUsers.add(newuser);
 			}
 			
-			usersTable.getItems().addAll(bufferListUsers);
+			allUsersViewController.getUsersTable().getItems().addAll(bufferListUsers);
 			bufferListUsers.clear();
-			
-	        assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-	        assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
-	        assetCategoryColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_category"));
-	        assetTypeColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_type"));
-	        modelColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_model"));
-	        statusColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_status"));
-	        locationColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_location"));
-	        assetPurchaseDateColumn.setCellValueFactory(new PropertyValueFactory<Asset, Date>("asset_purchase_date"));
-	        assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_warranty"));
-	        assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_serial_number"));
-	        
-	        //assetIdColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-	        assetCategoryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-	        assetTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-	        modelColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-	        statusColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-	        locationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-	        
-//	        assetPurchaseDateColumn.setCellFactory(DatePickerTableCell.forTableColumn());
-//	        assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-//	        assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-	        
-	        //Users table:
-	        usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-	        user_idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("user_id"));
-	        usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
-	        pass_wordColumn.setCellValueFactory(new PropertyValueFactory<User, String>("pass_word"));
-	        emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-	        full_nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("full_name"));
-	        user_roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("user_role"));
-	        
-	        
-	        // Initialize search criteria ComboBox
-	        searchCriteriaComboBox.getItems().addAll("Asset Category", "Asset Type", "Model", "Status", "Location");
-	        searchCriteriaComboBox.setValue("Asset Category");
-	        allAssets = assetsTable.getItems();
 	        
 	        
 		} catch (ClassNotFoundException e) {
@@ -296,198 +202,7 @@ public class AdminController implements Initializable{
 		}
 	}
 	
-	public void createNewAsset(ActionEvent event){
-		
-		Parent root;
-			
-			try {
-				newAssetLoader =new FXMLLoader(getClass().getResource("/AdminUi/newAssetScene.fxml"));
-				
-				root = newAssetLoader.load();
-				((NewAssetController)newAssetLoader.getController()).setAdminController(this);
-				
-				fillFormula = new Stage();
-				fillFormula.setResizable(false);
-				
-				fillFormula.setTitle("Create New Asset:");
-				
-				//AssetController.setStage(fillFormula);
-				createNewScene = new Scene(root);
-				createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-		
-				fillFormula.setScene(createNewScene);
-				fillFormula.getIcons().add(Main.itAssetLogo);
-				fillFormula.show();
-				
-				
-//				Dialog<ButtonType> dialog = new Dialog<>();
-//				dialog.setDialogPane((DialogPane)root);
-//				dialog.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
 	
-	public void addAsset(Asset newAsset) {
-        DatabaseUtilities.insertItemIntoDatabase(newAsset);
-        newAsset.setAsset_id(last_id);
-        assetsTable.getItems().add(newAsset);
-        //allAssets.add(newAsset);
-    }
-	public void addUser(User newuser) {
-		DatabaseUtilities.insertItemIntoDatabase(newuser);
-        newuser.setUser_id(last_id);
-        usersTable.getItems().add(newuser);
-	}
-
-	
-    private void displayErrorMessage(String title, String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-    
-    private boolean displayConfirmMessge(String message,String content) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirm");
-        alert.setHeaderText(message);
-        alert.setContentText(content);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-        	return true;
-        } else {
-        	return false;
-        }
-    }
-   
-
-    // Method to delete selected assets from assetsTable
-    public void deleteSelectedAssets() {
-    	
-    	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
-    	
-    	if(displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
-    		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 
-    		for(Asset item : selectedAssets) {
-    			DatabaseUtilities.deleteItemFromDatabase(item);
-    		}
-    		
-    		assetsTable.getItems().removeAll(selectedAssets);
-    	}
-    	
-    	allAssets.removeAll(selectedAssets);
-    }
-    
-    
-    //Method to delete selected users from usersTable
-    public void deleteSelectedUsers() {
-    	ObservableList<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems();
-    	
-    	if(displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
-    		for(User item : selectedUsers) {
-    			DatabaseUtilities.deleteItemFromDatabase(item);
-    		}
-    		
-    		usersTable.getItems().removeAll(selectedUsers);
-    	}
-    }
-    
-    
-	public void createNewUser(ActionEvent event) {
-		Parent root;
-		try {
-			newUserLoader = new FXMLLoader(getClass().getResource("/AdminUi/newUserScene.fxml"));
-			root = newUserLoader.load();
-			((NewUserController)newUserLoader.getController()).setAdminController(this);
-			
-			fillFormula = new Stage();
-			fillFormula.setResizable(false);
-			
-				fillFormula.setTitle("Create New User:");
-	//			try {
-	//				root = FXMLLoader.load(getClass().getResource("/AdminUi/userScene.fxml"));
-	//			} catch (IOException e) {
-	//				e.printStackTrace();
-	//			}
-				
-				//UserController.setStage(fillFormula);
-				
-			createNewScene = new Scene(root);
-			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-			
-			fillFormula.setScene(createNewScene);
-			fillFormula.getIcons().add(Main.itAssetLogo);
-			
-			//((Stage)((Node)event.getSource()).getScene().getWindow()).set
-			
-			fillFormula.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@FXML
-	private void handleSearchAction(ActionEvent event) {
-	    String selectedCriteria = searchCriteriaComboBox.getValue();
-	    String searchText = searchTextField.getText();
-	    filterTableView(selectedCriteria, searchText);
-	}
-	
-	
-	private void filterTableView(String criteria, String searchText) {
-	    
-	    if (criteria == null || searchText == null || searchText.isEmpty()) {
-	        // If criteria or searchText is null or empty, show all items
-	        assetsTable.setItems(allAssets);
-	        return;
-	    }
-
-	    ObservableList<Asset> filteredList = FXCollections.observableArrayList();
-	    switch (criteria) {
-	        case "Asset Category":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_category().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Asset Type":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_type().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Model":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_model().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Status":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_status().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Location":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_location().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        // Add cases for other criteria
-	    }
-
-	    // Update TableView with filtered list
-	    assetsTable.setItems(filteredList);
-	}
 
 	
 	private boolean isOpenedSideBar = false;
@@ -564,8 +279,8 @@ public class AdminController implements Initializable{
 	
 	//not now !
 	public void LogOut(ActionEvent event) throws IOException {
-		
-		root = FXMLLoader.load(getClass().getResource(LoginController.fxmlLogin));
+		Helper.currentLoginLoader = new FXMLLoader(getClass().getResource(Helper.fxmlLogin));
+		root = Helper.currentLoginLoader.load();
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		loginScene = new Scene(root);
 		stage.setScene(loginScene);
@@ -575,16 +290,20 @@ public class AdminController implements Initializable{
 	}
 	//
 	
+	public void triggerDashBoardPane(ActionEvent event) {
+		//set all visiblity to false.
+		selectView(DASHBOARD_VIEW);
+		closeSideBar();
+	}
+	
 	public void triggerAssetPane(ActionEvent event) {
 		//set all visiblity to false.
 		selectView(ASSETS_VIEW);
-		
 		closeSideBar();
 	}
 	public void triggerUserPane(ActionEvent event) {
 		//set all panes visiblity to false 
 		selectView(USERS_VIEW);
-		
 		closeSideBar();
 	}
 

@@ -7,7 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import AdminUi.AdminController;
+import AdminUi.AllAssetsController;
+import AdminUi.AllUsersController;
 import Components.Asset;
 import Components.User;
 import LoginUi.LoginController;
@@ -44,7 +45,7 @@ public class DatabaseUtilities {
 			         if (generatedKeys.next()) {
 			             int lastInsertedId = generatedKeys.getInt(1);
 			             //set the actual asset id:
-			             AdminController.last_id = lastInsertedId;
+			             AllAssetsController.last_id = lastInsertedId;
 			         } else {
 			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
@@ -65,7 +66,7 @@ public class DatabaseUtilities {
 			         if (generatedKeys.next()) {
 			             int lastInsertedId = generatedKeys.getInt(1);
 			             //set the actual user id:
-			             AdminController.last_id = lastInsertedId;
+			             AllUsersController.last_id = lastInsertedId;
 			         } else {
 			             System.out.println("Failed to retrieve last inserted ID.");
 			         }

@@ -5,37 +5,20 @@ import java.util.ResourceBundle;
 
 import Components.User;
 import LoginUi.LoginController;
+import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class NewUserController implements Initializable{
-	
-//	private static Stage stage;
-	
-	private AdminController adminController;
-
-//	public static void setStage(Stage res) {
-//		stage = res;
-//	}
-	
-	public AdminController getAdminController() {
-		return adminController;
-	}
-
-	public void setAdminController(AdminController adminController) {
-		this.adminController = adminController;
-	}
 	
 	@FXML
 	private ChoiceBox<String> permissions;
@@ -98,7 +81,7 @@ public class NewUserController implements Initializable{
 		String user_role = permissions.getValue();
 		
 		User newuser = new User(id,username,pass_word,email,full_name,user_role);
-		adminController.addUser(newuser);
+		((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().addUser(newuser);
 		
 		disposeWindow(event);
 	}

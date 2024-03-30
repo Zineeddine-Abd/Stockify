@@ -94,11 +94,6 @@ public class AdminController implements Initializable{
 	FXMLLoader newUserLoader;
 	FXMLLoader newAssetLoader;
 	
-	//constant for easy manipulation on code:
-	private final String asset = "Asset";
-	private final String user = "User";
-	//choosing user or asset for creation:*****
-	private MenuItem[] newOptions = {new MenuItem(asset),new MenuItem(user)};
 	@FXML
 	private VBox allAssetsPane;
 	@FXML
@@ -369,7 +364,7 @@ public class AdminController implements Initializable{
     }
    
 
-    // Method to delete selected rows from the TableView
+    // Method to delete selected assets from assetsTable
     public void deleteSelectedAssets() {
     	
     	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
@@ -381,6 +376,20 @@ public class AdminController implements Initializable{
     		}
     		
     		assetsTable.getItems().removeAll(selectedAssets);
+    	}
+    }
+    
+    
+    //Method to delete selected users from usersTable
+    public void deleteSelectedUsers() {
+    	ObservableList<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems();
+    	
+    	if(displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
+    		for(User item : selectedUsers) {
+    			DatabaseUtilities.deleteItemFromDatabase(item);
+    		}
+    		
+    		usersTable.getItems().removeAll(selectedUsers);
     	}
     }
     

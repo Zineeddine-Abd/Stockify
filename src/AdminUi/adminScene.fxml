@@ -42,7 +42,7 @@
                               <Insets left="15.0" right="15.0" top="15.0" />
                            </HBox.margin>
                         </Button>
-                        <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Delete">
+                        <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#deleteSelectedUsers" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Delete">
                            <HBox.margin>
                               <Insets bottom="15.0" left="4.0" right="15.0" top="15.0" />
                            </HBox.margin>

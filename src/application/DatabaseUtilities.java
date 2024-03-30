@@ -104,7 +104,13 @@ public class DatabaseUtilities {
 					resetSequenceTo1();
 				}
 			}else if(target instanceof User) {
-				//delete user , not implemented yet
+				User user = (User)target;
+				String deleteUser = "DELETE FROM users WHERE user_id=?";
+				ps = con.prepareStatement(deleteUser);
+				ps.setInt(1, user.getUser_id());
+				ps.executeUpdate();
+				
+				//log out all deleted users .
 			}
 			
 		} catch (ClassNotFoundException e) {

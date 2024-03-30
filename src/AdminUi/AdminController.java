@@ -10,23 +10,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-
 import javafx.util.Duration;
-
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import Components.Asset;
-import Components.HardwareAsset;
-import Components.SoftwareAsset;
 import javafx.animation.Animation.Status;
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,11 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,7 +37,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -63,7 +49,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 
 public class AdminController implements Initializable{
@@ -170,7 +156,14 @@ public class AdminController implements Initializable{
     @FXML
     private TableColumn<User, String> user_roleColumn;
     
-	
+    @FXML
+    private TextField searchTextField;
+
+    @FXML
+    private ChoiceBox<String> searchCriteriaComboBox;
+    
+    ObservableList<Asset> allAssets;
+    
 	//logging out mats:***********
 	private Stage stage;
 	private Scene loginScene;
@@ -286,6 +279,12 @@ public class AdminController implements Initializable{
 	        user_roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("user_role"));
 	        
 	        
+	        // Initialize search criteria ComboBox
+	        searchCriteriaComboBox.getItems().addAll("Asset Category", "Asset Type", "Model", "Status", "Location");
+	        searchCriteriaComboBox.setValue("Asset Category");
+	        allAssets = assetsTable.getItems();
+	        
+	        
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -333,6 +332,7 @@ public class AdminController implements Initializable{
         DatabaseUtilities.insertItemIntoDatabase(newAsset);
         newAsset.setAsset_id(last_id);
         assetsTable.getItems().add(newAsset);
+        allAssets.add(newAsset);
     }
 	public void addUser(User newuser) {
 		DatabaseUtilities.insertItemIntoDatabase(newuser);
@@ -377,6 +377,8 @@ public class AdminController implements Initializable{
     		
     		assetsTable.getItems().removeAll(selectedAssets);
     	}
+    	
+    	allAssets.removeAll(selectedAssets);
     }
     
     
@@ -392,8 +394,6 @@ public class AdminController implements Initializable{
     		usersTable.getItems().removeAll(selectedUsers);
     	}
     }
-    
-    
     
     
 	public void createNewUser(ActionEvent event) {
@@ -429,6 +429,66 @@ public class AdminController implements Initializable{
 		}
 	}
 	
+	@FXML
+	private void handleSearchAction(ActionEvent event) {
+	    String selectedCriteria = searchCriteriaComboBox.getValue();
+	    String searchText = searchTextField.getText();
+	    filterTableView(selectedCriteria, searchText);
+	}
+	
+	
+	private void filterTableView(String criteria, String searchText) {
+	    
+	    if (criteria == null || searchText == null || searchText.isEmpty()) {
+	        // If criteria or searchText is null or empty, show all items
+	        assetsTable.setItems(allAssets);
+	        return;
+	    }
+
+	    ObservableList<Asset> filteredList = FXCollections.observableArrayList();
+	    switch (criteria) {
+	        case "Asset Category":
+	            for (Asset asset : allAssets) {
+	                if (asset.getAsset_category().toLowerCase().contains(searchText.toLowerCase())) {
+	                    filteredList.add(asset);
+	                }
+	            }
+	            break;
+	        case "Asset Type":
+	            for (Asset asset : allAssets) {
+	                if (asset.getAsset_type().toLowerCase().contains(searchText.toLowerCase())) {
+	                    filteredList.add(asset);
+	                }
+	            }
+	            break;
+	        case "Model":
+	            for (Asset asset : allAssets) {
+	                if (asset.getAsset_model().toLowerCase().contains(searchText.toLowerCase())) {
+	                    filteredList.add(asset);
+	                }
+	            }
+	            break;
+	        case "Status":
+	            for (Asset asset : allAssets) {
+	                if (asset.getAsset_status().toLowerCase().contains(searchText.toLowerCase())) {
+	                    filteredList.add(asset);
+	                }
+	            }
+	            break;
+	        case "Location":
+	            for (Asset asset : allAssets) {
+	                if (asset.getAsset_location().toLowerCase().contains(searchText.toLowerCase())) {
+	                    filteredList.add(asset);
+	                }
+	            }
+	            break;
+	        // Add cases for other criteria
+	    }
+
+	    // Update TableView with filtered list
+	    assetsTable.setItems(filteredList);
+	}
+
 	
 	private boolean isOpenedSideBar = false;
 	

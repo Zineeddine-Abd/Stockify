@@ -2,24 +2,19 @@ package LoginUi;
 import application.*;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -34,9 +29,7 @@ import javafx.animation.*;
 public class LoginController{
 	
 	private Stage stage;
-	private Scene adminScene;
-	private Scene technicianScene;
-	private Scene professorScene;
+	private Scene scene;
 	private Parent root;
 	
 	private static final String ADMIN = "Administrator";
@@ -45,8 +38,6 @@ public class LoginController{
 	
 	public static final String[] permissions = {ADMIN,TECHNICIAN,PROFESSOR};
 	
-	private Connection con;
-	public static final String url = "jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:5432/postgres?user=postgres.hjtaojbdkclkvvgfvzvh&password=ThisIsMyDatabasePassword";
 	
 	@FXML
 	private Button loginButton;
@@ -68,52 +59,44 @@ public class LoginController{
 	
 	//Database linking for each user.
 	private void assignUser(ActionEvent event) throws IOException {
-		directAdmin(event);
-		return;
+		//directAdmin(event);
+		//return;
 		
-//		Connection con = null;
-//		PreparedStatement statement = null;
-//		ResultSet resultSet = null;
-//		try {
-//			//Changes based on the driver and type of sqlDatabase used:
-//			
-//			Class.forName("org.postgresql.Driver");
-//	        con = DriverManager.getConnection(url);
-//			
-//			String password = "'" + (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText()) +"'" ;
-//			String username = "'" + usernameField.getText() + "'" ;
-//			
-//	        String sql = "SELECT * FROM users WHERE username=" + username + " AND pass_word="+password + " ;";
-//	        statement = con.prepareStatement(sql);
-//	        resultSet = statement.executeQuery();
-//	        
-//	        if(resultSet.next()) {
-//	        	switch(resultSet.getString("user_role")) {
-//	        		case ADMIN:
-//	        			directAdmin(event);
-//	        			break;
-//	        		case TECHNICIAN:
-//	        			directTechnician(event);
-//	        			break;
-//	        		case PROFESSOR:
-//	        			directProfessor(event);
-//	        			break;
-//	        		default:
-//	        			System.out.println("error!"); //idk what to put here - lokman.
-//	        	}
-//	        	return;
-//	        }else {
-//	        	incorrectInfo.setText("Invalid username or password!");
-//	        	animatedIncorrectInfolabel();
-//	        }
-//	        
-//		} catch (IOException | SQLException | ClassNotFoundException e) {
-//			displayErrorMessage("Error",e.getMessage());
-//		}finally {
-//			DatabaseUtilities.closeResultSet(resultSet);
-//			DatabaseUtilities.closePreparedStatement(statement);
-//			DatabaseUtilities.closeConnnection(con);
-//		}
+		try (Connection con = DatabaseUtilities.getDataSource().getConnection()){
+			//Changes based on the driver and type of sqlDatabase used:
+			
+			
+			String password = "'" + (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText()) +"'" ;
+			String username = "'" + usernameField.getText() + "'" ;
+			
+	        String sql = "SELECT * FROM users WHERE username=" + username + " AND pass_word="+password + " ;";
+	        
+	        try(PreparedStatement statement = con.prepareStatement(sql);
+	        	ResultSet resultSet = statement.executeQuery();){
+	        	if(resultSet.next()) {
+		        	switch(resultSet.getString("user_role")) {
+		        		case ADMIN:
+		        			directAdmin(event);
+		        			break;
+		        		case TECHNICIAN:
+		        			directTechnician(event);
+		        			break;
+		        		case PROFESSOR:
+		        			directProfessor(event);
+		        			break;
+		        		default:
+		        			System.out.println("error!"); //idk what to put here - lokman.
+		        	}
+		        	return;
+	        }else {
+	        	incorrectInfo.setText("Invalid username or password!");
+	        	animatedIncorrectInfolabel();
+	        }
+	        }
+	        
+		} catch (IOException | SQLException e) {
+			displayErrorMessage("Error",e.getMessage());
+		}
 	}
 	
 	public void showPassword(ActionEvent event) {
@@ -185,11 +168,11 @@ public class LoginController{
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
 		
-		professorScene = new Scene(root);
-		professorScene.getStylesheets().add(this.getClass().getResource("/ProfessorUi/professor.css").toExternalForm());
+		scene = new Scene(root);
+		scene.getStylesheets().add(this.getClass().getResource("/ProfessorUi/professor.css").toExternalForm());
 		
 		stage = new Stage();
-		stage.setScene(professorScene);
+		stage.setScene(scene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		stage.initStyle(StageStyle.DECORATED);
@@ -199,9 +182,6 @@ public class LoginController{
 		centerStage(stage);
 	}
 	
-	private void newStage(Parent root) {
-		
-	}
 	
 	 private void centerStage(Stage stage) {
         double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();

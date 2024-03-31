@@ -15,6 +15,7 @@ import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,6 +90,7 @@ public class AllAssetsController implements Initializable{
     //observable lists***************
     ObservableList<Asset> allAssetsObs;
     FilteredList<Asset> filteredAssets;
+    SortedList<Asset> sortedAssets;
     //********************************
     
 	@Override
@@ -144,7 +146,11 @@ public class AllAssetsController implements Initializable{
 		
         filteredAssets = new FilteredList<Asset>(allAssetsObs);
         filterTableView();
-        assetsTable.setItems(filteredAssets);
+        
+        sortedAssets = new SortedList<Asset>(filteredAssets);
+        sortedAssets.comparatorProperty().bind(assetsTable.comparatorProperty());
+        
+        assetsTable.setItems(sortedAssets);
         
         // Initialize search criteria ComboBox
         searchCriteriaComboBox.getItems().addAll("Category", "Type", "Model", "Status", "Location");
@@ -203,47 +209,55 @@ public class AllAssetsController implements Initializable{
     	}
     }
     
-	
+    
+    //Filtering methods******************************************************
 	private void filterTableView() {
 		searchTextField.textProperty().addListener((obs, oldTxt, newTxt)->{
-			
-			filteredAssets.setPredicate((asset)-> {
-				if(newTxt == null || newTxt.isBlank()) {
-					return true;
-				}else {
-					switch (searchCriteriaComboBox.getValue()) {
-					case "Category":
-						if(asset.getAsset_category().toLowerCase().contains(newTxt.toLowerCase().trim())) {	
-							return true;
-						}
-			            break;
-			        case "Type":
-			        	if(asset.getAsset_type().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			        case "Model":
-			        	if(asset.getAsset_model().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			        case "Status":
-			        	if(asset.getAsset_status().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			        case "Location":
-			        	if(asset.getAsset_location().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			            
-			        default:
-			        	return false;
+			setFilterPredicate(newTxt);
+		});
+		searchCriteriaComboBox.valueProperty().addListener((obs, oldVal, newVal)->{
+			setFilterPredicate(searchTextField.getText());
+		});
+	}
+	
+	private void setFilterPredicate(String txt) {
+		
+		filteredAssets.setPredicate((asset)-> {
+			if(txt == null || txt.isBlank()) {
+				return true;
+			}else {
+				switch (searchCriteriaComboBox.getValue()) {
+				case "Category":
+					if(asset.getAsset_category().toLowerCase().contains(txt.toLowerCase())) {	
+						return true;
 					}
-					return false;
+		            break;
+		        case "Type":
+		        	if(asset.getAsset_type().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		        case "Model":
+		        	if(asset.getAsset_model().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		        case "Status":
+		        	if(asset.getAsset_status().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		        case "Location":
+		        	if(asset.getAsset_location().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		            
+		        default:
+		        	return false;
 				}
-			});
+				return false;
+			}
 		});
 	}
 }

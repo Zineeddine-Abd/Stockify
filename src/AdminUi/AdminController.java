@@ -1,14 +1,9 @@
 package AdminUi;
 
-import Components.*;
+
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
 
@@ -28,11 +23,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import application.DatabaseUtilities;
 import application.Helper;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-
-import java.util.ArrayList;
 
 
 

@@ -6,16 +6,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import Components.User;
 import application.DatabaseUtilities;
 import application.Helper;
 import application.Main;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -82,6 +81,7 @@ public class AllUsersController implements Initializable{
   	//observable lists***************
   	ObservableList<User> allUsersObs;
     FilteredList<User> filteredUsers;
+    SortedList<User> sortedUsers;
     //********************************
     
 	@Override
@@ -124,7 +124,11 @@ public class AllUsersController implements Initializable{
         
         filteredUsers = new FilteredList<User>(allUsersObs);
         filterTableView();
-        usersTable.setItems(filteredUsers);
+        
+        sortedUsers = new SortedList<User>(filteredUsers);
+        sortedUsers.comparatorProperty().bind(usersTable.comparatorProperty());
+        
+        usersTable.setItems(sortedUsers);
         
         // Initialize search criteria ComboBox
         searchCriteriaComboBox.getItems().addAll("Name", "Password", "Email", "Full name", "Role");
@@ -181,48 +185,54 @@ public class AllUsersController implements Initializable{
     }
 
     
+    
+    //Filtering methods******************************************************
     private void filterTableView() {
 		searchTextField.textProperty().addListener((obs, oldTxt, newTxt)->{
-			
-			filteredUsers.setPredicate((user)-> {
-				if(newTxt == null || newTxt.isBlank()) {
-					return true;
-				}else {
-					switch (searchCriteriaComboBox.getValue()) {
-					case "Name":
-						if(user.getUsername().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			        case "Password":
-			        	if(user.getPass_word().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			        case "Email":
-			        	if(user.getEmail().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			        case "Full name":
-			        	if(user.getFull_name().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			        case "Role":
-			        	if(user.getUser_role().toLowerCase().contains(newTxt.toLowerCase().trim())) {
-							return true;
-						}
-			            break;
-			            
-			        default:
-			        	return false;
-					}
-					return false;
-				}
-			});
+			setFilterPredicate(newTxt);
+		});
+		searchCriteriaComboBox.valueProperty().addListener((obs, oldVal, newVal)->{
+			setFilterPredicate(searchTextField.getText());
 		});
 	}
 
-    
+    private void setFilterPredicate(String txt) {
+    	filteredUsers.setPredicate((user)-> {
+			if(txt == null || txt.isBlank()) {
+				return true;
+			}else {
+				switch (searchCriteriaComboBox.getValue()) {
+				case "Name":
+					if(user.getUsername().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		        case "Password":
+		        	if(user.getPass_word().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		        case "Email":
+		        	if(user.getEmail().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		        case "Full name":
+		        	if(user.getFull_name().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		        case "Role":
+		        	if(user.getUser_role().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
+		            
+		        default:
+		        	return false;
+				}
+				return false;
+			}
+		});
+    }
 }

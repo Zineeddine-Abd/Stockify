@@ -21,9 +21,11 @@ public class Main extends Application {
 			primaryStage.setScene(loginScene);
 			primaryStage.setTitle("Stockify - Login");
 			primaryStage.getIcons().add(itAssetLogo);
-			
-			
 			primaryStage.initStyle(StageStyle.UNDECORATED);
+			primaryStage.setOnCloseRequest(e ->{
+				DatabaseUtilities.getDataSource().close();
+			});
+			
 			//connectToStockifyDB();
 			primaryStage.show();
 		} catch(Exception e) {

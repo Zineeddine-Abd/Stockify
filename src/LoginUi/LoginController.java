@@ -175,7 +175,9 @@ public class LoginController{
 		stage.setScene(scene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
-		stage.initStyle(StageStyle.DECORATED);
+		stage.setOnCloseRequest(e ->{
+			DatabaseUtilities.getDataSource().close();
+		});
 		
 //		stage.setMaximized(true);
 		stage.show();
@@ -214,6 +216,7 @@ public class LoginController{
 	 
 	 public void closeLoginScreen(MouseEvent event) {
 		 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		 DatabaseUtilities.getDataSource().close();
 		 stage.close();
 	 }
 	 

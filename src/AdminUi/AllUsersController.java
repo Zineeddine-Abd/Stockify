@@ -2,13 +2,20 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Observable;
 import java.util.ResourceBundle;
-
 import Components.User;
 import application.DatabaseUtilities;
 import application.Helper;
 import application.Main;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +24,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -64,9 +73,45 @@ public class AllUsersController implements Initializable{
   	private Stage fillFormula;
   	private Scene createNewScene;
   	//*************************************************
+  	@FXML
+    private TextField searchTextField;
+    @FXML
+    private ChoiceBox<String> searchCriteriaComboBox;
+    
+  	
+  	//observable lists***************
+  	ObservableList<User> allUsersObs;
+    FilteredList<User> filteredUsers;
+    //********************************
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		allUsersObs = FXCollections.observableArrayList();
+		
+		try (Connection con = DatabaseUtilities.getDataSource().getConnection())
+		{
+			String getAllUsersQuery = "SELECT * FROM users";
+			try(PreparedStatement psUsers = con.prepareStatement(getAllUsersQuery)){
+				try (ResultSet userResultSet = psUsers.executeQuery();){
+					//Users:
+					while(userResultSet.next()) {//while the reader still has a next row read it:
+						int user_id = userResultSet.getInt("user_id");
+						String username = userResultSet.getString("username");
+						String pass_word = userResultSet.getString("pass_word");
+						String email = userResultSet.getString("email");
+						String full_name = userResultSet.getString("full_name");
+						String user_role = userResultSet.getString("user_role");
+						
+						User newuser = new User(user_id,username,pass_word,email,full_name,user_role);
+						allUsersObs.add(newuser);
+					}
+				}    
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 		  //Users table:
         usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         user_idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("user_id"));
@@ -75,7 +120,15 @@ public class AllUsersController implements Initializable{
         emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
         full_nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("full_name"));
         user_roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("user_role"));
-		
+        
+        
+        filteredUsers = new FilteredList<User>(allUsersObs);
+        filterTableView();
+        usersTable.setItems(filteredUsers);
+        
+        // Initialize search criteria ComboBox
+        searchCriteriaComboBox.getItems().addAll("Name", "Password", "Email", "Full name", "Role");
+        searchCriteriaComboBox.setValue("Name");
 	}
 	
 	public void createNewUser(ActionEvent event) {
@@ -89,14 +142,6 @@ public class AllUsersController implements Initializable{
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
 			
-				fillFormula.setTitle("Create New User:");
-	//			try {
-	//				root = FXMLLoader.load(getClass().getResource("/AdminUi/userScene.fxml"));
-	//			} catch (IOException e) {
-	//				e.printStackTrace();
-	//			}
-				
-				//UserController.setStage(fillFormula);
 				
 			createNewScene = new Scene(root);
 			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
@@ -120,7 +165,7 @@ public class AllUsersController implements Initializable{
 	public void addUser(User newuser) {
 		DatabaseUtilities.insertItemIntoDatabase(newuser);
         newuser.setUser_id(last_id);
-        usersTable.getItems().add(newuser);
+        allUsersObs.add(newuser);
 	}
 	
 	  //Method to delete selected users from usersTable
@@ -131,12 +176,53 @@ public class AllUsersController implements Initializable{
     		for(User item : selectedUsers) {
     			DatabaseUtilities.deleteItemFromDatabase(item);
     		}
-    		
-    		usersTable.getItems().removeAll(selectedUsers);
+    		allUsersObs.removeAll(selectedUsers);
     	}
     }
 
     
-    
+    private void filterTableView() {
+		searchTextField.textProperty().addListener((obs, oldTxt, newTxt)->{
+			
+			filteredUsers.setPredicate((user)-> {
+				if(newTxt == null || newTxt.isBlank()) {
+					return true;
+				}else {
+					switch (searchCriteriaComboBox.getValue()) {
+					case "Name":
+						if(user.getUsername().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			        case "Password":
+			        	if(user.getPass_word().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			        case "Email":
+			        	if(user.getEmail().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			        case "Full name":
+			        	if(user.getFull_name().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			        case "Role":
+			        	if(user.getUser_role().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			            
+			        default:
+			        	return false;
+					}
+					return false;
+				}
+			});
+		});
+	}
+
     
 }

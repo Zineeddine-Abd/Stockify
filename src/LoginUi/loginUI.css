@@ -11,7 +11,6 @@
   -fx-border-radius: 4px;
   -fx-color: #fff;
   -fx-text-fill: #FFFFFF;
-  -fx-cursor: pointer;
   -fx-font-family: "Space Grotesk",-apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   -fx-font-size: 20px;
   -fx-font-weight: 700;
@@ -19,8 +18,7 @@
   -fx-min-width: 100px;
   -fx-padding: 16px 20px;
 }
-#loginButton:hover {
-	-fx-cursor: hand;
+#loginButton:hover { 
 	-fx-translate-y:-2;
  	-fx-background-color: #065dd8;
   	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
@@ -29,36 +27,6 @@
 .text-field{
 	-fx-background-insets:0;
 	-fx-padding: 5px 12px;
-}
-/*Choice box Style */
-
-.dropdown-box{
-	-fx-background-color:  #354251;
-	-fx-text-fill: black;
-	-fx-background-insets:0;
-	-fx-padding: 0px 0px;
-}
-.dropdown-box .arrow{
-	-fx-background-color: white;
-}
-
-.dropdown-box .context-menu{
-	-fx-background-color:  #354251;
-}
-.dropdown-box .context-menu .menu-item .label{
-	-fx-text-fill: white;
-}
-.dropdown-box .label{
-	-fx-text-fill: white;
-}
-
-
-.dropdown-box .context-menu .menu-item:hover {
-	-fx-cursor: hand;
-	-fx-text-fill: #FFFFFF;
-}
-.dropdown-box:hover{
-	-fx-cursor: hand;
 }
 
 /*end of Choice Box Style. */

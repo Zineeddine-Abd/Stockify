@@ -2,15 +2,19 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
-
 import Components.Asset;
 import application.DatabaseUtilities;
 import application.Helper;
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,14 +83,42 @@ public class AllAssetsController implements Initializable{
   	//*************************************************
   	@FXML
     private TextField searchTextField;
-
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
     
-    ObservableList<Asset> allAssets;
-	
+    //observable lists***************
+    ObservableList<Asset> allAssetsObs;
+    FilteredList<Asset> filteredAssets;
+    //********************************
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		allAssetsObs = FXCollections.observableArrayList();
+		
+		
+		try(Connection con = DatabaseUtilities.getDataSource().getConnection()){
+			String getAllAssetsQuery = "SELECT * FROM assets";
+			try(PreparedStatement psAssets = con.prepareStatement(getAllAssetsQuery)){
+				try(ResultSet rs = psAssets.executeQuery()){
+					while(rs.next()) {//while the reader still has a next row read it:
+						int asset_id = rs.getInt("asset_id");
+						String asset_category = rs.getString("asset_category");
+						String asset_type = rs.getString("asset_type");
+						String asset_model = rs.getString("asset_model");
+						String asset_status = rs.getString("asset_status");
+						String asset_location = rs.getString("asset_location");
+						Date asset_purchase_date = rs.getDate("asset_purchase_date");
+						int asset_warranty = rs.getInt("asset_warranty");
+						int asset_serial_number = rs.getInt("asset_serial_number");
+						
+						Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number);
+						allAssetsObs.add(asset);
+					}
+				}
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
@@ -110,11 +142,13 @@ public class AllAssetsController implements Initializable{
 //	    assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 //	    assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		
+        filteredAssets = new FilteredList<Asset>(allAssetsObs);
+        filterTableView();
+        assetsTable.setItems(filteredAssets);
         
         // Initialize search criteria ComboBox
-        searchCriteriaComboBox.getItems().addAll("Asset Category", "Asset Type", "Model", "Status", "Location");
-        searchCriteriaComboBox.setValue("Asset Category");
-        allAssets = assetsTable.getItems();
+        searchCriteriaComboBox.getItems().addAll("Category", "Type", "Model", "Status", "Location");
+        searchCriteriaComboBox.setValue("Category");
 	}
 
 	
@@ -152,8 +186,7 @@ public class AllAssetsController implements Initializable{
 	public void addAsset(Asset newAsset) {
         DatabaseUtilities.insertItemIntoDatabase(newAsset);
         newAsset.setAsset_id(last_id);
-        allAssets.add(newAsset);
-        assetsTable.setItems(allAssets);
+        allAssetsObs.add(newAsset);
     }
 	
 	 
@@ -166,73 +199,52 @@ public class AllAssetsController implements Initializable{
     		for(Asset item : selectedAssets) {
     			DatabaseUtilities.deleteItemFromDatabase(item);
     		}
-    		
-    		assetsTable.getItems().removeAll(selectedAssets);
+    		allAssetsObs.removeAll(selectedAssets);
     	}
-    	
-    	allAssets.removeAll(selectedAssets);
-    	assetsTable.setItems(allAssets);
     }
     
-    
-    @FXML
-	private void handleSearchAction(ActionEvent event) {
-	    String selectedCriteria = searchCriteriaComboBox.getValue();
-	    String searchText = searchTextField.getText();
-	    filterTableView(selectedCriteria, searchText);
-	}
 	
-	
-	private void filterTableView(String criteria, String searchText) {
-	    
-	    if (criteria == null || searchText == null || searchText.isEmpty()) {
-	        // If criteria or searchText is null or empty, show all items
-	        assetsTable.setItems(allAssets);
-	        return;
-	    }
-
-	    ObservableList<Asset> filteredList = FXCollections.observableArrayList();
-	    switch (criteria) {
-	        case "Asset Category":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_category().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Asset Type":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_type().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Model":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_model().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Status":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_status().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        case "Location":
-	            for (Asset asset : allAssets) {
-	                if (asset.getAsset_location().toLowerCase().contains(searchText.toLowerCase())) {
-	                    filteredList.add(asset);
-	                }
-	            }
-	            break;
-	        
-	    }
-
-	    // Update TableView with filtered list
-	    assetsTable.setItems(filteredList);
+	private void filterTableView() {
+		searchTextField.textProperty().addListener((obs, oldTxt, newTxt)->{
+			
+			filteredAssets.setPredicate((asset)-> {
+				if(newTxt == null || newTxt.isBlank()) {
+					return true;
+				}else {
+					switch (searchCriteriaComboBox.getValue()) {
+					case "Category":
+						if(asset.getAsset_category().toLowerCase().contains(newTxt.toLowerCase().trim())) {	
+							return true;
+						}
+			            break;
+			        case "Type":
+			        	if(asset.getAsset_type().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			        case "Model":
+			        	if(asset.getAsset_model().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			        case "Status":
+			        	if(asset.getAsset_status().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			        case "Location":
+			        	if(asset.getAsset_location().toLowerCase().contains(newTxt.toLowerCase().trim())) {
+							return true;
+						}
+			            break;
+			            
+			        default:
+			        	return false;
+					}
+					return false;
+				}
+			});
+		});
 	}
 }
 

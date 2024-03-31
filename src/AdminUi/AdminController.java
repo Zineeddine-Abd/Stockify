@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
-import Components.Asset;
+
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -139,65 +139,6 @@ public class AdminController implements Initializable{
 		// Initialize table columns
 		//estalish a connection to the SupaBase Database For :
 		
-		
-		
-		try (Connection con = DatabaseUtilities.getDataSource().getConnection())
-		{
-			
-			ArrayList<Asset> bufferListAssets = new ArrayList<Asset>();
-			ArrayList<User> bufferListUsers = new ArrayList<User>();		
-
-			
-			String getAllAssetsQuery = "SELECT * FROM assets";
-			try(PreparedStatement psAssets = con.prepareStatement(getAllAssetsQuery)){
-				try(
-				ResultSet rs = psAssets.executeQuery();){
-					while(rs.next()) {//while the reader still has a next row read it:
-						int asset_id = rs.getInt("asset_id");
-						String asset_category = rs.getString("asset_category");
-						String asset_type = rs.getString("asset_type");
-						String asset_model = rs.getString("asset_model");
-						String asset_status = rs.getString("asset_status");
-						String asset_location = rs.getString("asset_location");
-						Date asset_purchase_date = rs.getDate("asset_purchase_date");
-						int asset_warranty = rs.getInt("asset_warranty");
-						int asset_serial_number = rs.getInt("asset_serial_number");
-						Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number);
-						bufferListAssets.add(asset);
-					}
-					allAssetsViewController.getAssetsTable().getItems().addAll(bufferListAssets);
-					bufferListAssets.clear();
-				}
-			}
-			
-			String getAllUsersQuery = "SELECT * FROM users";
-			try(PreparedStatement psUsers = con.prepareStatement(getAllUsersQuery)){
-				try (ResultSet userResultSet = psUsers.executeQuery();){
-					//Users:
-					while(userResultSet.next()) {//while the reader still has a next row read it:
-						int user_id = userResultSet.getInt("user_id");
-						String username = userResultSet.getString("username");
-						String pass_word = userResultSet.getString("pass_word");
-						String email = userResultSet.getString("email");
-						String full_name = userResultSet.getString("full_name");
-						String user_role = userResultSet.getString("user_role");
-						
-						User newuser = new User(user_id,username,pass_word,email,full_name,user_role);
-						
-						bufferListUsers.add(newuser);
-					}
-					
-					allUsersViewController.getUsersTable().getItems().addAll(bufferListUsers);
-					bufferListUsers.clear();
-				}    
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-//			DatabaseUtilities.closeResultSet(rs);
-//			DatabaseUtilities.closePreparedStatement(ps);
-//			DatabaseUtilities.closeConnnection(con);
-		}
 	}
 	
 	

@@ -2,13 +2,18 @@ package LoginUi;
 import application.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,9 +25,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.animation.*;
 
@@ -57,11 +60,11 @@ public class LoginController{
 
 	
 	
+	
 	//Database linking for each user.
 	private void assignUser(ActionEvent event) throws IOException {
 		//directAdmin(event);
 		//return;
-		
 		try (Connection con = DatabaseUtilities.getDataSource().getConnection()){
 			//Changes based on the driver and type of sqlDatabase used:
 			
@@ -88,13 +91,13 @@ public class LoginController{
 		        			System.out.println("error!"); //idk what to put here - lokman.
 		        	}
 		        	return;
-	        }else {
-	        	incorrectInfo.setText("Invalid username or password!");
-	        	animatedIncorrectInfolabel();
-	        }
+		        }else {
+		        	incorrectInfo.setText("Invalid username or password!");
+		        	animatedIncorrectInfolabel();
+		        }
 	        }
 	        
-		} catch (IOException | SQLException e) {
+		} catch (SQLException e) {
 			displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -127,15 +130,20 @@ public class LoginController{
 			incorrectInfo.setText("Invalid username or password!");
 			animatedIncorrectInfolabel();
 		}else {			
-			try {
+			try {  
 				assignUser(event);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
 			}	
 		}
 		
 	}
+	public void waitCursor(MouseEvent event) {
+		loginButton.setCursor(null);
+		loginButton.getScene().setCursor(Cursor.WAIT); 
+	}
+	
+	
 	private void animatedIncorrectInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),incorrectInfo);
 		fadetransition.setFromValue(1);

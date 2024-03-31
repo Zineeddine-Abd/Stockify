@@ -23,7 +23,11 @@ public class Main extends Application {
 			primaryStage.getIcons().add(itAssetLogo);
 			primaryStage.initStyle(StageStyle.UNDECORATED);
 			primaryStage.setOnCloseRequest(e ->{
-				DatabaseUtilities.getDataSource().close();
+				e.consume();
+				primaryStage.close();
+				if(DatabaseUtilities.getDataSource() != null) {
+					DatabaseUtilities.getDataSource().close();
+				}
 			});
 			
 			//connectToStockifyDB();

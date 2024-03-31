@@ -176,30 +176,17 @@ public class LoginController{
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		stage.setOnCloseRequest(e ->{
-			DatabaseUtilities.getDataSource().close();
+			e.consume();
+			stage.close();
+			if(DatabaseUtilities.getDataSource() != null) {
+				DatabaseUtilities.getDataSource().close();
+			}
 		});
-		
+		stage.centerOnScreen();
 //		stage.setMaximized(true);
 		stage.show();
-		centerStage(stage);
 	}
 	
-	
-	 private void centerStage(Stage stage) {
-        double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
-        double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
-        double stageWidth = stage.getWidth();
-        double stageHeight = stage.getHeight();
-
-        // Calculate the center position
-        double centerX = (screenWidth - stageWidth) / 2;
-        double centerY = (screenHeight - stageHeight) / 2;
-
-        // Set the stage position
-        stage.setX(centerX);
-        stage.setY(centerY);
-    }
-	 
 	 
 	 Stage draggableStage;
 	 double x, y;
@@ -215,9 +202,11 @@ public class LoginController{
 	 }
 	 
 	 public void closeLoginScreen(MouseEvent event) {
-		 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		 DatabaseUtilities.getDataSource().close();
-		 stage.close();
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.close();
+		if(DatabaseUtilities.getDataSource() != null) {
+			DatabaseUtilities.getDataSource().close();
+		}
 	 }
 	 
 	 private void displayErrorMessage(String title, String message) {

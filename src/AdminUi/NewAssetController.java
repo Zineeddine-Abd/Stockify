@@ -22,11 +22,12 @@ import javafx.util.Duration;
 
 public class NewAssetController implements Initializable{
 	
-
-
 	private final String IN_INVENTORY = "In Inventory";
-	private final String READY_TO_USE = "Ready to use";
-	private final String WORKING = "Currently Working";
+	private final String READY_TO_DEPLOY = "Ready to deploy";
+	private final String DEPLOYED = "Deployed";
+	private final String LOST_STOLEN = "Lost/Stolen";
+	private final String UNDER_MAINTENANCE = "Under Maintenance";
+	private final String BROKEN = "Broken";
 	
 	private final String HARDWARE = "Hardware";
 	private final String SOFTWARE = "Software";
@@ -36,7 +37,7 @@ public class NewAssetController implements Initializable{
 	private String[] hardware_type = {"Desktop" , "Laptop", "Projector", "Scanner", "Printer", "Switch" ,"Hub","Router","Modem" };
 	private String[] software_type = {"Anti-Virus","License"};
 	private String[] accessory_type = {"Keyboard","Mouse","Cable","HDD","SSD","RAM"};
-	private String[] statuses = {IN_INVENTORY,READY_TO_USE,WORKING};//all status for now , feel free to add any more statuses.
+	private String[] statuses = {IN_INVENTORY,READY_TO_DEPLOY,DEPLOYED,LOST_STOLEN,UNDER_MAINTENANCE,BROKEN};//all status for now , feel free to add any more statuses.
 	
 	//*******hardware models:*********************
 	private String[] desktop_laptop_models = {"HP","Dell","Lenovo","Acer","Apple","MSI","Razer"};

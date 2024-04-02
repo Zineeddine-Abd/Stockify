@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Components.Asset;
+import application.DatabaseUtilities;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,8 +26,8 @@ import javafx.util.Duration;
 public class NewAssetController implements Initializable{
 	
 	private final String IN_INVENTORY = "In Inventory";
-	private final String READY_TO_DEPLOY = "Ready to deploy";
-	private final String DEPLOYED = "Deployed";
+	private final String READY_TO_USE = "Ready to Use";
+	private final String IN_USE = "In Use";
 	private final String LOST_STOLEN = "Lost/Stolen";
 	private final String UNDER_MAINTENANCE = "Under Maintenance";
 	private final String BROKEN = "Broken";
@@ -37,7 +40,7 @@ public class NewAssetController implements Initializable{
 	private String[] hardware_type = {"Desktop" , "Laptop", "Projector", "Scanner", "Printer", "Switch" ,"Hub","Router","Modem" };
 	private String[] software_type = {"Anti-Virus","License"};
 	private String[] accessory_type = {"Keyboard","Mouse","Cable","HDD","SSD","RAM"};
-	private String[] statuses = {IN_INVENTORY,READY_TO_DEPLOY,DEPLOYED,LOST_STOLEN,UNDER_MAINTENANCE,BROKEN};//all status for now , feel free to add any more statuses.
+	private String[] statuses = {IN_INVENTORY,READY_TO_USE,IN_USE,LOST_STOLEN,UNDER_MAINTENANCE,BROKEN};//all status for now , feel free to add any more statuses.
 	
 	//*******hardware models:*********************
 	private String[] desktop_laptop_models = {"HP","Dell","Lenovo","Acer","Apple","MSI","Razer"};
@@ -50,7 +53,7 @@ public class NewAssetController implements Initializable{
 	//*******Accessory models:********************
 	private String[] keyboard_mouse_models = {"HP","Razer","Logitech"};
 	private String[] components_models = {"SanDisk","Samsung","Toshiba","GIGABYTE" , "Kingston Technology" , "ADATA Technology" , "Corsair"};
-	
+	private ArrayList<String> rooms = DatabaseUtilities.getRooms();
 
 	@FXML
 	private ChoiceBox<String> categoryChoiceBox;
@@ -60,9 +63,11 @@ public class NewAssetController implements Initializable{
 	private ChoiceBox<String> modelChoiceBox;
 	@FXML
 	private ChoiceBox<String> statusChoiceBox;
+	@FXML
+	private ChoiceBox<String> locationDropDownBox;
 	
 	@FXML
-	private TextField serialField,warrantyField,locationField;
+	private TextField serialField,warrantyField;
 	@FXML
 	private Button submitButton;
 	@FXML
@@ -71,7 +76,8 @@ public class NewAssetController implements Initializable{
 	private Label invalidInfo;
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		categoryChoiceBox.getItems().addAll(categories);
+		categoryChoiceBox.getItems().addAll(categories); // add asset categories.
+		locationDropDownBox.getItems().addAll(rooms);
 		
 		categoryChoiceBox.setOnAction(event->{
 			typeChoiceBox.getItems().clear();
@@ -146,8 +152,8 @@ public class NewAssetController implements Initializable{
 			return;
 		}
 		
-		if(!locationField.getText().matches("^[0-9A-Za-z]+$")) {//Location
-			invalidInfo.setText("Invalid Deplacement Location!");
+		if(locationDropDownBox.getValue() == null) {//Location
+			invalidInfo.setText("Invalid Location!");
 			animatedInvalidInfolabel();
 			return;
 		}
@@ -156,7 +162,7 @@ public class NewAssetController implements Initializable{
 		String type = typeChoiceBox.getValue();
 		String model = modelChoiceBox.getValue();
 		String status = statusChoiceBox.getValue();
-		String location = locationField.getText();
+		String location = locationDropDownBox.getValue();
 		int warranty = Integer.parseInt(warrantyField.getText());
 		int serial_number = Integer.parseInt(serialField.getText());
 		
@@ -172,7 +178,6 @@ public class NewAssetController implements Initializable{
 		//	assetTypeInput.clear();
 //        modelInput.clear();
         serialField.clear();
-        locationField.clear();
         warrantyField.clear();
     }
 	

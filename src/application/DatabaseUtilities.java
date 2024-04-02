@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -14,6 +15,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import AdminUi.AllAssetsController;
 import AdminUi.AllUsersController;
 import Components.Asset;
+import Components.Room;
 import Components.User;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -105,6 +107,8 @@ public class DatabaseUtilities {
 				         }
 				    }
 				}
+			}else if(item instanceof Room) {
+				//to be implemented later.
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -124,7 +128,6 @@ public class DatabaseUtilities {
 				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){
 					Asset asset = (Asset)target;
 				
-				
 					ps.setInt(1, asset.getAsset_id());
 					ps.executeUpdate();
 					//reset the sequence if data:
@@ -137,12 +140,9 @@ public class DatabaseUtilities {
 				String deleteUser = "DELETE FROM users WHERE user_id=?";
 				try(PreparedStatement ps = con.prepareStatement(deleteUser)){
 					User user = (User)target;
-				
 					ps.setInt(1, user.getUser_id());
 					ps.executeUpdate();
-				
-					//log out all deleted users .
-					
+					//log out all deleted users .//to be implemented later.
 				}
 			}
 		} catch (SQLException e) {
@@ -188,5 +188,23 @@ public class DatabaseUtilities {
 		 alert.setHeaderText(null);
 		 alert.setContentText(message);
 	     alert.showAndWait();
+	 }
+	 
+	 public static ArrayList<String> getRooms() {
+		 ArrayList<String> rooms = new ArrayList<String>();
+		 try (Connection con = dataSource.getConnection()){
+			 String getRoomNamesQuery = "SELECT * FROM rooms";
+			 try(PreparedStatement ps = con.prepareStatement(getRoomNamesQuery)){
+				 try(ResultSet rs = ps.executeQuery()){
+					while(rs.next()) {
+						rooms.add(rs.getString("room_name"));
+					}
+				 }
+			 }
+		 }catch(SQLException e) {
+			 displaySQLErrorMessage("Error",e.getMessage());
+		 }
+		 
+		 return rooms;
 	 }
 }

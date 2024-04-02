@@ -54,6 +54,8 @@ public class AdminController implements Initializable{
 	private Button AllUsersButton;
 	@FXML
 	private Button dashboardButton;
+	@FXML
+	private Button roomsButton;
 	//*****************************************/
 	
 	//User and Asset Loaders
@@ -91,6 +93,15 @@ public class AdminController implements Initializable{
 	public DashboardController getDashboardViewController() {
 		return dashboardViewController;
 	}
+	
+	@FXML
+	private BorderPane allRoomsView;
+	@FXML
+	private RoomsController allRoomsViewController;
+	
+	public RoomsController getRoomsController() {
+		return allRoomsViewController;
+	}
 	//*****************************************/
 	
 	//Array of panes
@@ -100,7 +111,7 @@ public class AdminController implements Initializable{
 	public static int DASHBOARD_VIEW = 0;
 	public static int USERS_VIEW = 1;
 	public static int ASSETS_VIEW = 2;
-	public static int SETTING_VIEW = 3;
+	public static int ROOMS_VIEW = 3;
 	public static int BACKUP_VIEW = 4;
 	
 	
@@ -121,7 +132,7 @@ public class AdminController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//initialize views array
-		views = new Pane[]{dashboardView ,allUsersView, allAssetsView};
+		views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView};
 		
 		// --> here we will set the default view (dashboardview) 	
 		
@@ -229,6 +240,10 @@ public class AdminController implements Initializable{
 	public void triggerUserPane(ActionEvent event) {
 		//set all panes visiblity to false 
 		selectView(USERS_VIEW);
+		closeSideBar();
+	}
+	public void triggerRoomsPane(ActionEvent event) {
+		selectView(ROOMS_VIEW);
 		closeSideBar();
 	}
 

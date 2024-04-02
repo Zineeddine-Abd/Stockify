@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox prefHeight="532.0" prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.NewAssetController">
    <children>
       <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Asset">
@@ -82,11 +81,11 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="locationField">
+      <ChoiceBox fx:id="locationDropDownBox" prefHeight="25.0" prefWidth="346.0" styleClass="dropdown-box" stylesheets="@admin.css">
          <VBox.margin>
-            <Insets left="15.0" right="15.0" />
+            <Insets bottom="15.0" left="15.0" right="15.0" />
          </VBox.margin>
-      </TextField>
+      </ChoiceBox>
       <HBox prefHeight="48.0" prefWidth="346.0">
          <children>
             <Button fx:id="submitButton" mnemonicParsing="false" onAction="#validateInformation" prefHeight="51.0" prefWidth="166.0" stylesheets="@admin.css" text="Submit">

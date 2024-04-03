@@ -61,6 +61,7 @@ public class AdminController implements Initializable{
 	//User and Asset Loaders
 	public static final String fxmlNewAsset = "/AdminUi/newAssetScene.fxml";
 	public static final String fxmlNewUser = "/AdminUi/newUserScene.fxml";
+	public static final String fxmlNewRoom = "/AdminUi/newRoomScene.fxml";
 	public static FXMLLoader currentNewAssetLoader;
 	public static FXMLLoader currentNewUserLoader;
 	

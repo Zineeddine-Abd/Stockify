@@ -33,8 +33,12 @@ public class NewRoomController implements Initializable{
 	@FXML
 	private Label invalidInfo;
 	
+	private String[] room_type = {"TP","TD","Emphy"};
+	
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		typeChoiceBox.getItems().addAll(room_type);
 		
 	}
 	
@@ -58,8 +62,7 @@ public class NewRoomController implements Initializable{
 		String room_type = typeChoiceBox.getValue();
 		String room_name = roomField.getText();
 		Room room = new Room(room_id,room_type,room_name);
-		
-		Date date = java.sql.Date.valueOf(LocalDate.now());
+	
 		((AdminController)Helper.currentAdminLoader.getController()).getRoomsController().addRoom(room);
 	    
 		disposeWindow(event);

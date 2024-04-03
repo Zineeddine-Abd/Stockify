@@ -1,5 +1,6 @@
 package AdminUi;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
@@ -12,13 +13,18 @@ import Components.Asset;
 import Components.Room;
 import application.DatabaseUtilities;
 import application.Helper;
+import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -26,6 +32,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class RoomsController implements Initializable{
 	@FXML
@@ -36,11 +44,18 @@ public class RoomsController implements Initializable{
 	private TableColumn<Room,String> roomTypeColumn;
 	@FXML
 	private TableColumn<Room,String> roomNameColumn;
+	
 	//********Observable Lists:***************
     ObservableList<Room> allRooms;
     FilteredList<Room> filteredRooms;
     SortedList<Room> sortedRooms;
 	//****************************************
+    
+    //creating new asset/user mats:********************
+  	private Stage fillFormula;
+  	private Scene createNewScene;
+  	//*************************************************
+  	
   	@FXML
     private TextField searchTextField;
     @FXML
@@ -74,6 +89,7 @@ public class RoomsController implements Initializable{
 		roomsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         roomIdColumn.setCellValueFactory(new PropertyValueFactory<Room, Integer>("room_id"));
         roomTypeColumn.setCellValueFactory(new PropertyValueFactory<Room, String>("room_type"));
+        roomNameColumn.setCellValueFactory(new PropertyValueFactory<Room, String>("room_name"));
         
 		
         filteredRooms = new FilteredList<Room>(allRooms);
@@ -90,7 +106,40 @@ public class RoomsController implements Initializable{
 	}
 	
 	public void popupNewRoom(ActionEvent event) {
+		Parent root;
 		
+		try {
+			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewRoom));
+			
+			root = AdminController.currentNewAssetLoader.load();
+			
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+			fillFormula.setTitle("Create New Romm:");
+			
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+	
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			fillFormula.initModality(Modality.WINDOW_MODAL);
+			fillFormula.initOwner(parentStage);
+			
+			fillFormula.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void addRoom(Room newRoom) {
+		DatabaseUtilities.insertItemIntoDatabase(newRoom);
+		newRoom.setRoom_id(last_id);
+		allRooms.add(newRoom);
 	}
 	
     public void deleteSelectedRooms() {
@@ -107,13 +156,8 @@ public class RoomsController implements Initializable{
     	}
     }
 	
-	public void addRoom(Room room) {
-		DatabaseUtilities.insertItemIntoDatabase(room);
-		room.setRoom_id(last_id);
-		allRooms.add(room);
-	}
 	
-	
+    //Filtering methods******************************************************
 	private void filterTableView() {
 		searchTextField.textProperty().addListener((obs, oldTxt, newTxt)->{
 			setFilterPredicate(newTxt);

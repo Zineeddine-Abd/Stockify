@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="371.0" prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.RoomsController">
+<VBox prefHeight="371.0" prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.NewRoomController">
    <children>
       <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Room">
          <font>

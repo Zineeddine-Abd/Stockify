@@ -76,7 +76,7 @@ public class AllUsersController implements Initializable{
     private TextField searchTextField;
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
-    
+    private final String[] criteria = {"Name", "Password", "Email", "Full name", "Role"};
   	
   	//observable lists***************
   	ObservableList<User> allUsersObs;
@@ -131,8 +131,8 @@ public class AllUsersController implements Initializable{
         usersTable.setItems(sortedUsers);
         
         // Initialize search criteria ComboBox
-        searchCriteriaComboBox.getItems().addAll("Name", "Password", "Email", "Full name", "Role");
-        searchCriteriaComboBox.setValue("Name");
+        searchCriteriaComboBox.getItems().addAll(criteria);
+        searchCriteriaComboBox.setValue(criteria[0]);
 	}
 	
 	public void createNewUser(ActionEvent event) {
@@ -167,9 +167,15 @@ public class AllUsersController implements Initializable{
 	
 	
 	public void addUser(User newuser) {
-		DatabaseUtilities.insertItemIntoDatabase(newuser);
-        newuser.setUser_id(last_id);
-        allUsersObs.add(newuser);
+		try {
+			DatabaseUtilities.insertItemIntoDatabase(newuser);
+			newuser.setUser_id(last_id);
+			allUsersObs.add(newuser);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       
 	}
 	
 	  //Method to delete selected users from usersTable
@@ -178,9 +184,15 @@ public class AllUsersController implements Initializable{
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
     		for(User item : selectedUsers) {
-    			DatabaseUtilities.deleteItemFromDatabase(item);
+    			try {
+					DatabaseUtilities.deleteItemFromDatabase(item);
+					allUsersObs.remove(item);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     		}
-    		allUsersObs.removeAll(selectedUsers);
+    		
     	}
     }
 

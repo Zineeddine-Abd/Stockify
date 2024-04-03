@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -162,13 +161,13 @@ public class NewAssetController implements Initializable{
 		String type = typeChoiceBox.getValue();
 		String model = modelChoiceBox.getValue();
 		String status = statusChoiceBox.getValue();
-		String location = locationDropDownBox.getValue();
+		int room_id = Integer.parseInt(locationDropDownBox.getValue());
 		int warranty = Integer.parseInt(warrantyField.getText());
 		int serial_number = Integer.parseInt(serialField.getText());
 		
 		Date date = java.sql.Date.valueOf(LocalDate.now());
 		
-		Asset new_asset = new Asset(id,category,type,model,status,location,date,warranty,serial_number);
+		Asset new_asset = new Asset(id,category,type,model,status,room_id,date,warranty,serial_number);
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addAsset(new_asset);
 	    
 		disposeWindow(event);

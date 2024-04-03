@@ -134,10 +134,6 @@ public class LoginController{
 		}
 		
 	}
-	public void waitCursor(MouseEvent event) {
-		loginButton.setCursor(null);
-		loginButton.getScene().setCursor(Cursor.WAIT); 
-	}
 	
 	
 	private void animatedIncorrectInfolabel() {
@@ -173,7 +169,6 @@ public class LoginController{
 		stage.close();
 		
 		scene = new Scene(root);
-		scene.getStylesheets().add(this.getClass().getResource("/ProfessorUi/professor.css").toExternalForm());
 		
 		stage = new Stage();
 		stage.setScene(scene);

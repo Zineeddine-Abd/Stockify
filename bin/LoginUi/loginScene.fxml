@@ -33,7 +33,7 @@
                <font>
                   <Font size="16.0" />
                </font></PasswordField>
-            <Button fx:id="loginButton" layoutX="142.0" layoutY="396.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" onMousePressed="#waitCursor" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="142.0" layoutY="396.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>

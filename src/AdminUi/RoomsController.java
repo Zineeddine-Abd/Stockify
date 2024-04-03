@@ -60,6 +60,7 @@ public class RoomsController implements Initializable{
     private TextField searchTextField;
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
+    private String[] criteria = {"Name", "Type"};
     
 	//id
     public static int last_id = 0;
@@ -75,8 +76,9 @@ public class RoomsController implements Initializable{
 				try(ResultSet rs = psAssets.executeQuery()){
 					while(rs.next()) {//while the reader still has a next row read it:
 						int room_id = rs.getInt("room_id");
-						String room_type = rs.getString("room_type");
 						String room_name = rs.getString("room_name");
+						String room_type = rs.getString("room_type");
+						
 						Room room = new Room(room_id,room_type,room_name);
 						allRooms.add(room);
 					}
@@ -101,17 +103,17 @@ public class RoomsController implements Initializable{
         roomsTable.setItems(sortedRooms);
         
         // Initialize search criteria ComboBox
-        searchCriteriaComboBox.getItems().addAll("Name", "Type");
-        searchCriteriaComboBox.setValue("Name");
+        searchCriteriaComboBox.getItems().addAll(criteria);
+        searchCriteriaComboBox.setValue(criteria[0]);
 	}
 	
 	public void popupNewRoom(ActionEvent event) {
 		Parent root;
 		
 		try {
-			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewRoom));
+			AdminController.currentNewRoomLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewRoom));
 			
-			root = AdminController.currentNewAssetLoader.load();
+			root = AdminController.currentNewRoomLoader.load();
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -137,9 +139,15 @@ public class RoomsController implements Initializable{
 	}
 	
 	public void addRoom(Room newRoom) {
-		DatabaseUtilities.insertItemIntoDatabase(newRoom);
-		newRoom.setRoom_id(last_id);
-		allRooms.add(newRoom);
+		try {
+			DatabaseUtilities.insertItemIntoDatabase(newRoom);
+			newRoom.setRoom_id(last_id);
+			allRooms.add(newRoom);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
     public void deleteSelectedRooms() {
@@ -149,10 +157,15 @@ public class RoomsController implements Initializable{
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
     		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 
     		for(Room item : selectedRooms) {
-    			DatabaseUtilities.deleteItemFromDatabase(item);
+    			try{
+    				DatabaseUtilities.deleteItemFromDatabase(item);
+    				allRooms.remove(item);
+    			}catch(SQLException e) {
+    				
+    			}
     		}
     		
-    		allRooms.removeAll(selectedRooms);
+    		
     	}
     }
 	

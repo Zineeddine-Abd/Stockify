@@ -14,6 +14,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import AdminUi.AllAssetsController;
 import AdminUi.AllUsersController;
+import AdminUi.RoomsController;
 import Components.Asset;
 import Components.Room;
 import Components.User;
@@ -55,12 +56,12 @@ public class DatabaseUtilities {
 	
 	
 	
-	public static void insertItemIntoDatabase(Object item) {
+	public static void insertItemIntoDatabase(Object item) throws SQLException{
 		
 		try (Connection con = dataSource.getConnection()){
 			
 			if(item instanceof Asset) {
-				String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number) VALUES (?,?,?,?,?,?,?,?)";
+				String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_room_id,asset_purchase_date,asset_warranty,asset_serial_number) VALUES (?,?,?,?,?,?,?,?)";
 				try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
 					Asset asset = (Asset)item;
 					
@@ -69,7 +70,7 @@ public class DatabaseUtilities {
 					ps.setString(2,asset.getAsset_type());
 					ps.setString(3,asset.getAsset_model());
 					ps.setString(4,asset.getAsset_status());
-					ps.setString(5,asset.getAsset_location());
+					ps.setInt(5,asset.getAsset_room_id());
 					ps.setDate(6,asset.getAsset_purchase_date());
 					ps.setInt(7,asset.getAsset_warranty());
 					ps.setInt(8,asset.getAsset_serial_number());
@@ -109,6 +110,24 @@ public class DatabaseUtilities {
 				}
 			}else if(item instanceof Room) {
 				//to be implemented later.
+				String insertUser = "INSERT INTO rooms (room_name, room_type) VALUES(?,?);";
+				try(PreparedStatement ps = con.prepareStatement(insertUser,Statement.RETURN_GENERATED_KEYS);){
+					Room room = (Room)item;
+					
+					ps.setString(1, room.getRoom_name());
+					ps.setString(2, room.getRoom_type());
+					ps.executeUpdate();
+					
+					try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+				         if (generatedKeys.next()) {
+				             int lastInsertedId = generatedKeys.getInt(1);
+				             //set the actual user id:
+				             RoomsController.last_id = lastInsertedId;
+				         } else {
+				             System.out.println("Failed to retrieve last inserted ID.");
+				         }
+				    }
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -119,7 +138,7 @@ public class DatabaseUtilities {
 	
 	
 	
-	public static void deleteItemFromDatabase(Object target) {
+	public static void deleteItemFromDatabase(Object target) throws SQLException{
 		
 		try (Connection con = dataSource.getConnection()) {
 			
@@ -143,6 +162,13 @@ public class DatabaseUtilities {
 					ps.setInt(1, user.getUser_id());
 					ps.executeUpdate();
 					//log out all deleted users .//to be implemented later.
+				}
+			}else if(target instanceof Room) {
+				String deleteUser = "DELETE FROM rooms WHERE room_id=?";
+				try(PreparedStatement ps = con.prepareStatement(deleteUser)){
+					Room room = (Room)target;
+					ps.setInt(1, room.getRoom_id());
+					ps.executeUpdate();
 				}
 			}
 		} catch (SQLException e) {

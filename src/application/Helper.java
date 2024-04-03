@@ -19,7 +19,8 @@ public class Helper {
 	public static FXMLLoader currentTechnicianLoader;
 	public static FXMLLoader currentProfessorLoader;
 	
-	
+	public static final int CLICK_THRESHOLD = 2;
+	public static boolean exception_thrown = false;
 
 	public static boolean displayConfirmMessge(String message,String content) {
         Alert alert = new Alert(AlertType.CONFIRMATION);

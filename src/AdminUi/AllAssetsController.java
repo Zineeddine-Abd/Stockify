@@ -84,8 +84,17 @@ public class AllAssetsController implements Initializable{
   	//*************************************************
   	@FXML
     private TextField searchTextField;
+  	
+  	public TextField getSearchTextField() {
+  		return searchTextField;
+  	}
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
+    
+    public ChoiceBox<String> getSearchCriteriaComboBox(){
+    	return searchCriteriaComboBox;
+    }
+    
     private final String[] criteria = {"Category", "Type", "Model", "Status", "Location"};
     
     //observable lists***************
@@ -194,7 +203,12 @@ public class AllAssetsController implements Initializable{
         try {
 			DatabaseUtilities.insertItemIntoDatabase(newAsset);
 			newAsset.setAsset_id(last_id);
-			allAssetsObs.add(newAsset);
+			if(!Helper.exception_thrown) {				
+				allAssetsObs.add(newAsset);
+			}else {				
+				//reset the flag to false.
+				Helper.exception_thrown = false;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

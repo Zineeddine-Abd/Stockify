@@ -130,7 +130,8 @@ public class DatabaseUtilities {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Helper.displayErrorMessage("Error",e.getMessage());
+			Helper.exception_thrown = true;
 		}
 	}
 	

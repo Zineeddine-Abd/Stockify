@@ -51,16 +51,18 @@ public class NewRoomController implements Initializable{
 		if(typeChoiceBox.getValue() == null) {
 			invalidInfo.setText("Select the type of the room first!");
 			animatedInvalidInfolabel();
+			return;
 		}
 		
 		if(!roomField.getText().matches("^[a-zA-Z0-9]+$")) {
 			invalidInfo.setText("Invalid room!");
 			animatedInvalidInfolabel();
+			return;
 		}
 		
 		int room_id = 0;
 		String room_type = typeChoiceBox.getValue();
-		String room_name = roomField.getText();
+		String room_name = roomField.getText().toUpperCase();
 		Room room = new Room(room_id,room_type,room_name);
 	
 		((AdminController)Helper.currentAdminLoader.getController()).getRoomsController().addRoom(room);

@@ -170,7 +170,12 @@ public class AllUsersController implements Initializable{
 		try {
 			DatabaseUtilities.insertItemIntoDatabase(newuser);
 			newuser.setUser_id(last_id);
-			allUsersObs.add(newuser);
+			if(!Helper.exception_thrown) {
+				allUsersObs.add(newuser);
+			}else {				
+				//reset the flag to false.
+				Helper.exception_thrown = false;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

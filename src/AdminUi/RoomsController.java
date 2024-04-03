@@ -51,7 +51,7 @@ public class RoomsController implements Initializable{
     SortedList<Room> sortedRooms;
 	//****************************************
     
-    //creating new asset/user mats:********************
+    //creating new room mats:********************
   	private Stage fillFormula;
   	private Scene createNewScene;
   	//*************************************************
@@ -61,14 +61,13 @@ public class RoomsController implements Initializable{
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
     private String[] criteria = {"Name", "Type"};
-    
+    private Room lastSelectedRoom = new Room(-1,null,null); // dummy values just to set the first selected item.
 	//id
     public static int last_id = 0;
 	
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		allRooms = FXCollections.observableArrayList();
-		
 		
 		try(Connection con = DatabaseUtilities.getDataSource().getConnection()){
 			String getAllRoomsQuery = "SELECT * FROM rooms";
@@ -93,6 +92,20 @@ public class RoomsController implements Initializable{
         roomTypeColumn.setCellValueFactory(new PropertyValueFactory<Room, String>("room_type"));
         roomNameColumn.setCellValueFactory(new PropertyValueFactory<Room, String>("room_name"));
         
+        roomsTable.setOnMouseClicked(event->{
+        	if(lastSelectedRoom == null || roomsTable.getSelectionModel().getSelectedItem() == null) {
+        		return;
+        	}
+        	if(lastSelectedRoom.getRoom_id() == roomsTable.getSelectionModel().getSelectedItem().getRoom_id()) {        		
+        		AllAssetsController currentAssetController = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+        		currentAssetController.getSearchTextField().setText("" + roomsTable.getSelectionModel().getSelectedItem().getRoom_id());
+        		currentAssetController.getSearchCriteriaComboBox().setValue("Location");
+        		((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
+        		roomsTable.getSelectionModel().clearSelection();
+        	}else {
+        		lastSelectedRoom = roomsTable.getSelectionModel().getSelectedItem();
+        	}
+        });
 		
         filteredRooms = new FilteredList<Room>(allRooms);
         filterTableView();
@@ -118,7 +131,7 @@ public class RoomsController implements Initializable{
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
 			
-			fillFormula.setTitle("Create New Romm:");
+			fillFormula.setTitle("Create New Room:");
 			
 			createNewScene = new Scene(root);
 			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
@@ -135,17 +148,20 @@ public class RoomsController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void addRoom(Room newRoom) {
 		try {
 			DatabaseUtilities.insertItemIntoDatabase(newRoom);
 			newRoom.setRoom_id(last_id);
-			allRooms.add(newRoom);
+			if(!Helper.exception_thrown) {				
+				allRooms.add(newRoom);
+			}else {
+				//reset the flag to false.
+				Helper.exception_thrown = false;
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
 	}
@@ -161,11 +177,9 @@ public class RoomsController implements Initializable{
     				DatabaseUtilities.deleteItemFromDatabase(item);
     				allRooms.remove(item);
     			}catch(SQLException e) {
-    				
+    				Helper.displayErrorMessage("Error", e.getMessage());
     			}
     		}
-    		
-    		
     	}
     }
 	

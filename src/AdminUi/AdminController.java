@@ -228,23 +228,23 @@ public class AdminController implements Initializable{
 		stage.show();
 	}
 	
-	public void triggerDashBoardPane(ActionEvent event) {
+	public void triggerDashBoardPane() {
 		//set all visiblity to false.
 		selectView(DASHBOARD_VIEW);
 		closeSideBar();
 	}
 	
-	public void triggerAssetPane(ActionEvent event) {
+	public void triggerAssetPane() {
 		//set all visiblity to false.
 		selectView(ASSETS_VIEW);
 		closeSideBar();
 	}
-	public void triggerUserPane(ActionEvent event) {
+	public void triggerUserPane() {
 		//set all panes visiblity to false 
 		selectView(USERS_VIEW);
 		closeSideBar();
 	}
-	public void triggerRoomsPane(ActionEvent event) {
+	public void triggerRoomsPane() {
 		selectView(ROOMS_VIEW);
 		closeSideBar();
 	}

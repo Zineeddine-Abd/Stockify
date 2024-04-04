@@ -96,6 +96,48 @@ public class DB_Assets extends DB_Utilities{
 		}
 	}
 	
+	public static void updateAsset(ObservableList<Asset> obsList, Asset oldAsset, Asset newAsset) {
+		try(Connection con = dataSource.getConnection()){
+			String updateAsset = "UPDATE assets SET "
+					+ "asset_category = ?,"
+					+ "asset_type = ?,"
+					+ "asset_model = ?,"
+					+ "asset_status = ?,"
+					+ "asset_room = ?,"
+					+ "asset_purchase_date = ?,"
+					+ "asset_warranty = ?,"
+					+ "asset_serial_number = ? "
+					+ "WHERE asset_id = ?";
+			try(PreparedStatement ps = con.prepareStatement(updateAsset)){
+				
+//				ps.setInt(1, 0);
+				ps.setString(1,newAsset.getAsset_category());
+				ps.setString(2,newAsset.getAsset_type());
+				ps.setString(3,newAsset.getAsset_model());
+				ps.setString(4,newAsset.getAsset_status());
+				ps.setString(5,newAsset.getAsset_room());
+				ps.setDate(6,newAsset.getAsset_purchase_date());
+				ps.setInt(7,newAsset.getAsset_warranty());
+				ps.setInt(8,newAsset.getAsset_serial_number());
+				ps.setInt(9,oldAsset.getAsset_id());
+				ps.executeUpdate();
+				
+				
+				
+				oldAsset.setAsset_category(newAsset.getAsset_category());
+				oldAsset.setAsset_type(newAsset.getAsset_type());
+				oldAsset.setAsset_model(newAsset.getAsset_model());
+				oldAsset.setAsset_status(newAsset.getAsset_status());
+				oldAsset.setAsset_room(newAsset.getAsset_room());
+				oldAsset.setAsset_purchase_date(newAsset.getAsset_purchase_date());
+				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
+				oldAsset.setAsset_serial_number(newAsset.getAsset_serial_number());
+				
+			}
+		}catch(SQLException e) {
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
 	
 	private static void resetSequenceTo1(Connection con) {
         try (Statement stmt = con.createStatement()){	

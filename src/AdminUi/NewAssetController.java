@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Components.Asset;
+import application.DB_Assets;
 import application.DB_Rooms;
-import application.DB_Utilities;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -22,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+
 
 public class NewAssetController implements Initializable{
 	
@@ -74,8 +76,25 @@ public class NewAssetController implements Initializable{
 	private Button cancelButton;
 	@FXML
 	private Label invalidInfo;
+	
+	//old asset
+	private Asset oldAsset;
+	
+	public void setOldAsset(Asset asset) {
+		this.oldAsset = asset;
+	}
+	//title label
+	@FXML
+	private Label titleLabel;
+	
+	public void setTitleLabelText(String text) {
+		this.titleLabel.setText(text);
+	}
+	
+	
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
 		categoryChoiceBox.getItems().addAll(categories); // add asset categories.
 		locationDropDownBox.getItems().addAll(rooms);
 		
@@ -169,9 +188,33 @@ public class NewAssetController implements Initializable{
 		Date date = java.sql.Date.valueOf(LocalDate.now());
 		
 		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty,serial_number);
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addAsset(new_asset);
+		
+		if(oldAsset == null) {
+			newAsset(new_asset);
+		}else {
+			updateAsset(new_asset);
+		}
 	    
 		disposeWindow(event);
+	}
+	
+	
+	private void newAsset(Asset newAsset) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addAsset(newAsset);
+	}
+	
+	private void updateAsset(Asset newAsset) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, newAsset);
+	}
+	
+	void setInfos() {
+		categoryChoiceBox.setValue(oldAsset.getAsset_category());
+		typeChoiceBox.setValue(oldAsset.getAsset_category());
+		modelChoiceBox.setValue(oldAsset.getAsset_model());
+		statusChoiceBox.setValue(oldAsset.getAsset_status());
+		locationDropDownBox.setValue(oldAsset.getAsset_room());
+		warrantyField.setText(String.valueOf(oldAsset.getAsset_warranty()));
+		serialField.setText(String.valueOf(oldAsset.getAsset_serial_number()));
 	}
 	
 	private void clearInputs() {

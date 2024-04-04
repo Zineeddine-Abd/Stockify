@@ -11,7 +11,7 @@
 
 <VBox prefHeight="532.0" prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.NewAssetController">
    <children>
-      <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Asset">
+      <Label fx:id="titleLabel" alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Asset">
          <font>
             <Font size="36.0" />
          </font>

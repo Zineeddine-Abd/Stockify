@@ -3,6 +3,7 @@ package AdminUi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Components.Asset;
 import Components.User;
 import LoginUi.LoginController;
 import application.Helper;
@@ -38,6 +39,20 @@ public class NewUserController implements Initializable{
 	private Button cancelButton;
 	@FXML
 	private Label invalidInfo;	
+	
+	//old asset
+	private User oldUser;
+	
+	public void setOldUser(User user) {
+		this.oldUser = user;
+	}
+	//title label
+	@FXML
+	private Label titleLabel;
+	
+	public void setTitleLabelText(String text) {
+		this.titleLabel.setText(text);
+	}
 	
 	//*********************all methods:***********************
 
@@ -81,10 +96,31 @@ public class NewUserController implements Initializable{
 		String user_role = permissions.getValue();
 		
 		User newuser = new User(id,username,pass_word,email,full_name,user_role);
-		((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().addUser(newuser);
+		if(oldUser == null) {
+			newUser(newuser);
+		}else {
+			updateUser(newuser);
+		}
 		
 		disposeWindow(event);
 	}
+	
+	private void newUser(User newUser) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().addUser(newUser);
+	}
+	
+	private void updateUser(User newUser) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().updateUser(oldUser, newUser);
+	}
+	
+	void setInfos() {
+		usernameField.setText(oldUser.getUsername());
+		passwordField.setText(oldUser.getPass_word());
+		emailField.setText(oldUser.getEmail());
+		fullNameField.setText(oldUser.getFull_name());
+		permissions.setValue(oldUser.getUser_role());
+	}
+	
 	
 	public void animatedInvalidInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),invalidInfo);

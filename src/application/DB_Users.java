@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import Components.User;
 import javafx.collections.ObservableList;
 
@@ -80,6 +81,40 @@ public class DB_Users extends DB_Utilities{
 				}
 				
 				//log out all deleted users .//to be implemented later.
+			}
+		}catch(SQLException e) {
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
+	
+	public static void updateUser(ObservableList<User> obsList, User oldUser, User newUser) {
+		try(Connection con = dataSource.getConnection()){
+			String updateUser = "UPDATE users SET "
+					+ "username = ?,"
+					+ "pass_word = ?,"
+					+ "email = ?,"
+					+ "full_name = ?,"
+					+ "user_role = ? "
+					+ "WHERE user_id = ?";
+			try(PreparedStatement ps = con.prepareStatement(updateUser)){
+				
+//				ps.setInt(1, 0);
+				ps.setString(1,newUser.getUsername());
+				ps.setString(2,newUser.getPass_word());
+				ps.setString(3,newUser.getEmail());
+				ps.setString(4,newUser.getFull_name());
+				ps.setString(5,newUser.getUser_role());
+				ps.setInt(6,oldUser.getUser_id());
+				ps.executeUpdate();
+				
+				
+				
+				oldUser.setUsername(newUser.getUsername());
+				oldUser.setPass_word(newUser.getPass_word());
+				oldUser.setEmail(newUser.getEmail());
+				oldUser.setFull_name(newUser.getFull_name());
+				oldUser.setUser_role(newUser.getUser_role());
+				
 			}
 		}catch(SQLException e) {
 			Helper.displayErrorMessage("Error",e.getMessage());

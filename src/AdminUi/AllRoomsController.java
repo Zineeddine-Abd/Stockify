@@ -11,10 +11,14 @@ import java.util.ResourceBundle;
 
 import Components.Asset;
 import Components.Room;
+import Components.User;
 import application.DB_Rooms;
+import application.DB_Users;
 import application.DB_Utilities;
 import application.Helper;
 import application.Main;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -23,20 +27,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class RoomsController implements Initializable{
+public class AllRoomsController implements Initializable{
 	@FXML
 	private TableView<Room> roomsTable;
 	@FXML
@@ -45,6 +55,8 @@ public class RoomsController implements Initializable{
 	private TableColumn<Room,String> roomTypeColumn;
 	@FXML
 	private TableColumn<Room,String> roomNameColumn;
+	@FXML
+	private TableColumn<Room,String> editColumn;
 	
 	//********Observable Lists:***************
     ObservableList<Room> allRooms;
@@ -62,7 +74,7 @@ public class RoomsController implements Initializable{
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
     private String[] criteria = {"Name", "Type"};
-    private Room lastSelectedRoom = new Room(-1,null,null); // dummy values just to set the first selected item.
+   // private Room lastSelectedRoom = new Room(-1,null,null); // dummy values just to set the first selected item.
     
 	
 	
@@ -78,21 +90,60 @@ public class RoomsController implements Initializable{
         roomIdColumn.setCellValueFactory(new PropertyValueFactory<Room, Integer>("room_id"));
         roomTypeColumn.setCellValueFactory(new PropertyValueFactory<Room, String>("room_type"));
         roomNameColumn.setCellValueFactory(new PropertyValueFactory<Room, String>("room_name"));
+        editColumn.setCellFactory((col)->{
+			TableCell<Room, String> cell = new TableCell<Room, String>(){
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if(empty) {
+						setGraphic(null);
+					}else {
+						FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
+						edit.setGlyphSize(18);
+						edit.setCursor(Cursor.HAND);
+						
+						edit.hoverProperty().addListener((obs, oldVal, newVal) -> {
+								if(newVal) {
+									edit.setFill(Color.GREEN);
+								}else {
+									edit.setFill(Color.BLACK);
+								}
+						});
+				
+						edit.setOnMouseClicked(event -> popupUpdateRoom(event, this.getTableRow().getItem()));
+						
+						
+						
+						FontAwesomeIconView assets = new FontAwesomeIconView(FontAwesomeIcon.DESKTOP);
+						assets.setGlyphSize(18);
+						assets.setCursor(Cursor.HAND);
+						assets.hoverProperty().addListener((obs, oldVal, newVal) -> {
+							if(newVal) {
+								assets.setFill(Color.BLUE);
+							}else {
+								assets.setFill(Color.BLACK);
+							}
+						});
+						assets.setOnMouseClicked(event -> {     		
+				        	AllAssetsController currentAssetController = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+				        	currentAssetController.getSearchTextField().setText("" + this.getTableRow().getItem().getRoom_name());
+				        	currentAssetController.getSearchCriteriaComboBox().setValue("Location");
+				        	((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
+				        	roomsTable.getSelectionModel().clearSelection();
+						});
+						
+						HBox box = new HBox(edit, assets);
+						HBox.setMargin(edit, new Insets(2, 2, 0, 3));
+						HBox.setMargin(assets, new Insets(2, 2, 0, 3));
+						
+						setGraphic(box);
+					}
+				}
+			};
+			return cell;
+		});
         
-        roomsTable.setOnMouseClicked(event->{
-        	if(lastSelectedRoom == null || roomsTable.getSelectionModel().getSelectedItem() == null) {
-        		return;
-        	}
-        	if(lastSelectedRoom.getRoom_id() == roomsTable.getSelectionModel().getSelectedItem().getRoom_id()) {        		
-        		AllAssetsController currentAssetController = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
-        		currentAssetController.getSearchTextField().setText("" + roomsTable.getSelectionModel().getSelectedItem().getRoom_id());
-        		currentAssetController.getSearchCriteriaComboBox().setValue("Location");
-        		((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
-        		roomsTable.getSelectionModel().clearSelection();
-        	}else {
-        		lastSelectedRoom = roomsTable.getSelectionModel().getSelectedItem();
-        	}
-        });
+        
 		
         filteredRooms = new FilteredList<Room>(allRooms);
         filterTableView();
@@ -114,11 +165,49 @@ public class RoomsController implements Initializable{
 			AdminController.currentNewRoomLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewRoom));
 			
 			root = AdminController.currentNewRoomLoader.load();
+			NewRoomController controller = (NewRoomController)AdminController.currentNewRoomLoader.getController();
+			controller.setOldRoom(null);
+			controller.setTitleLabelText("New Room");
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
 			
 			fillFormula.setTitle("Create New Room:");
+			
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+	
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			fillFormula.initModality(Modality.WINDOW_MODAL);
+			fillFormula.initOwner(parentStage);
+			
+			fillFormula.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void popupUpdateRoom(MouseEvent event, Room room) {
+		Parent root;
+		
+		try {
+			AdminController.currentNewRoomLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewRoom));
+			
+			root = AdminController.currentNewRoomLoader.load();
+			NewRoomController controller = (NewRoomController)AdminController.currentNewRoomLoader.getController();
+			controller.setOldRoom(room);
+			controller.setTitleLabelText("Update Room");
+			controller.setInfos();
+			
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+			fillFormula.setTitle("Update Room:");
 			
 			createNewScene = new Scene(root);
 			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
@@ -150,6 +239,11 @@ public class RoomsController implements Initializable{
     		DB_Rooms.removeRoom(allRooms, selectedRooms);
     	}
     }
+    
+    public void updateRoom(Room oldRoom, Room newRoom) {
+		DB_Rooms.updateRoom(allRooms, oldRoom, newRoom);
+		roomsTable.refresh();
+	}
 	
 	
     //Filtering methods******************************************************

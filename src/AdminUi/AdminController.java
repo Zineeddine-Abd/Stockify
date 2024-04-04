@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import application.Helper;
@@ -99,9 +100,9 @@ public class AdminController implements Initializable{
 	@FXML
 	private BorderPane allRoomsView;
 	@FXML
-	private RoomsController allRoomsViewController;
+	private AllRoomsController allRoomsViewController;
 	
-	public RoomsController getRoomsController() {
+	public AllRoomsController getAllRoomsViewController() {
 		return allRoomsViewController;
 	}
 	//*****************************************/
@@ -210,8 +211,10 @@ public class AdminController implements Initializable{
 	}
 	
 	public void closeWithBar() {
-		
-		if(closeTimeLine != null && closeTimeLine.getStatus() != Status.RUNNING) {
+		if(closeTimeLine == null) {
+			closeTimeLine = new Timeline();
+		}
+		if(closeTimeLine.getStatus() != Status.RUNNING) {
 			closeSideBar();
 		}
 	}

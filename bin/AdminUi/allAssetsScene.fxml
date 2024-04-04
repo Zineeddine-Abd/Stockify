@@ -11,7 +11,7 @@
 
 <BorderPane stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AllAssetsController">
    <center>
-     <TableView fx:id="assetsTable" editable="true">
+     <TableView fx:id="assetsTable" stylesheets="@table.css">
         <columns>
            <TableColumn fx:id="assetIdColumn" prefWidth="75.0" text="asset_id" />
            <TableColumn fx:id="assetCategoryColumn" prefWidth="92.800048828125" text="asset_category" />
@@ -20,15 +20,16 @@
            <TableColumn fx:id="statusColumn" prefWidth="80.79998779296875" text="asset_status" />
            <TableColumn fx:id="roomColumn" prefWidth="88.79998779296875" text="asset_room" />
            <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="134.39996337890625" text="asset_purchase_date" />
-           <TableColumn fx:id="assetWarrantyColumn" minWidth="0.0" prefWidth="99.199951171875" text="asset_warranty" />
-           <TableColumn fx:id="assetSerialNumberColumn" prefWidth="74.39993896484373" text="asset_serial_number" />
+           <TableColumn fx:id="assetWarrantyColumn" minWidth="0.0" prefWidth="94.0" text="asset_warranty" />
+           <TableColumn fx:id="assetSerialNumberColumn" prefWidth="119.0" text="asset_serial_number" />
+            <TableColumn fx:id="editColumn" minWidth="0.0" prefWidth="22.0" resizable="false" sortable="false" />
         </columns>
      </TableView>
    </center>
    <top>
      <HBox BorderPane.alignment="CENTER">
         <children>
-           <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#createNewAsset" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
+           <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#popupNewAsset" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
               <HBox.margin>
                  <Insets left="15.0" right="15.0" top="15.0" />
               </HBox.margin>

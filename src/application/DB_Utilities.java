@@ -3,23 +3,13 @@ package application;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import AdminUi.AllAssetsController;
-import AdminUi.AllUsersController;
-import AdminUi.RoomsController;
-import Components.Asset;
-import Components.Room;
-import Components.User;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class DB_Utilities {
 	
@@ -39,7 +29,6 @@ public class DB_Utilities {
 			dataSource.setMaximumPoolSize(1000);
 			
 			dataSource.setLoginTimeout(5);
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

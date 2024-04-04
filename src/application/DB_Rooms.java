@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Components.Room;
+import Components.User;
 import javafx.collections.ObservableList;
 
 public class DB_Rooms extends DB_Utilities{
@@ -82,7 +83,30 @@ public class DB_Rooms extends DB_Utilities{
 	}
 	
 	
-	
+	public static void updateRoom(ObservableList<Room> obsList, Room oldRoom, Room newRoom) {
+		try(Connection con = dataSource.getConnection()){
+			String updateRoom = "UPDATE rooms SET "
+					+ "room_name = ?,"
+					+ "room_type = ? "
+					+ "WHERE room_id = ?";
+			try(PreparedStatement ps = con.prepareStatement(updateRoom)){
+				
+//				ps.setInt(1, 0);
+				ps.setString(1,newRoom.getRoom_name());
+				ps.setString(2,newRoom.getRoom_type());
+				ps.setInt(3,oldRoom.getRoom_id());
+				ps.executeUpdate();
+				
+				
+				
+				oldRoom.setRoom_name(newRoom.getRoom_name());
+				oldRoom.setRoom_type(newRoom.getRoom_type());
+				
+			}
+		}catch(SQLException e) {
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
 	
 	
 	 public static ArrayList<String> getRooms() {

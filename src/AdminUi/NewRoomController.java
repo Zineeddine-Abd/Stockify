@@ -1,12 +1,10 @@
 package AdminUi;
 
 import java.net.URL;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-import Components.Asset;
 import Components.Room;
+import Components.User;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -34,6 +32,21 @@ public class NewRoomController implements Initializable{
 	private Label invalidInfo;
 	
 	private String[] room_type = {"TP","TD","Emphy"};
+	
+	
+	//old asset
+	private Room oldRoom;
+	
+	public void setOldRoom(Room room) {
+		this.oldRoom = room;
+	}
+	//title label
+	@FXML
+	private Label titleLabel;
+	
+	public void setTitleLabelText(String text) {
+		this.titleLabel.setText(text);
+	}
 	
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -65,10 +78,29 @@ public class NewRoomController implements Initializable{
 		String room_name = roomField.getText().toUpperCase();
 		Room room = new Room(room_id,room_type,room_name);
 	
-		((AdminController)Helper.currentAdminLoader.getController()).getRoomsController().addRoom(room);
+		if(oldRoom == null) {
+			newRoom(room);
+		}else {
+			updateRoom(room);
+		}
 	    
 		disposeWindow(event);
 	}
+	
+	private void newRoom(Room newRoom) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllRoomsViewController().addRoom(newRoom);
+	}
+	
+	private void updateRoom(Room newRoom) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllRoomsViewController().updateRoom(oldRoom, newRoom);
+	}
+	
+	void setInfos() {
+		typeChoiceBox.setValue(oldRoom.getRoom_type());
+		roomField.setText(oldRoom.getRoom_name());
+	}
+	
+	
 	
 	public void animatedInvalidInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),invalidInfo);

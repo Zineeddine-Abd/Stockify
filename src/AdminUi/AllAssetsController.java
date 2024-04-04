@@ -2,17 +2,14 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import Components.Asset;
 import application.DB_Assets;
-import application.DB_Utilities;
 import application.Helper;
 import application.Main;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -21,17 +18,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -71,6 +71,9 @@ public class AllAssetsController implements Initializable{
 
     @FXML
     private TableColumn<Asset, Integer> assetSerialNumberColumn;
+    
+    @FXML
+    private TableColumn<Asset, String> editColumn;
 	
 	
 	@FXML
@@ -108,6 +111,10 @@ public class AllAssetsController implements Initializable{
 		
 		DB_Assets.refresh(allAssetsObs);
 	
+//		assetsTable.getColumns().forEach(col -> {
+//			col.setResizable(false);
+//			col.setReorderable(false);
+//		});
 		
 		assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
@@ -120,17 +127,38 @@ public class AllAssetsController implements Initializable{
         assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_warranty"));
         assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_serial_number"));
         
-        //assetIdColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assetCategoryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        assetTypeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        modelColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        statusColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        //locationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         
-//	    assetPurchaseDateColumn.setCellFactory(DatePickerTableCell.forTableColumn());
-//	    assetWarrantyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-//	    assetSerialNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-		
+        
+        
+        editColumn.setReorderable(false);
+		editColumn.setCellFactory((col)->{
+			TableCell<Asset, String> cell = new TableCell<Asset, String>(){
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if(empty) {
+						setGraphic(null);
+					}else {
+						FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
+						edit.setGlyphSize(18);
+						edit.setCursor(Cursor.HAND);
+						
+						edit.hoverProperty().addListener((obs, oldVal, newVal) -> {
+								if(newVal) {
+									edit.setFill(Color.GREEN);
+								}else {
+									edit.setFill(Color.BLACK);
+								}
+						});
+				
+						edit.setOnMouseClicked(event -> popupUpdateAsset(event, this.getTableRow().getItem()));
+						setGraphic(edit);
+					}
+				}
+			};
+			return cell;
+		});
+        
         filteredAssets = new FilteredList<Asset>(allAssetsObs);
         filterTableView();
         
@@ -145,13 +173,18 @@ public class AllAssetsController implements Initializable{
 	}
 
 	
-	public void createNewAsset(ActionEvent event){
+	
+	
+	public void popupNewAsset(ActionEvent event){
 		Parent root;
 			
 		try {
 			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
 			
 			root = AdminController.currentNewAssetLoader.load();
+			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
+			controller.setOldAsset(null);
+			controller.setTitleLabelText("New Asset");
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -176,6 +209,46 @@ public class AllAssetsController implements Initializable{
 		}
 	}
 	
+	public void popupUpdateAsset(MouseEvent event, Asset asset){
+		Parent root;
+			
+		try {
+			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
+			
+			
+			root = AdminController.currentNewAssetLoader.load();
+			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
+			controller.setOldAsset(asset);
+			controller.setTitleLabelText("Update Asset");
+			controller.setInfos();
+			
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+			fillFormula.setTitle("Update Asset:");
+			
+			
+			//AssetController.setStage(fillFormula);
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+	
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			fillFormula.initModality(Modality.WINDOW_MODAL);
+			fillFormula.initOwner(parentStage);
+			
+			fillFormula.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 	public void addAsset(Asset newAsset) {
        DB_Assets.addAsset(allAssetsObs, newAsset);
     }
@@ -191,6 +264,10 @@ public class AllAssetsController implements Initializable{
     	}
     }
     
+    public void updateAsset(Asset oldAsset, Asset newAsset) {
+		DB_Assets.updateAsset(allAssetsObs, oldAsset, newAsset);
+		assetsTable.refresh();
+	}
     
     //Filtering methods******************************************************
 	private void filterTableView() {

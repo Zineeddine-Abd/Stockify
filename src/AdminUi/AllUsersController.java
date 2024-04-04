@@ -7,11 +7,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import Components.Asset;
 import Components.User;
+import application.DB_Assets;
 import application.DB_Users;
 import application.DB_Utilities;
 import application.Helper;
 import application.Main;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -20,16 +25,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -60,6 +69,9 @@ public class AllUsersController implements Initializable{
 
     @FXML
     private TableColumn<User, String> user_roleColumn;
+    
+    @FXML
+    private TableColumn<User, String> editColumn;
     
 	//Top
     @FXML
@@ -99,6 +111,34 @@ public class AllUsersController implements Initializable{
         full_nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("full_name"));
         user_roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("user_role"));
         
+        editColumn.setReorderable(false);
+		editColumn.setCellFactory((col)->{
+			TableCell<User, String> cell = new TableCell<User, String>(){
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if(empty) {
+						setGraphic(null);
+					}else {
+						FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
+						edit.setGlyphSize(18);
+						edit.setCursor(Cursor.HAND);
+						
+						edit.hoverProperty().addListener((obs, oldVal, newVal) -> {
+								if(newVal) {
+									edit.setFill(Color.GREEN);
+								}else {
+									edit.setFill(Color.BLACK);
+								}
+						});
+				
+						edit.setOnMouseClicked(event -> popupUpdateUser(event, this.getTableRow().getItem()));
+						setGraphic(edit);
+					}
+				}
+			};
+			return cell;
+		});
         
         filteredUsers = new FilteredList<User>(allUsersObs);
         filterTableView();
@@ -113,13 +153,15 @@ public class AllUsersController implements Initializable{
         searchCriteriaComboBox.setValue(criteria[0]);
 	}
 	
-	public void createNewUser(ActionEvent event) {
+	public void popupNewUser(ActionEvent event) {
 		Parent root;
 		try {
-			
-			
 			AdminController.currentNewUserLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewUser));
 			root = AdminController.currentNewUserLoader.load();
+			NewUserController controller = (NewUserController)AdminController.currentNewUserLoader.getController();
+			controller.setOldUser(null);
+			controller.setTitleLabelText("New User");
+			
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -144,6 +186,39 @@ public class AllUsersController implements Initializable{
 	}
 	
 	
+	public void popupUpdateUser(MouseEvent event, User user) {
+		Parent root;
+		try {
+			AdminController.currentNewUserLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewUser));
+			root = AdminController.currentNewUserLoader.load();
+			NewUserController controller = (NewUserController)AdminController.currentNewUserLoader.getController();
+			controller.setOldUser(user);
+			controller.setTitleLabelText("Update User");
+			controller.setInfos();
+			
+			
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+				
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+			
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			fillFormula.initModality(Modality.WINDOW_MODAL);
+			fillFormula.initOwner(parentStage);
+			
+			fillFormula.show();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void addUser(User newuser) {
        DB_Users.addUser(allUsersObs, newuser);
 	}
@@ -157,6 +232,10 @@ public class AllUsersController implements Initializable{
     	}
     }
 
+    public void updateUser(User oldUser, User newUser) {
+		DB_Users.updateUser(allUsersObs, oldUser, newUser);
+		usersTable.refresh();
+	}
     
     
     //Filtering methods******************************************************

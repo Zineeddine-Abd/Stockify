@@ -11,7 +11,7 @@
 
 <BorderPane stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AllUsersController">
    <center>
-    <TableView fx:id="usersTable">
+    <TableView fx:id="usersTable" stylesheets="@table.css">
       <columns>
         <TableColumn fx:id="user_idColumn" prefWidth="75.0" text="user_id" />
         <TableColumn fx:id="usernameColumn" prefWidth="92.800048828125" text="username" />
@@ -19,13 +19,14 @@
           <TableColumn fx:id="emailColumn" prefWidth="74.39996337890625" text="email" />
           <TableColumn fx:id="full_nameColumn" prefWidth="74.39996337890625" text="full_name" />
           <TableColumn fx:id="user_roleColumn" prefWidth="74.39996337890625" text="user_role" />
+            <TableColumn fx:id="editColumn" prefWidth="22.0" resizable="false" sortable="false" />
       </columns>
     </TableView>
    </center>
    <top>
      <HBox BorderPane.alignment="CENTER">
        <children>
-          <Button fx:id="newUserButton" mnemonicParsing="false" onAction="#createNewUser" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
+          <Button fx:id="newUserButton" mnemonicParsing="false" onAction="#popupNewUser" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
              <HBox.margin>
                 <Insets left="15.0" right="15.0" top="15.0" />
              </HBox.margin>

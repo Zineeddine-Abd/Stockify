@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="638.0" prefWidth="802.0" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AdminController">
+<BorderPane stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AdminController">
    <top>
       <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
          <children>
@@ -56,7 +56,7 @@
                         <FontAwesomeIconView fill="#67809c" glyphName="STAR" size="25" />
                      </graphic>
                   </Button>
-                  <Button fx:id="AllUsersButton" mnemonicParsing="false" onAction="#triggerUserPane" prefHeight="43.0" prefWidth="200.0" text="People">
+                  <Button fx:id="AllUsersButton" mnemonicParsing="false" onAction="#triggerUserPane" prefHeight="43.0" prefWidth="200.0" text="Users">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -70,7 +70,7 @@
                         <FontAwesomeIconView fill="#67809c" glyphName="USER" size="25" />
                      </graphic>
                   </Button>
-                  <Button fx:id="AllAssetsButton" layoutX="20.0" layoutY="114.0" mnemonicParsing="false" onAction="#triggerAssetPane" prefHeight="43.0" prefWidth="200.0" text="All Assets">
+                  <Button fx:id="AllAssetsButton" layoutX="20.0" layoutY="114.0" mnemonicParsing="false" onAction="#triggerAssetPane" prefHeight="43.0" prefWidth="200.0" text="Assets">
                      <font>
                         <Font size="24.0" />
                      </font>

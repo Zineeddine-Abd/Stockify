@@ -18,7 +18,7 @@
            <TableColumn fx:id="assetTypeColumn" prefWidth="74.39996337890625" text="asset_type" />
            <TableColumn fx:id="modelColumn" prefWidth="80.00001525878906" text="asset_model" />
            <TableColumn fx:id="statusColumn" prefWidth="80.79998779296875" text="asset_status" />
-           <TableColumn fx:id="locationColumn" prefWidth="88.79998779296875" text="asset_location" />
+           <TableColumn fx:id="roomColumn" prefWidth="88.79998779296875" text="asset_room" />
            <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="134.39996337890625" text="asset_purchase_date" />
            <TableColumn fx:id="assetWarrantyColumn" minWidth="0.0" prefWidth="99.199951171875" text="asset_warranty" />
            <TableColumn fx:id="assetSerialNumberColumn" prefWidth="74.39993896484373" text="asset_serial_number" />

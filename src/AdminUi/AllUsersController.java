@@ -8,7 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import Components.User;
-import application.DatabaseUtilities;
+import application.DB_Users;
+import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import javafx.collections.FXCollections;
@@ -65,8 +66,6 @@ public class AllUsersController implements Initializable{
 	private Button newUserButton;
 	
     
-    //id
-    public static int last_id = 0;
     
     //creating new asset/user mats:********************
   	private Stage fillFormula;
@@ -88,29 +87,8 @@ public class AllUsersController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		allUsersObs = FXCollections.observableArrayList();
 		
-		try (Connection con = DatabaseUtilities.getDataSource().getConnection())
-		{
-			String getAllUsersQuery = "SELECT * FROM users";
-			try(PreparedStatement psUsers = con.prepareStatement(getAllUsersQuery)){
-				try (ResultSet userResultSet = psUsers.executeQuery();){
-					//Users:
-					while(userResultSet.next()) {//while the reader still has a next row read it:
-						int user_id = userResultSet.getInt("user_id");
-						String username = userResultSet.getString("username");
-						String pass_word = userResultSet.getString("pass_word");
-						String email = userResultSet.getString("email");
-						String full_name = userResultSet.getString("full_name");
-						String user_role = userResultSet.getString("user_role");
-						
-						User newuser = new User(user_id,username,pass_word,email,full_name,user_role);
-						allUsersObs.add(newuser);
-					}
-				}    
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		
+		DB_Users.refresh(allUsersObs);
 		
 		  //Users table:
         usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -167,20 +145,7 @@ public class AllUsersController implements Initializable{
 	
 	
 	public void addUser(User newuser) {
-		try {
-			DatabaseUtilities.insertItemIntoDatabase(newuser);
-			newuser.setUser_id(last_id);
-			if(!Helper.exception_thrown) {
-				allUsersObs.add(newuser);
-			}else {				
-				//reset the flag to false.
-				Helper.exception_thrown = false;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-       
+       DB_Users.addUser(allUsersObs, newuser);
 	}
 	
 	  //Method to delete selected users from usersTable
@@ -188,16 +153,7 @@ public class AllUsersController implements Initializable{
     	ObservableList<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems();
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
-    		for(User item : selectedUsers) {
-    			try {
-					DatabaseUtilities.deleteItemFromDatabase(item);
-					allUsersObs.remove(item);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    		
+    		DB_Users.removeUser(allUsersObs, selectedUsers);
     	}
     }
 

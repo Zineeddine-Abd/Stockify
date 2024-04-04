@@ -61,7 +61,7 @@ public class LoginController{
 	private void assignUser(ActionEvent event) throws IOException {
 		//directAdmin(event);
 		//return;
-		try (Connection con = DatabaseUtilities.getDataSource().getConnection()){
+		try (Connection con = DB_Utilities.getDataSource().getConnection()){
 			//Changes based on the driver and type of sqlDatabase used:
 			
 			
@@ -177,8 +177,8 @@ public class LoginController{
 		stage.setOnCloseRequest(e ->{
 			e.consume();
 			stage.close();
-			if(DatabaseUtilities.getDataSource() != null) {
-				DatabaseUtilities.getDataSource().close();
+			if(DB_Utilities.getDataSource() != null) {
+				DB_Utilities.getDataSource().close();
 			}
 		});
 		stage.centerOnScreen();
@@ -203,8 +203,8 @@ public class LoginController{
 	 public void closeLoginScreen(MouseEvent event) {
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
-		if(DatabaseUtilities.getDataSource() != null) {
-			DatabaseUtilities.getDataSource().close();
+		if(DB_Utilities.getDataSource() != null) {
+			DB_Utilities.getDataSource().close();
 		}
 	 }
 	 

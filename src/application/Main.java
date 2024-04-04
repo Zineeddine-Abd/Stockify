@@ -24,8 +24,8 @@ public class Main extends Application {
 			primaryStage.setOnCloseRequest(e ->{
 				e.consume();
 				primaryStage.close();
-				if(DatabaseUtilities.getDataSource() != null) {
-					DatabaseUtilities.getDataSource().close();
+				if(DB_Utilities.getDataSource() != null) {
+					DB_Utilities.getDataSource().close();
 				}
 			});
 			

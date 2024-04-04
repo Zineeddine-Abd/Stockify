@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import Components.Asset;
-import application.DatabaseUtilities;
+import application.DB_Assets;
+import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import javafx.collections.FXCollections;
@@ -60,7 +61,7 @@ public class AllAssetsController implements Initializable{
     private TableColumn<Asset, String> statusColumn;
 
     @FXML
-    private TableColumn<Asset, Integer> locationColumn;
+    private TableColumn<Asset, String> roomColumn;
     
     @FXML
     private TableColumn<Asset, Date> assetPurchaseDateColumn;
@@ -75,8 +76,6 @@ public class AllAssetsController implements Initializable{
 	@FXML
 	private Button newAssetButton;
 	
-	//id
-    public static int last_id = 0;
     
     //creating new asset/user mats:********************
   	private Stage fillFormula;
@@ -107,30 +106,8 @@ public class AllAssetsController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		allAssetsObs = FXCollections.observableArrayList();
 		
-		
-		try(Connection con = DatabaseUtilities.getDataSource().getConnection()){
-			String getAllAssetsQuery = "SELECT * FROM assets";
-			try(PreparedStatement psAssets = con.prepareStatement(getAllAssetsQuery)){
-				try(ResultSet rs = psAssets.executeQuery()){
-					while(rs.next()) {//while the reader still has a next row read it:
-						int asset_id = rs.getInt("asset_id");
-						String asset_category = rs.getString("asset_category");
-						String asset_type = rs.getString("asset_type");
-						String asset_model = rs.getString("asset_model");
-						String asset_status = rs.getString("asset_status");
-						int asset_location = rs.getInt("asset_room_id");
-						Date asset_purchase_date = rs.getDate("asset_purchase_date");
-						int asset_warranty = rs.getInt("asset_warranty");
-						int asset_serial_number = rs.getInt("asset_serial_number");
-						
-						Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_location,asset_purchase_date,asset_warranty,asset_serial_number);
-						allAssetsObs.add(asset);
-					}
-				}
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
+		DB_Assets.refresh(allAssetsObs);
+	
 		
 		assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
@@ -138,7 +115,7 @@ public class AllAssetsController implements Initializable{
         assetTypeColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_type"));
         modelColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_model"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_status"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_room_id"));
+        roomColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_room"));
         assetPurchaseDateColumn.setCellValueFactory(new PropertyValueFactory<Asset, Date>("asset_purchase_date"));
         assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_warranty"));
         assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_serial_number"));
@@ -200,20 +177,7 @@ public class AllAssetsController implements Initializable{
 	}
 	
 	public void addAsset(Asset newAsset) {
-        try {
-			DatabaseUtilities.insertItemIntoDatabase(newAsset);
-			newAsset.setAsset_id(last_id);
-			if(!Helper.exception_thrown) {				
-				allAssetsObs.add(newAsset);
-			}else {				
-				//reset the flag to false.
-				Helper.exception_thrown = false;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-       
+       DB_Assets.addAsset(allAssetsObs, newAsset);
     }
 	
 	 
@@ -222,17 +186,8 @@ public class AllAssetsController implements Initializable{
     	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
-    		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 
-    		for(Asset item : selectedAssets) {
-    			try {
-					DatabaseUtilities.deleteItemFromDatabase(item);
-					allAssetsObs.remove(item);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    		
+    		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 	
+    		DB_Assets.removeAsset(allAssetsObs, selectedAssets);
     	}
     }
     
@@ -275,7 +230,7 @@ public class AllAssetsController implements Initializable{
 					}
 		            break;
 		        case "Location":
-		        	if(String.valueOf(asset.getAsset_room_id()).contains(txt.toLowerCase())) {
+		        	if(asset.getAsset_room().toLowerCase().contains(txt.toLowerCase())) {
 						return true;
 					}
 		            break;

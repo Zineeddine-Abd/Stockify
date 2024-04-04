@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Components.Asset;
-import application.DatabaseUtilities;
+import application.DB_Rooms;
+import application.DB_Utilities;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -52,7 +53,7 @@ public class NewAssetController implements Initializable{
 	//*******Accessory models:********************
 	private String[] keyboard_mouse_models = {"HP","Razer","Logitech"};
 	private String[] components_models = {"SanDisk","Samsung","Toshiba","GIGABYTE" , "Kingston Technology" , "ADATA Technology" , "Corsair"};
-	private ArrayList<String> rooms = DatabaseUtilities.getRooms();
+	private ArrayList<String> rooms = DB_Rooms.getRooms();
 
 	@FXML
 	private ChoiceBox<String> categoryChoiceBox;
@@ -161,13 +162,13 @@ public class NewAssetController implements Initializable{
 		String type = typeChoiceBox.getValue();
 		String model = modelChoiceBox.getValue();
 		String status = statusChoiceBox.getValue();
-		int room_id = Integer.parseInt(locationDropDownBox.getValue());
+		String room = locationDropDownBox.getValue();
 		int warranty = Integer.parseInt(warrantyField.getText());
 		int serial_number = Integer.parseInt(serialField.getText());
 		
 		Date date = java.sql.Date.valueOf(LocalDate.now());
 		
-		Asset new_asset = new Asset(id,category,type,model,status,room_id,date,warranty,serial_number);
+		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty,serial_number);
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addAsset(new_asset);
 	    
 		disposeWindow(event);

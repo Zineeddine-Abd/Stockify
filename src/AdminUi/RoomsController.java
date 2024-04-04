@@ -11,7 +11,8 @@ import java.util.ResourceBundle;
 
 import Components.Asset;
 import Components.Room;
-import application.DatabaseUtilities;
+import application.DB_Rooms;
+import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import javafx.collections.FXCollections;
@@ -62,30 +63,16 @@ public class RoomsController implements Initializable{
     private ChoiceBox<String> searchCriteriaComboBox;
     private String[] criteria = {"Name", "Type"};
     private Room lastSelectedRoom = new Room(-1,null,null); // dummy values just to set the first selected item.
-	//id
-    public static int last_id = 0;
+    
 	
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		allRooms = FXCollections.observableArrayList();
 		
-		try(Connection con = DatabaseUtilities.getDataSource().getConnection()){
-			String getAllRoomsQuery = "SELECT * FROM rooms";
-			try(PreparedStatement psAssets = con.prepareStatement(getAllRoomsQuery)){
-				try(ResultSet rs = psAssets.executeQuery()){
-					while(rs.next()) {//while the reader still has a next row read it:
-						int room_id = rs.getInt("room_id");
-						String room_name = rs.getString("room_name");
-						String room_type = rs.getString("room_type");
-						
-						Room room = new Room(room_id,room_type,room_name);
-						allRooms.add(room);
-					}
-				}
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
+		DB_Rooms.refresh(allRooms);
+		
+		
 		
 		roomsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         roomIdColumn.setCellValueFactory(new PropertyValueFactory<Room, Integer>("room_id"));
@@ -151,19 +138,7 @@ public class RoomsController implements Initializable{
 	}
 	
 	public void addRoom(Room newRoom) {
-		try {
-			DatabaseUtilities.insertItemIntoDatabase(newRoom);
-			newRoom.setRoom_id(last_id);
-			if(!Helper.exception_thrown) {				
-				allRooms.add(newRoom);
-			}else {
-				//reset the flag to false.
-				Helper.exception_thrown = false;
-			}
-		} catch (SQLException e) {
-			Helper.displayErrorMessage("Error",e.getMessage());
-		}
-		
+		DB_Rooms.addRoom(allRooms, newRoom);
 	}
 	
     public void deleteSelectedRooms() {
@@ -172,14 +147,7 @@ public class RoomsController implements Initializable{
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
     		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 
-    		for(Room item : selectedRooms) {
-    			try{
-    				DatabaseUtilities.deleteItemFromDatabase(item);
-    				allRooms.remove(item);
-    			}catch(SQLException e) {
-    				Helper.displayErrorMessage("Error", e.getMessage());
-    			}
-    		}
+    		DB_Rooms.removeRoom(allRooms, selectedRooms);
     	}
     }
 	

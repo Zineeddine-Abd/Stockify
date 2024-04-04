@@ -4,18 +4,19 @@ import java.sql.Date;
 
 public class Asset {
 	
-	private int asset_id, asset_room_id;
+	private int asset_id;
+	private String asset_room;
     private String asset_category, asset_type, asset_model, asset_status;
     Date asset_purchase_date;
     private int asset_warranty, asset_serial_number;
     
-    public Asset(int assetId,String asset_category, String assetType, String model, String status, int location,Date purchase_date, int warranty,int serial_number) {
+    public Asset(int assetId,String asset_category, String assetType, String model, String status, String room,Date purchase_date, int warranty,int serial_number) {
         this.asset_id = assetId;
         this.asset_category = asset_category;
         this.asset_type = assetType;
         this.asset_model = model;
         this.asset_status = status;
-        this.asset_room_id = location;
+        this.asset_room = room;
         this.asset_purchase_date = purchase_date;
         this.asset_warranty = warranty;
         this.asset_serial_number = serial_number;
@@ -61,12 +62,12 @@ public class Asset {
 		this.asset_status = asset_status;
 	}
 
-	public int getAsset_room_id() {
-		return asset_room_id;
+	public String getAsset_room() {
+		return asset_room;
 	}
 
-	public void setAsset_room_id(int asset_room_id) {
-		this.asset_room_id = asset_room_id;
+	public void setAsset_room(String asset_room) {
+		this.asset_room = asset_room;
 	}
 
 	public Date getAsset_purchase_date() {

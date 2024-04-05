@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import Components.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,8 @@ import javafx.util.Duration;
 import javafx.animation.*;
 
 public class LoginController{
+	
+	private User currentLoggedInUser;
 	
 	private Stage stage;
 	private Scene scene;
@@ -73,6 +77,22 @@ public class LoginController{
 	        try(PreparedStatement statement = con.prepareStatement(sql);
 	        	ResultSet resultSet = statement.executeQuery();){
 	        	if(resultSet.next()) {
+	        		int user_id = resultSet.getInt("user_id");
+	        		//username exists.~~
+	        		//password exists.~~
+					String email = resultSet.getString("email");
+					String full_name = resultSet.getString("full_name");
+					String user_role = resultSet.getString("user_role");
+					
+					User currentLoggeduser = new User(user_id,username,password,email,full_name,user_role);
+	        		this.currentLoggedInUser = currentLoggeduser;
+	        		
+	        		if(DB_Sessions.sessionExists(user_id)) {
+	        			incorrectInfo.setText("Another Device is already logged in!");
+			        	animatedIncorrectInfolabel();
+			        	return;
+	        		}					
+	        		DB_Sessions.createSession(user_id);
 		        	switch(resultSet.getString("user_role")) {
 		        		case ADMIN:
 		        			directAdmin(event);
@@ -86,7 +106,6 @@ public class LoginController{
 		        		default:
 		        			System.out.println("error!"); //idk what to put here - lokman.
 		        	}
-		        	return;
 		        }else {
 		        	incorrectInfo.setText("Invalid username or password!");
 		        	animatedIncorrectInfolabel();
@@ -163,11 +182,9 @@ public class LoginController{
 		newStage(event, root);
 	}
 	
-	
 	private void newStage(ActionEvent event, Parent root) {
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
-		
 		scene = new Scene(root);
 		
 		stage = new Stage();
@@ -175,6 +192,7 @@ public class LoginController{
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		stage.setOnCloseRequest(e ->{
+			DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
 			e.consume();
 			stage.close();
 			if(DB_Utilities.getDataSource() != null) {

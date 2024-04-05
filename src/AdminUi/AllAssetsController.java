@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,10 +28,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -110,11 +113,6 @@ public class AllAssetsController implements Initializable{
 		allAssetsObs = FXCollections.observableArrayList();
 		
 		DB_Assets.refresh(allAssetsObs);
-	
-//		assetsTable.getColumns().forEach(col -> {
-//			col.setResizable(false);
-//			col.setReorderable(false);
-//		});
 		
 		assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
@@ -128,6 +126,25 @@ public class AllAssetsController implements Initializable{
         assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_serial_number"));
         
         
+        assetsTable.setRowFactory(tv -> new TableRow<Asset>() {
+            @Override
+            protected void updateItem(Asset item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setStyle("");
+                } else {
+                    if (item.getAsset_status().equals("Broken")) {
+                        setStyle("-fx-background-color: #ffcccc;");
+                    }else if(item.getAsset_status().equals("Under Maintenance")){
+                    	setStyle("-fx-background-color:  #FFB266;");
+                    }else if(item.getAsset_status().equals("Ready to Use")){
+                    	setStyle("-fx-background-color: #B2FF66;");
+                    }else {
+                    	setStyle("");
+                    }
+                }
+            }
+        });
         
         
         editColumn.setReorderable(false);
@@ -140,8 +157,16 @@ public class AllAssetsController implements Initializable{
 						setGraphic(null);
 					}else {
 						FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
+						
+						FontAwesomeIconView report = new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_TRIANGLE);
+						
 						edit.setGlyphSize(18);
 						edit.setCursor(Cursor.HAND);
+						
+						report.setGlyphSize(18);
+						report.setCursor(Cursor.HAND);
+						
+						
 						
 						edit.hoverProperty().addListener((obs, oldVal, newVal) -> {
 								if(newVal) {
@@ -150,9 +175,26 @@ public class AllAssetsController implements Initializable{
 									edit.setFill(Color.BLACK);
 								}
 						});
-				
+						
+						report.hoverProperty().addListener((obs, oldVal, newVal) -> {
+							if(newVal) {
+								report.setFill(Color.RED);
+							}else {
+								report.setFill(Color.BLACK);
+							}
+						});
+						
+						
 						edit.setOnMouseClicked(event -> popupUpdateAsset(event, this.getTableRow().getItem()));
-						setGraphic(edit);
+						
+						report.setOnMouseClicked(event-> reportAsset(event , this.getTableRow().getItem()));
+						
+						HBox box = new HBox(edit, report);
+						HBox.setMargin(edit, new Insets(2, 2, 0, 3));
+						HBox.setMargin(report, new Insets(2, 2, 0, 3));
+						
+						setGraphic(box);
+						
 					}
 				}
 			};
@@ -229,6 +271,37 @@ public class AllAssetsController implements Initializable{
 			
 			
 			//AssetController.setStage(fillFormula);
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+	
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			fillFormula.initModality(Modality.WINDOW_MODAL);
+			fillFormula.initOwner(parentStage);
+			
+			fillFormula.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void reportAsset(MouseEvent event , Asset item) {
+		Parent root;
+		
+		try {
+			AdminController.currentReportPopupLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlReport));
+			root = AdminController.currentReportPopupLoader.load();
+			ReportPopupController controller = (ReportPopupController)AdminController.currentReportPopupLoader.getController();
+			controller.setOldAsset(item);
+			
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+			fillFormula.setTitle("Report an Asset:");
+			
 			createNewScene = new Scene(root);
 			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
 	

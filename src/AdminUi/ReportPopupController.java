@@ -14,10 +14,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ReportPopupController implements Initializable{
+	
+	@FXML
+	private TextArea messageAreaTextField;
 	
 	@FXML
 	private ChoiceBox<String> statusChoiceBox;
@@ -58,8 +62,6 @@ public class ReportPopupController implements Initializable{
 		int serial_number = oldAsset.getAsset_serial_number();
 		Date date = oldAsset.getAsset_purchase_date();
 		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty,serial_number);
-		
-		
 		
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, new_asset);
 		disposeWindow(event);

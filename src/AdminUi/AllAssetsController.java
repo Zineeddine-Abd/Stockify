@@ -190,13 +190,18 @@ public class AllAssetsController implements Initializable{
 					}else {
 						FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
 						
-						FontAwesomeIconView report = new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_TRIANGLE);
+						FontAwesomeIconView report = new FontAwesomeIconView(FontAwesomeIcon.NEWSPAPER_ALT);
+						
+						FontAwesomeIconView reportMessage = new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE);
 						
 						edit.setGlyphSize(18);
 						edit.setCursor(Cursor.HAND);
 						
 						report.setGlyphSize(18);
 						report.setCursor(Cursor.HAND);
+						
+						reportMessage.setGlyphSize(18);
+						reportMessage.setCursor(Cursor.HAND);
 						
 						
 						
@@ -210,9 +215,17 @@ public class AllAssetsController implements Initializable{
 						
 						report.hoverProperty().addListener((obs, oldVal, newVal) -> {
 							if(newVal) {
-								report.setFill(Color.RED);
+								report.setFill(Color.BLUE);
 							}else {
 								report.setFill(Color.BLACK);
+							}
+						});
+						
+						reportMessage.hoverProperty().addListener((obs,oldVal,newVal)->{
+							if(newVal) {
+								reportMessage.setFill(Color.RED);
+							}else {
+								reportMessage.setFill(Color.BLACK);
 							}
 						});
 						
@@ -221,9 +234,12 @@ public class AllAssetsController implements Initializable{
 						
 						report.setOnMouseClicked(event-> reportAsset(event , this.getTableRow().getItem()));
 						
-						HBox box = new HBox(edit, report);
+						reportMessage.setOnMouseClicked(event-> showReportDetails(event,this.getTableRow().getItem()));
+						
+						HBox box = new HBox(edit, report , reportMessage);
 						HBox.setMargin(edit, new Insets(2, 2, 0, 3));
 						HBox.setMargin(report, new Insets(2, 2, 0, 3));
+						HBox.setMargin(reportMessage, new Insets(2, 2, 0, 3));
 						
 						setGraphic(box);
 						
@@ -333,6 +349,38 @@ public class AllAssetsController implements Initializable{
 			fillFormula.setResizable(false);
 			
 			fillFormula.setTitle("Report an Asset:");
+			
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+	
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			fillFormula.initModality(Modality.WINDOW_MODAL);
+			fillFormula.initOwner(parentStage);
+			
+			fillFormula.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void showReportDetails(MouseEvent event ,Asset asset) {
+		Parent root;
+		
+		try {
+			AdminController.currentReportDetailsPopupLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlReportDetails));
+			root = AdminController.currentReportDetailsPopupLoader.load();
+			ReportDetailsPopupController controller = (ReportDetailsPopupController)AdminController.currentReportDetailsPopupLoader.getController();
+			controller.setAsset(asset);
+			
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+			fillFormula.setTitle("Report Details:");
 			
 			createNewScene = new Scene(root);
 			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());

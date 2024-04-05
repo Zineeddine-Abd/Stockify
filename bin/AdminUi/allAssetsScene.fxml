@@ -22,14 +22,14 @@
            <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="134.39996337890625" text="asset_purchase_date" />
            <TableColumn fx:id="assetWarrantyColumn" minWidth="0.0" prefWidth="94.0" text="asset_warranty" />
            <TableColumn fx:id="assetSerialNumberColumn" prefWidth="119.0" text="asset_serial_number" />
-            <TableColumn fx:id="editColumn" minWidth="0.0" prefWidth="50.0" resizable="false" sortable="false" />
+            <TableColumn fx:id="editColumn" minWidth="0.0" prefWidth="90.0" resizable="false" sortable="false" />
         </columns>
      </TableView>
    </center>
    <top>
-     <HBox BorderPane.alignment="CENTER">
+     <HBox stylesheets="@admin.css" BorderPane.alignment="CENTER">
         <children>
-           <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#popupNewAsset" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="New">
+           <Button fx:id="newAssetButton" mnemonicParsing="false" onAction="#popupNewAsset" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" stylesheets="@admin.css" text="New">
               <HBox.margin>
                  <Insets left="15.0" right="15.0" top="15.0" />
               </HBox.margin>

@@ -39,7 +39,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
                <children>
-                  <Button fx:id="dashboardButton" alignment="CENTER" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="43.0" prefWidth="200.0" text="DashBoard">
+                  <Button fx:id="dashboardButton" alignment="CENTER" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="43.0" prefWidth="200.0" text="DashBoard" textAlignment="RIGHT">
                      <font>
                         <Font name="SansSerif Regular" size="24.0" />
                      </font>
@@ -53,10 +53,10 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="STAR" size="25" />
+                        <FontAwesomeIconView fill="#67809c" glyphName="BAR_CHART" size="25" />
                      </graphic>
                   </Button>
-                  <Button fx:id="AllUsersButton" mnemonicParsing="false" onAction="#triggerUserPane" prefHeight="43.0" prefWidth="200.0" text="Users">
+                  <Button fx:id="AllUsersButton" mnemonicParsing="false" onAction="#triggerUserPane" prefHeight="43.0" prefWidth="200.0" text="Users" textAlignment="RIGHT">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -81,7 +81,7 @@
                         <Insets />
                      </VBox.margin>
                      <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="KEY" size="25" />
+                        <FontAwesomeIconView fill="#67809c" glyphName="DESKTOP" size="25" />
                      </graphic>
                   </Button>
                   <Button fx:id="roomsButton" layoutX="20.0" layoutY="191.0" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="43.0" prefWidth="200.0" text="Rooms">
@@ -95,7 +95,7 @@
                         <Insets />
                      </VBox.margin>
                      <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="ARCHIVE" size="25" />
+                        <FontAwesomeIconView fill="#67809c" glyphName="BUILDING" size="25" />
                      </graphic>
                   </Button>
                   <Button layoutX="20.0" layoutY="260.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="200.0" text="Settings">

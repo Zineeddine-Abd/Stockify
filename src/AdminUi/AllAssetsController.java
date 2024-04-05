@@ -132,19 +132,51 @@ public class AllAssetsController implements Initializable{
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setStyle("");
+                    setTextFill(Color.BLACK); // Default text color
                 } else {
-                    if (item.getAsset_status().equals("Broken")) {
-                        setStyle("-fx-background-color: #ffcccc;");
-                    }else if(item.getAsset_status().equals("Under Maintenance")){
-                    	setStyle("-fx-background-color: #FFB266;");
-                    }else if(item.getAsset_status().equals("Ready To Use")){
-                    	setStyle("-fx-background-color: #B2FF66;");
-                    }else {
-                    	setStyle("");
+                    if (isSelected()) {
+                        setTextFill(Color.WHITE); // Change text color when selected
+                        setStyle("-fx-background-color: #0096c9;"); // Change background color when selected
+                    } else {
+                        setTextFill(Color.BLACK); // Default text color
+                        if (item.getAsset_status().equals("Broken")) {
+                            setStyle("-fx-background-color: #ffcccc;");
+                        } else if (item.getAsset_status().equals("Under Maintenance")) {
+                            setStyle("-fx-background-color: #FFB266;");
+                        } else if (item.getAsset_status().equals("Ready To Use")) {
+                            setStyle("-fx-background-color: #B2FF66;");
+                        } else {
+                            setStyle("");
+                        }
                     }
                 }
             }
+
+            @Override
+            public void updateSelected(boolean selected) {
+            	super.updateSelected(selected);
+                if (!selected) {
+                    // Reset background color to its original state
+                    if (getItem() != null) {
+                        Asset item = getItem(); // Access the item
+                        if (item.getAsset_status().equals("Broken")) {
+                            setStyle("-fx-background-color: #ffcccc;");
+                        } else if (item.getAsset_status().equals("Under Maintenance")) {
+                            setStyle("-fx-background-color: #FFB266;");
+                        } else if (item.getAsset_status().equals("Ready To Use")) {
+                            setStyle("-fx-background-color: #B2FF66;");
+                        } else {
+                            setStyle("");
+                        }
+                    }
+                } else {
+                    // Change text color and background color when selected
+                    setTextFill(Color.WHITE);
+                    setStyle("-fx-background-color: #0096c9;");
+                }
+            }
         });
+
         
         
         editColumn.setReorderable(false);

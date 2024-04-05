@@ -136,8 +136,8 @@ public class AllAssetsController implements Initializable{
                     if (item.getAsset_status().equals("Broken")) {
                         setStyle("-fx-background-color: #ffcccc;");
                     }else if(item.getAsset_status().equals("Under Maintenance")){
-                    	setStyle("-fx-background-color:  #FFB266;");
-                    }else if(item.getAsset_status().equals("Ready to Use")){
+                    	setStyle("-fx-background-color: #FFB266;");
+                    }else if(item.getAsset_status().equals("Ready To Use")){
                     	setStyle("-fx-background-color: #B2FF66;");
                     }else {
                     	setStyle("");

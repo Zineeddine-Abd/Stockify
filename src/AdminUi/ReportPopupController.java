@@ -28,7 +28,7 @@ public class ReportPopupController implements Initializable{
 	@FXML
 	private Label invalidInfo;
 	
-	private String[] reportStatuses = {"Broken","Under Maintenance","Ready to Use"};
+	private String[] reportStatuses = {"Broken","Under Maintenance","Ready To Use"};
 	
 	private Asset oldAsset;
 	

@@ -2,9 +2,13 @@ package AdminUi;
 
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Components.Asset;
+import Components.Message;
+import LoginUi.LoginController;
+import application.DB_Messages;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -41,7 +45,6 @@ public class ReportPopupController implements Initializable{
 	}
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
 		statusChoiceBox.getItems().addAll(reportStatuses);
 	}
 	
@@ -52,7 +55,13 @@ public class ReportPopupController implements Initializable{
 			return;
 		}
 		
-		int id = 0;
+		if(!messageAreaTextField.getText().isBlank()) {
+			Date date = java.sql.Date.valueOf(LocalDate.now());
+			Message msg = new Message(-1,messageAreaTextField.getText(),oldAsset.getAsset_id(),LoginController.getLoggedUser().getUser_id(),date);
+			MessageController controller = (MessageController)AdminController.currentMessagesLoader.getController();
+			controller.addMessage(msg);
+		}
+		
 		String category = oldAsset.getAsset_category();
 		String type = oldAsset.getAsset_type();
 		String model = oldAsset.getAsset_model();
@@ -61,7 +70,7 @@ public class ReportPopupController implements Initializable{
 		int warranty = oldAsset.getAsset_warranty();
 		int serial_number = oldAsset.getAsset_serial_number();
 		Date date = oldAsset.getAsset_purchase_date();
-		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty,serial_number);
+		Asset new_asset = new Asset(oldAsset.getAsset_id(),category,type,model,status,room,date,warranty,serial_number);
 		
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, new_asset);
 		disposeWindow(event);

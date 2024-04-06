@@ -6,6 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Components.Session;
+import Components.User;
+import LoginUi.LoginController;
+import javafx.collections.ObservableList;
+
 public class DB_Sessions extends DB_Utilities{
 	
 	public static void createSession(int logged_user_id) {
@@ -20,8 +25,6 @@ public class DB_Sessions extends DB_Utilities{
 		}
 	}
 	
-	
-	
 	public static boolean sessionExists(int logged_user_id) {
 		try(Connection con = dataSource.getConnection()){
 			String insertRoom = "SELECT * FROM sessions WHERE logged_user_id=?;";
@@ -29,6 +32,7 @@ public class DB_Sessions extends DB_Utilities{
 				ps.setInt(1, logged_user_id);
 				try(ResultSet rs = ps.executeQuery()){
 					if(rs.next()) {
+						LoginController.setSession(new Session(logged_user_id,rs.getString("user_session_UUID")));
 						return true;
 					}
 				}
@@ -38,8 +42,6 @@ public class DB_Sessions extends DB_Utilities{
 		}
 		return false;
 	}
-	
-	
 	
 	public static void terminateCurrentSession(int logged_user_id) {
 		try(Connection con = dataSource.getConnection()){
@@ -52,7 +54,6 @@ public class DB_Sessions extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
-	
 	
 	
 }

@@ -63,13 +63,18 @@ public class AdminController implements Initializable{
 	public static final String fxmlNewAsset = "/AdminUi/newAssetScene.fxml";
 	public static final String fxmlNewUser = "/AdminUi/newUserScene.fxml";
 	public static final String fxmlNewRoom = "/AdminUi/newRoomScene.fxml";
+	
 	public static final String fxmlReport = "/AdminUi/reportPopupScene.fxml";
 	public static final String fxmlReportDetails = "/AdminUi/reportDetailsPopupScene.fxml";
+	public static final String fxmlMessages = "/AdminUi/messages.fxml";
+	
 	public static FXMLLoader currentNewAssetLoader;
 	public static FXMLLoader currentNewUserLoader;
 	public static FXMLLoader currentNewRoomLoader;
+	
 	public static FXMLLoader currentReportPopupLoader;
 	public static FXMLLoader currentReportDetailsPopupLoader;
+	public static FXMLLoader currentMessagesLoader;
 	
 	
 	//Scenes***********************************/

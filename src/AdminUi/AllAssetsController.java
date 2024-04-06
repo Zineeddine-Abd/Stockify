@@ -234,7 +234,7 @@ public class AllAssetsController implements Initializable{
 						
 						report.setOnMouseClicked(event-> reportAsset(event , this.getTableRow().getItem()));
 						
-						reportMessage.setOnMouseClicked(event-> showReportDetails(event,this.getTableRow().getItem()));
+						reportMessage.setOnMouseClicked(event-> showMessagesList(event,this.getTableRow().getItem()));
 						
 						HBox box = new HBox(edit, report , reportMessage);
 						HBox.setMargin(edit, new Insets(2, 2, 0, 3));
@@ -368,19 +368,20 @@ public class AllAssetsController implements Initializable{
 	}
 	
 	
-	public void showReportDetails(MouseEvent event ,Asset asset) {
+	public void showMessagesList(MouseEvent event ,Asset asset) {
 		Parent root;
 		
 		try {
-			AdminController.currentReportDetailsPopupLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlReportDetails));
-			root = AdminController.currentReportDetailsPopupLoader.load();
-			ReportDetailsPopupController controller = (ReportDetailsPopupController)AdminController.currentReportDetailsPopupLoader.getController();
+			AdminController.currentMessagesLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlMessages));
+			root = AdminController.currentMessagesLoader.load();
+			MessageController controller = (MessageController)AdminController.currentMessagesLoader.getController();
 			controller.setAsset(asset);
+			controller.setItems();
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
 			
-			fillFormula.setTitle("Report Details:");
+			fillFormula.setTitle("All Reports");
 			
 			createNewScene = new Scene(root);
 			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());

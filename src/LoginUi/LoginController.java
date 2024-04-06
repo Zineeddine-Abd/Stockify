@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import Components.Session;
 import Components.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,8 +29,17 @@ import javafx.util.Duration;
 import javafx.animation.*;
 
 public class LoginController{
+	private static Session currentSession;
 	
-	private User currentLoggedInUser;
+	public static void setSession(Session ses) {
+		currentSession = ses;
+	}
+	
+	private static User currentLoggedInUser;
+	
+	public static User getLoggedUser() {
+		return currentLoggedInUser;
+	}
 	
 	private Stage stage;
 	private Scene scene;
@@ -38,7 +48,7 @@ public class LoginController{
 	private static final String ADMIN = "Administrator";
 	private static final String TECHNICIAN = "Technician";
 	private static final String PROFESSOR = "Professor";
-	
+	private boolean promptLoggedUser = true;
 	public static final String[] permissions = {ADMIN,TECHNICIAN,PROFESSOR};
 	
 	
@@ -63,11 +73,9 @@ public class LoginController{
 	
 	//Database linking for each user.
 	private void assignUser(ActionEvent event) throws IOException {
-		//directAdmin(event);
-		//return;
+		
 		try (Connection con = DB_Utilities.getDataSource().getConnection()){
 			//Changes based on the driver and type of sqlDatabase used:
-			
 			
 			String password = "'" + (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText()) +"'" ;
 			String username = "'" + usernameField.getText() + "'" ;
@@ -85,7 +93,7 @@ public class LoginController{
 					String user_role = resultSet.getString("user_role");
 					
 					User currentLoggeduser = new User(user_id,username,password,email,full_name,user_role);
-	        		this.currentLoggedInUser = currentLoggeduser;
+	        		currentLoggedInUser = currentLoggeduser;
 	        		
 	        		if(DB_Sessions.sessionExists(user_id)) {
 	        			incorrectInfo.setText("Another Device is already logged in!");

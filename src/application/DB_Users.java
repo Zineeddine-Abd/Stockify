@@ -120,4 +120,34 @@ public class DB_Users extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
+	
+	
+	public static User getUser(int id) {
+		try (Connection con = DB_Utilities.getDataSource().getConnection())
+		{
+			String getAllUsersQuery = "SELECT * FROM users WHERE user_id=?";
+			try(PreparedStatement psUsers = con.prepareStatement(getAllUsersQuery)){
+				psUsers.setInt(1, id);
+				try (ResultSet userResultSet = psUsers.executeQuery();){
+					//Users:
+					if(userResultSet.next()) {//while the reader still has a next row read it:
+						int user_id = userResultSet.getInt("user_id");
+						String username = userResultSet.getString("username");
+						String pass_word = userResultSet.getString("pass_word");
+						String email = userResultSet.getString("email");
+						String full_name = userResultSet.getString("full_name");
+						String user_role = userResultSet.getString("user_role");
+						
+						User newuser = new User(user_id,username,pass_word,email,full_name,user_role);
+						
+						return newuser;
+					}
+				}    
+			}
+		} catch (SQLException e) {
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+		
+		return null;
+	}
 }

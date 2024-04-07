@@ -260,7 +260,7 @@ public class AdminController implements Initializable{
 	}
 	
 	public void triggerDashBoardPane() {
-		//set all visiblity to false.
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
 		updateNumberOfItems();
 		selectView(DASHBOARD_VIEW);
 		closeSideBar();
@@ -272,11 +272,12 @@ public class AdminController implements Initializable{
 		closeSideBar();
 	}
 	public void triggerUserPane() {
-		//set all panes visiblity to false 
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
 		selectView(USERS_VIEW);
 		closeSideBar();
 	}
 	public void triggerRoomsPane() {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
 		selectView(ROOMS_VIEW);
 		closeSideBar();
 	}

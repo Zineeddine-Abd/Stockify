@@ -1,111 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane prefHeight="700.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.DashboardController">
    <top>
-      <HBox prefHeight="156.0" prefWidth="873.0" style="-fx-background-color: #E0E0E0;" BorderPane.alignment="CENTER">
+      <HBox prefHeight="156.0" prefWidth="873.0" style="-fx-background-color: #E0E0E0; -fx-border-color: Black; -fx-border-width: 1px;" BorderPane.alignment="CENTER">
          <children>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+            <VBox prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
-               <top>
-                  <Label text="Assets" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Rooms" textFill="WHITE">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="28.0" />
                      </font>
-                     <BorderPane.margin>
-                        <Insets />
-                     </BorderPane.margin>
-                  </Label>
-               </top>
-               <center>
-                  <Label fx:id="numTotalAssets" BorderPane.alignment="CENTER">
+                  </Button>
+                  <Label fx:id="numRooms" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="Arial Rounded MT Bold" size="28.0" />
                      </font>
                   </Label>
-               </center>
-            </BorderPane>
-            <BorderPane layoutX="25.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#triggerHardwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Hardware" textFill="WHITE">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="numHardware" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
-               <top>
-                  <Label text="Hardware" BorderPane.alignment="CENTER">
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#triggerSoftwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Software" textFill="WHITE">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="28.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="numSoftware" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="28.0" />
                      </font>
                   </Label>
-               </top>
-               <center>
-                  <Label fx:id="numHardware" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </center>
-            </BorderPane>
-            <BorderPane layoutX="255.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+               </children>
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
-               <top>
-                  <Label text="Software" BorderPane.alignment="CENTER">
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-radius: 10px; -fx-border-radius: 10px;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#triggerAccessoryPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Accesories" textFill="WHITE">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="28.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="numAccessory" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="28.0" />
                      </font>
                   </Label>
-               </top>
-               <center>
-                  <Label fx:id="numSoftware" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </center>
-            </BorderPane>
-            <BorderPane layoutX="485.0" layoutY="25.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+               </children>
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
-               <top>
-                  <Label text="Accessory" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </top>
-               <center>
-                  <Label fx:id="numAccessory" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </center>
-            </BorderPane>
+            </VBox>
          </children>
       </HBox>
    </top>
    <center>
       <HBox prefHeight="395.0" prefWidth="873.0" style="-fx-background-color: #E0E0E0;" BorderPane.alignment="CENTER">
          <children>
-            <BorderPane prefHeight="514.0" prefWidth="406.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+            <BorderPane prefHeight="514.0" prefWidth="490.0" style="-fx-background-color: #bfc9d5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
+               <top>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="News" textFill="WHITE" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+               </top>
             </BorderPane>
-            <BorderPane layoutX="10.0" layoutY="10.0" prefHeight="514.0" prefWidth="495.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
-               <HBox.margin>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </HBox.margin>
-            </BorderPane>
+            <HBox prefHeight="544.0" prefWidth="526.0" style="-fx-background-color: #E0E0E0;">
+               <children>
+                  <BorderPane prefHeight="514.0" prefWidth="490.0" style="-fx-background-color: #bfc9d5; -fx-background-radius: 20px; -fx-border-color: black; fx-background-radius: 10px; -fx-border-radius: 10px;">
+                     <HBox.margin>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </HBox.margin>
+                     <top>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="440.0" style="-fx-border-color: black; fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Warnings" textFill="WHITE" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                     </top>
+                  </BorderPane>
+               </children>
+            </HBox>
          </children>
       </HBox>
    </center>

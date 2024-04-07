@@ -88,13 +88,13 @@ public class AllAssetsController implements Initializable{
   	private Scene createNewScene;
   	//*************************************************
   	@FXML
-    private TextField searchTextField;
+    public TextField searchTextField;
   	
   	public TextField getSearchTextField() {
   		return searchTextField;
   	}
     @FXML
-    private ChoiceBox<String> searchCriteriaComboBox;
+    public ChoiceBox<String> searchCriteriaComboBox;
     
     public ChoiceBox<String> getSearchCriteriaComboBox(){
     	return searchCriteriaComboBox;
@@ -229,6 +229,7 @@ public class AllAssetsController implements Initializable{
 							}
 						});
 						
+						((AdminController)Helper.currentAdminLoader.getController()).updateNumberOfItems();
 						
 						edit.setOnMouseClicked(event -> popupUpdateAsset(event, this.getTableRow().getItem()));
 						
@@ -424,7 +425,7 @@ public class AllAssetsController implements Initializable{
 	}
     
     //Filtering methods******************************************************
-	private void filterTableView() {
+	public void filterTableView() {
 		searchTextField.textProperty().addListener((obs, oldTxt, newTxt)->{
 			setFilterPredicate(newTxt);
 		});

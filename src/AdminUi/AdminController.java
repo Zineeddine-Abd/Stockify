@@ -1,13 +1,15 @@
 package AdminUi;
 
-
+import Components.*;
 
 import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
 
+import Components.Asset;
 import javafx.animation.Animation.Status;
+import javafx.collections.ObservableList;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -240,8 +242,26 @@ public class AdminController implements Initializable{
 		stage.show();
 	}
 	
+	public void updateNumberOfItems() {
+		
+		ObservableList<Room> allRooms = getAllRoomsViewController().allRooms;
+		long roomsCount = allRooms.size();
+		
+		ObservableList<Asset> allAssets = getAllAssetsViewController().allAssetsObs;
+		long hardwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Hardware")).count();
+		long softwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Software")).count();
+		long accessoriesCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Accessory")).count();
+				
+		
+		getDashboardViewController().numRooms.setText(String.valueOf(roomsCount));
+		getDashboardViewController().numHardware.setText(String.valueOf(hardwaresCount));
+		getDashboardViewController().numSoftware.setText(String.valueOf(softwaresCount));
+		getDashboardViewController().numAccessory.setText(String.valueOf(accessoriesCount));
+	}
+	
 	public void triggerDashBoardPane() {
 		//set all visiblity to false.
+		updateNumberOfItems();
 		selectView(DASHBOARD_VIEW);
 		closeSideBar();
 	}

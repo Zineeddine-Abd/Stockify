@@ -11,126 +11,128 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AdminController">
-   <top>
-      <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
-         <children>
-            <AnchorPane style="-fx-background-color: white;">
+
+<StackPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.AdminController">
+   <children>
+      <BorderPane stylesheets="@admin.css">
+         <center>
+            <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
                <children>
-                  <Button layoutX="40.0" mnemonicParsing="false" onAction="#goBackView" prefHeight="43.2" prefWidth="50.0">
+               	<fx:include fx:id="dashboardView" source="dashboardScene.fxml" />
+                  <fx:include fx:id="allUsersView" source="allUsersScene.fxml" />
+                  <fx:include fx:id="allAssetsView" source="allAssetsScene.fxml" />
+                  <fx:include fx:id="allRoomsView" source="allRoomsScene.fxml" />
+               </children>
+            </StackPane>
+         </center>
+         <top>
+            <AnchorPane prefHeight="42.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <Button layoutX="40.0" mnemonicParsing="false" onAction="#goBackView" prefHeight="42.0" prefWidth="50.0" AnchorPane.leftAnchor="40.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="BACKWARD" size="25" />
-                     </graphic></Button>
-                  <Button layoutX="90.0" mnemonicParsing="false" onAction="#goforwardView" prefHeight="43.2" prefWidth="50.0">
+                     </graphic>
+                  </Button>
+                  <Button layoutX="90.0" mnemonicParsing="false" onAction="#goforwardView" prefHeight="42.0" prefWidth="50.0" AnchorPane.leftAnchor="90.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="FORWARD" size="25" />
                      </graphic>
                   </Button>
-                  <Button layoutX="880.0" layoutY="1.0" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="43.2" prefWidth="50.0">
+                  <Button layoutX="880.0" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="42.0" prefWidth="50.0" AnchorPane.rightAnchor="0.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="HOME" size="25" />
                      </graphic>
                   </Button>
-               </children></AnchorPane>
-            <Pane fx:id="topBar" onMouseClicked="#closeWithBar" opacity="0.5" style="-fx-background-color: lightGray;" visible="false" />
-            <Button fx:id="collapser" mnemonicParsing="false" onAction="#toggleSidebar" prefWidth="200.0" styleClass="collapser" stylesheets="@admin.css" text="Menu" translateX="-160.0">
+               </children>
+            </AnchorPane>
+         </top>
+      </BorderPane>
+      
+                  <Pane id="pan" fx:id="bar" onMouseClicked="#closeWithBar" opacity="0.0" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightGray;" visible="false" />
+      <VBox fx:id="sideBar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="585.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="vbox" stylesheets="@admin.css" translateX="-200.0">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <children>
+            <Button fx:id="collapser" mnemonicParsing="false" onAction="#toggleSidebar" prefWidth="200.0" styleClass="collapser" stylesheets="@admin.css" text="Menu" translateX="40.0">
                <graphic>
                   <FontAwesomeIconView fx:id="menuIcon" fill="#67809c" glyphName="BARS" size="25" translateX="108.0" />
                </graphic>
             </Button>
-         </children>
-      </StackPane>
-   </top>
-   <center>
-      <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
-         <children>
-         	<fx:include fx:id="dashboardView" source="dashboardScene.fxml" />
-            <fx:include fx:id="allUsersView" source="allUsersScene.fxml" />
-            <fx:include fx:id="allAssetsView" source="allAssetsScene.fxml" />
-            <fx:include fx:id="allRoomsView" source="allRoomsScene.fxml" />
-            
-            <Pane id="pan" fx:id="bar" onMouseClicked="#closeWithBar" opacity="0.5" prefHeight="589.0" prefWidth="681.0" style="-fx-background-color: lightGray;" visible="false" />
-            <VBox fx:id="sideBar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="585.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="vbox" stylesheets="@admin.css" translateX="-200.0">
+            <Button fx:id="dashboardButton" alignment="CENTER" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="43.0" prefWidth="200.0" text="DashBoard" textAlignment="RIGHT">
+               <font>
+                  <Font name="SansSerif Regular" size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                <cursor>
-                  <Cursor fx:constant="DEFAULT" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
-               <children>
-                  <Button fx:id="dashboardButton" alignment="CENTER" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="43.0" prefWidth="200.0" text="DashBoard" textAlignment="RIGHT">
-                     <font>
-                        <Font name="SansSerif Regular" size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="BAR_CHART" size="25" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="AllUsersButton" mnemonicParsing="false" onAction="#triggerUserPane" prefHeight="43.0" prefWidth="200.0" text="Users" textAlignment="RIGHT">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="USER" size="25" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="AllAssetsButton" layoutX="20.0" layoutY="114.0" mnemonicParsing="false" onAction="#triggerAssetPane" prefHeight="43.0" prefWidth="200.0" text="Assets">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="DESKTOP" size="25" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="roomsButton" layoutX="20.0" layoutY="191.0" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="43.0" prefWidth="200.0" text="Rooms">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="BUILDING" size="25" />
-                     </graphic>
-                  </Button>
-                  <Button layoutX="20.0" layoutY="260.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="200.0" text="Settings">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <graphic>
-                        <FontAwesomeIconView fill="#67809c" glyphName="GEAR" size="25" />
-                     </graphic>
-                  </Button>
-               </children>
-            </VBox>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="BAR_CHART" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="AllUsersButton" mnemonicParsing="false" onAction="#triggerUserPane" prefHeight="43.0" prefWidth="200.0" text="Users" textAlignment="RIGHT">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="USER" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="AllAssetsButton" layoutX="20.0" layoutY="114.0" mnemonicParsing="false" onAction="#triggerAssetPane" prefHeight="43.0" prefWidth="200.0" text="Assets">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="DESKTOP" size="25" />
+               </graphic>
+            </Button>
+            <Button fx:id="roomsButton" layoutX="20.0" layoutY="191.0" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="43.0" prefWidth="200.0" text="Rooms">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="BUILDING" size="25" />
+               </graphic>
+            </Button>
+            <Button layoutX="20.0" layoutY="260.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="200.0" text="Settings">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="GEAR" size="25" />
+               </graphic>
+            </Button>
          </children>
-      </StackPane>
-   </center>
-</BorderPane>
+      </VBox>
+   </children>
+</StackPane>

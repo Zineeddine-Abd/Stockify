@@ -49,8 +49,6 @@ public class AdminController implements Initializable{
 	@FXML
 	private Pane bar;
 	@FXML
-	private Pane topBar;
-	@FXML
 	private FontAwesomeIconView menuIcon;
 	//****************************
 	
@@ -148,8 +146,8 @@ public class AdminController implements Initializable{
 	//SideBar Attributes*******************
 	private boolean isOpenedSideBar = false;
 	
-	private Timeline openTimeLine;
-	private Timeline closeTimeLine;
+	private Timeline openTimeLine = new Timeline();
+	private Timeline closeTimeLine = new Timeline();
 	
 	
 	@Override
@@ -186,15 +184,13 @@ public class AdminController implements Initializable{
 	public void openSideBar() {
 		
 		bar.setVisible(true);
-		topBar.setVisible(true);
 		//open
 		isOpenedSideBar = true;
 		KeyValue collapOpenKeyVal = new KeyValue(collapser.translateXProperty(), 0);
 		KeyValue sideBarOpenKeyVal = new KeyValue(sideBar.translateXProperty(), 0);
 		KeyValue barOpenVal = new KeyValue(bar.opacityProperty(), 0.5);
-		KeyValue topBarOpenVal = new KeyValue(topBar.opacityProperty(), 0.5);
 		
-		KeyFrame openSideBarFrame = new KeyFrame(Duration.millis(300), collapOpenKeyVal, sideBarOpenKeyVal, barOpenVal, topBarOpenVal);
+		KeyFrame openSideBarFrame = new KeyFrame(Duration.millis(300), collapOpenKeyVal, sideBarOpenKeyVal, barOpenVal);
 		KeyFrame openMenuIconFrame = new KeyFrame(Duration.millis(50), e -> {
 			if(isOpenedSideBar)
 				menuIcon.translateXProperty().set(0);
@@ -211,12 +207,11 @@ public class AdminController implements Initializable{
 		
 		//close
 		isOpenedSideBar = false;
-		KeyValue collapCloseKeyVal = new KeyValue(collapser.translateXProperty(), -collapser.getWidth()+closedCollapWidth);
+		KeyValue collapCloseKeyVal = new KeyValue(collapser.translateXProperty(), closedCollapWidth);
 		KeyValue sideBarCloseKeyVal = new KeyValue(sideBar.translateXProperty(), -sideBar.getWidth());
 		KeyValue barCloseVal = new KeyValue(bar.opacityProperty(), 0);
-		KeyValue topBarCloseVal = new KeyValue(topBar.opacityProperty(), 0);
 		
-		KeyFrame closeSideBarFrame = new KeyFrame(Duration.millis(300), collapCloseKeyVal, sideBarCloseKeyVal, barCloseVal, topBarCloseVal); //add dashboardSpace
+		KeyFrame closeSideBarFrame = new KeyFrame(Duration.millis(300), collapCloseKeyVal, sideBarCloseKeyVal, barCloseVal); //add dashboardSpace
 		KeyFrame closeMenuIconFrame = new KeyFrame(Duration.millis(350), e -> {
 			if(!isOpenedSideBar)
 				menuIcon.translateXProperty().set(shiftedMenuIconX);
@@ -225,16 +220,12 @@ public class AdminController implements Initializable{
 		closeTimeLine = new Timeline(closeSideBarFrame, closeMenuIconFrame);
 		closeTimeLine.setOnFinished(e -> {
 			bar.setVisible(false);
-			topBar.setVisible(false);
 		});
 		closeTimeLine.play();
 		
 	}
 	
 	public void closeWithBar() {
-		if(closeTimeLine == null) {
-			closeTimeLine = new Timeline();
-		}
 		if(closeTimeLine.getStatus() != Status.RUNNING) {
 			closeSideBar();
 		}

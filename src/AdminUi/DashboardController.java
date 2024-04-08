@@ -52,14 +52,12 @@ public class DashboardController implements Initializable{
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("Software");
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
 			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
-			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
 		}
 		
 		public void triggerAccessoryPane() {
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchCriteriaComboBox.setValue("Category");
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("Accessory");
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
-			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
 			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
 		}
 		

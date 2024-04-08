@@ -15,7 +15,23 @@
    <top>
       <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane style="-fx-background-color: white;" />
+            <AnchorPane style="-fx-background-color: white;">
+               <children>
+                  <Button layoutX="40.0" mnemonicParsing="false" onAction="#goBackView" prefHeight="43.2" prefWidth="50.0">
+                     <graphic>
+                        <FontAwesomeIconView fill="#67809c" glyphName="BACKWARD" size="25" />
+                     </graphic></Button>
+                  <Button layoutX="90.0" mnemonicParsing="false" onAction="#goforwardView" prefHeight="43.2" prefWidth="50.0">
+                     <graphic>
+                        <FontAwesomeIconView fill="#67809c" glyphName="FORWARD" size="25" />
+                     </graphic>
+                  </Button>
+                  <Button layoutX="880.0" layoutY="1.0" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="43.2" prefWidth="50.0">
+                     <graphic>
+                        <FontAwesomeIconView fill="#67809c" glyphName="HOME" size="25" />
+                     </graphic>
+                  </Button>
+               </children></AnchorPane>
             <Pane fx:id="topBar" onMouseClicked="#closeWithBar" opacity="0.5" style="-fx-background-color: lightGray;" visible="false" />
             <Button fx:id="collapser" mnemonicParsing="false" onAction="#toggleSidebar" prefWidth="200.0" styleClass="collapser" stylesheets="@admin.css" text="Menu" translateX="-160.0">
                <graphic>

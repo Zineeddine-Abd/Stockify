@@ -5,7 +5,11 @@ import Components.*;
 import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
+
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import Components.Asset;
 import javafx.animation.Animation.Status;
@@ -120,6 +124,11 @@ public class AdminController implements Initializable{
 	
 	//Array of panes
 	Pane[] views;
+	Stack<Integer> recentViews = new Stack<>();
+	Stack<Integer> forwardViews = new Stack<>();
+	//Stack<String> recentSearchText = new Stack<>();
+	//Stack<String> forwardSearchText = new Stack<>();
+	
 	//Set only one sence (constants)
 	
 	public static int DASHBOARD_VIEW = 0;
@@ -147,6 +156,7 @@ public class AdminController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//initialize views array
 		views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView};
+		recentViews.add(DASHBOARD_VIEW);
 		
 		// --> here we will set the default view (dashboardview) 	
 		
@@ -260,26 +270,43 @@ public class AdminController implements Initializable{
 	}
 	
 	public void triggerDashBoardPane() {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
-		updateNumberOfItems();
-		selectView(DASHBOARD_VIEW);
-		closeSideBar();
+		if(!recentViews.peek().equals(DASHBOARD_VIEW)) {
+			recentViews.add(DASHBOARD_VIEW);
+		}
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
+			updateNumberOfItems();
+			selectView(DASHBOARD_VIEW);
+			closeSideBar();
+		
 	}
 	
 	public void triggerAssetPane() {
-		//set all visiblity to false.
-		selectView(ASSETS_VIEW);
-		closeSideBar();
+		if(!recentViews.peek().equals(ASSETS_VIEW)) {
+			recentViews.add(ASSETS_VIEW);
+		}
+			//String searchText = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.getText();
+			//recentSearchText.add(searchText);
+			selectView(ASSETS_VIEW);
+			closeSideBar();
+		
 	}
 	public void triggerUserPane() {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
-		selectView(USERS_VIEW);
-		closeSideBar();
+		if(!recentViews.peek().equals(USERS_VIEW)) {
+			recentViews.add(USERS_VIEW);
+		}
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
+			selectView(USERS_VIEW);
+			closeSideBar();
+		
 	}
 	public void triggerRoomsPane() {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
-		selectView(ROOMS_VIEW);
-		closeSideBar();
+		if(!recentViews.peek().equals(ROOMS_VIEW)) {
+			recentViews.add(ROOMS_VIEW);
+		}
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
+			selectView(ROOMS_VIEW);
+			closeSideBar();
+		
 	}
 
 	
@@ -290,6 +317,50 @@ public class AdminController implements Initializable{
 			}else {
 				views[i].setVisible(true);
 			}
+		}
+	}
+	
+	public void goBackView() {
+		if(recentViews.size() > 1) {
+			int recentView = recentViews.pop();
+			forwardViews.add(recentView);
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
+			
+//			if(recentViews.peek() == 2) {
+//				String searchText = recentSearchText.pop();
+//				forwardSearchText.add(searchText);
+//				System.out.println("forwardSearchText Peek : " + forwardSearchText.peek());
+//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText(searchText);
+//			}
+//			else {
+//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
+//			}
+			selectView(recentViews.peek());
+		}
+	}
+	
+	public void goforwardView() {
+		if(forwardViews.size() > 0) {
+			int recentView = forwardViews.pop();
+			recentViews.add(recentView);
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
+			
+//			if(recentViews.peek() == 2) {
+//				String searchText;
+//				if(forwardSearchText.size() != 0) {
+//					System.out.println("in goForwardView : forwardSearchText Peek : " + forwardSearchText.peek());
+//					searchText = forwardSearchText.pop();
+//				}
+//				else {
+//					System.out.println("in goForwardView : recentSearchText Peek : " + recentSearchText.peek());
+//					searchText = recentSearchText.pop();	
+//				}
+//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText(searchText);
+//			}
+//			else {
+//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
+//			}
+			selectView(recentViews.peek());
 		}
 	}
 }

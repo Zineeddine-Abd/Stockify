@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 
 
@@ -20,6 +22,12 @@ public class DashboardController implements Initializable{
 	public Label numSoftware;
 	@FXML
 	public Label numAccessory;
+	@FXML
+	private HBox pans;
+	@FXML
+	private BorderPane newsPane;
+	@FXML
+	private BorderPane warningsPane;
 	
 	
 	//All Assets Section Mats:******************/
@@ -37,7 +45,8 @@ public class DashboardController implements Initializable{
 		
 		@Override
 		public void initialize(URL arg0, ResourceBundle arg1) {
-			
+			warningsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
+			newsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
 		}
 		
 		public void triggerHardwarePane() {

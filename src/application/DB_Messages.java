@@ -6,9 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import AdminUi.AdminController;
+import AdminUi.AllAssetsController;
 import Components.Asset;
 import Components.Message;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class DB_Messages extends DB_Utilities{
@@ -56,7 +60,6 @@ public class DB_Messages extends DB_Utilities{
 			            last_id = generatedKeys.getInt(1);
 			            msg.setMessageid(last_id);
 						obsList.add(msg);
-			            
 			         } else {
 			        	 Helper.displayErrorMessage("Error","Failed to retrieve last inserted ID.");
 			         }
@@ -65,5 +68,36 @@ public class DB_Messages extends DB_Utilities{
 		}catch(SQLException e) {
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
+	}
+	
+	
+	
+	public static ObservableList<Asset> getReportedAssets() {
+		try(Connection con = DB_Utilities.getDataSource().getConnection()){
+			ArrayList<Integer> reportedAssetIDS = new ArrayList<Integer>();
+			ObservableList<Asset> allReportedAssets = FXCollections.observableArrayList();
+			
+			String getAllMessagesQuery = "SELECT * FROM messages";
+			try(PreparedStatement psAssets = con.prepareStatement(getAllMessagesQuery)){
+				try(ResultSet rs = psAssets.executeQuery()){
+					while(rs.next()) {//while the reader still has a next row read it:
+						int cor_asset_id = rs.getInt("cor_asset_id");
+						if(!reportedAssetIDS.contains(cor_asset_id)) {						
+							reportedAssetIDS.add(cor_asset_id);
+						}
+					}
+				AllAssetsController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+				for(Asset element : controller.getAllAssetsObs()) {
+					if(reportedAssetIDS.contains(element.getAsset_id())) {
+						allReportedAssets.add(element);
+					}
+				}
+				}
+				return allReportedAssets;
+			}
+		}catch (SQLException e) {
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+		return null;
 	}
 }

@@ -156,13 +156,8 @@ public class AdminController implements Initializable{
 		views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView};
 		recentViews.add(DASHBOARD_VIEW);
 		
-		// --> here we will set the default view (dashboardview) 	
-		
-		//All Assets VBox Visibility set to false:
+		this.getDashboardViewController().setItems();
 		selectView(DASHBOARD_VIEW);
-		
-		// Initialize table columns
-		//estalish a connection to the SupaBase Database For :
 		
 	}
 	
@@ -248,7 +243,7 @@ public class AdminController implements Initializable{
 		ObservableList<Room> allRooms = getAllRoomsViewController().allRooms;
 		long roomsCount = allRooms.size();
 		
-		ObservableList<Asset> allAssets = getAllAssetsViewController().allAssetsObs;
+		ObservableList<Asset> allAssets = getAllAssetsViewController().getAllAssetsObs();
 		long hardwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Hardware")).count();
 		long softwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Software")).count();
 		long accessoriesCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Accessory")).count();

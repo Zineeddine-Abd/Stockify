@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -86,29 +88,40 @@
    <center>
       <HBox fx:id="pans" prefHeight="395.0" style="-fx-background-color: #E0E0E0;" BorderPane.alignment="CENTER">
          <children>
-            <BorderPane fx:id="newsPane" minHeight="300.0" minWidth="300.0" prefHeight="514.0" style="-fx-background-color: #bfc9d5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+            <BorderPane fx:id="recentActionsPane" minHeight="300.0" minWidth="300.0" prefHeight="514.0" style="-fx-background-color: #bfc9d5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
                <top>
-                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="News" textFill="WHITE" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </Label>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Recent Actions" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
                </top>
             </BorderPane>
-            <BorderPane fx:id="warningsPane" minHeight="300.0" minWidth="300.0" prefHeight="514.0" style="-fx-background-color: #bfc9d5; -fx-background-radius: 20px; -fx-border-color: black; fx-background-radius: 10px; -fx-border-radius: 10px;">
+            <BorderPane fx:id="warningsPane" layoutX="25.0" layoutY="25.0" minHeight="300.0" minWidth="300.0" prefHeight="514.0" style="-fx-background-color: #bfc9d5; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;">
+               <top>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Warnings" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </top>
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
-               <top>
-                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="440.0" style="-fx-border-color: black; fx-background-radius: 10px; -fx-border-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Warnings" textFill="WHITE" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </Label>
-               </top>
+               <center>
+                  <ListView fx:id="reportedAssetsList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
             </BorderPane>
          </children>
       </HBox>

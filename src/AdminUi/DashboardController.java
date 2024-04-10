@@ -3,17 +3,25 @@ package AdminUi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Components.Asset;
+import Components.Message;
+import application.DB_Messages;
 import application.Helper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 
 
-public class DashboardController implements Initializable{
+public class DashboardController{
 	@FXML
 	public Label numRooms;
 	@FXML
@@ -25,7 +33,7 @@ public class DashboardController implements Initializable{
 	@FXML
 	private HBox pans;
 	@FXML
-	private BorderPane newsPane;
+	private BorderPane recentActionsPane;
 	@FXML
 	private BorderPane warningsPane;
 	
@@ -39,17 +47,44 @@ public class DashboardController implements Initializable{
 		private Button AccesoriesButton;
 		@FXML
 		private Button RoomsButton;
+		@FXML
+		private ListView<Asset> reportedAssetsList;
+		private ObservableList<Asset> list;
 		//*****************************************/
-		
-		
-		
-		@Override
-		public void initialize(URL arg0, ResourceBundle arg1) {
+		public void setItems() {
 			warningsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
-			newsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
+			recentActionsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
+			
+			//Reported Assets List:
+			list = DB_Messages.getReportedAssets();
+			reportedAssetsList.setItems(list);
+			reportedAssetsList.setCellFactory(new Callback<ListView<Asset>, ListCell<Asset>>() {
+	            @Override
+	            public ListCell<Asset> call(ListView<Asset> param) {
+	                return new ListCell<Asset>() {
+	                    @Override
+	                    protected void updateItem(Asset item, boolean empty) {
+	                        super.updateItem(item, empty);
+	                        if (empty || item == null) {
+	                            setText(null);
+	                        } else {
+	                        	setText(item.toString());
+	                        	AllAssetsController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+	                            setOnMouseClicked(event->controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem()));
+	                        }
+	                    }
+	                };
+	            }
+	        });
+		}
+		
+		public void refreshList() {
+			list = DB_Messages.getReportedAssets();
+			reportedAssetsList.setItems(list);
 		}
 		
 		public void triggerHardwarePane() {
+			
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchCriteriaComboBox.setValue("Category");
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("Hardware");
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();

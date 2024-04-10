@@ -93,6 +93,9 @@ public class Asset {
 	public void setAsset_serial_number(int asset_serial_number) {
 		this.asset_serial_number = asset_serial_number;
 	}
-
+	
+	public String toString() {
+		return this.getAsset_id()+": "+this.getAsset_category()+": "+this.getAsset_type()+": "+this.getAsset_model()+": "+this.getAsset_status();
+	}
 
 }

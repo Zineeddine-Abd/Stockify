@@ -74,6 +74,8 @@ public class ReportPopupController implements Initializable{
 		
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, new_asset);
 		disposeWindow(event);
+		//java.lang.NullPointerException: Cannot invoke "javafx.fxml.FXMLLoader.getController()" because "AdminUi.AdminController.currentMessagesLoader" is null
+		((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().refreshList();
 	}
 	
 	public void animatedInvalidInfolabel() {

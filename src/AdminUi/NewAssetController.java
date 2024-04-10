@@ -208,7 +208,7 @@ public class NewAssetController implements Initializable{
 	
 	void setInfos() {
 		categoryChoiceBox.setValue(oldAsset.getAsset_category());
-		typeChoiceBox.setValue(oldAsset.getAsset_category());
+		typeChoiceBox.setValue(oldAsset.getAsset_type());
 		modelChoiceBox.setValue(oldAsset.getAsset_model());
 		statusChoiceBox.setValue(oldAsset.getAsset_status());
 		locationDropDownBox.setValue(oldAsset.getAsset_room());

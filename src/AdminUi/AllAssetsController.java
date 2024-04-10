@@ -10,7 +10,9 @@ import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -78,7 +80,6 @@ public class AllAssetsController implements Initializable{
     @FXML
     private TableColumn<Asset, String> editColumn;
 	
-	
 	@FXML
 	private Button newAssetButton;
 	
@@ -103,10 +104,14 @@ public class AllAssetsController implements Initializable{
     private final String[] criteria = {"Category", "Type", "Model", "Status", "Location"};
     
     //observable lists***************
-    ObservableList<Asset> allAssetsObs;
+    private ObservableList<Asset> allAssetsObs;
     FilteredList<Asset> filteredAssets;
     SortedList<Asset> sortedAssets;
     //********************************
+    
+    public ObservableList<Asset> getAllAssetsObs(){
+    	return allAssetsObs;
+    }
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -176,7 +181,7 @@ public class AllAssetsController implements Initializable{
                 }
             }
         });
-
+        
         
         
         editColumn.setReorderable(false);
@@ -202,7 +207,6 @@ public class AllAssetsController implements Initializable{
 						
 						reportMessage.setGlyphSize(18);
 						reportMessage.setCursor(Cursor.HAND);
-						
 						
 						
 						edit.hoverProperty().addListener((obs, oldVal, newVal) -> {
@@ -261,8 +265,13 @@ public class AllAssetsController implements Initializable{
         // Initialize search criteria ComboBox
         searchCriteriaComboBox.getItems().addAll(criteria);
         searchCriteriaComboBox.setValue(criteria[0]);
+        
+        InvalidationListener listener = observable -> {
+        	((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().setItems(); 
+        };
+        
+        allAssetsObs.addListener(listener);
 	}
-
 	
 	
 	
@@ -315,9 +324,7 @@ public class AllAssetsController implements Initializable{
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
-			
 			fillFormula.setTitle("Update Asset:");
-			
 			
 			//AssetController.setStage(fillFormula);
 			createNewScene = new Scene(root);

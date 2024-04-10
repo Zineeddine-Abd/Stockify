@@ -1,4 +1,5 @@
 package application;
+import LoginUi.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -23,6 +24,7 @@ public class Main extends Application {
 			primaryStage.initStyle(StageStyle.UNDECORATED);
 			primaryStage.setOnCloseRequest(e ->{
 				e.consume();
+				DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 				primaryStage.close();
 				if(DB_Utilities.getDataSource() != null) {
 					DB_Utilities.getDataSource().close();

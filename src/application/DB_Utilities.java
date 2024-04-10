@@ -25,7 +25,7 @@ public class DB_Utilities {
 			dataSource.setDriverClassName(properties.getProperty("driver.class.name"));
 			dataSource.setJdbcUrl(properties.getProperty("db.url"));
 			//tmp
-			dataSource.setMinimumIdle(10);
+			dataSource.setMinimumIdle(5);
 			dataSource.setMaximumPoolSize(1000);
 			
 			dataSource.setLoginTimeout(5);

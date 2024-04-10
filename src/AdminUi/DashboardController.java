@@ -4,10 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Components.Asset;
-import Components.Message;
 import application.DB_Messages;
 import application.Helper;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +19,7 @@ import javafx.util.Callback;
 
 
 
-public class DashboardController{
+public class DashboardController implements Initializable{
 	@FXML
 	public Label numRooms;
 	@FXML
@@ -51,10 +49,14 @@ public class DashboardController{
 		private ListView<Asset> reportedAssetsList;
 		private ObservableList<Asset> list;
 		//*****************************************/
-		public void setItems() {
+		
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
 			warningsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
 			recentActionsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
-			
+		}
+		
+		public void setItems() {
 			//Reported Assets List:
 			list = DB_Messages.getReportedAssets();
 			reportedAssetsList.setItems(list);
@@ -109,7 +111,6 @@ public class DashboardController{
 			((AdminController)Helper.currentAdminLoader.getController()).triggerRoomsPane();
 		}
 
-		
-		
+
 	
 }

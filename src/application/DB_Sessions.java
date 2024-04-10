@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Components.Session;
-import Components.User;
 import LoginUi.LoginController;
-import javafx.collections.ObservableList;
 
 public class DB_Sessions extends DB_Utilities{
 	

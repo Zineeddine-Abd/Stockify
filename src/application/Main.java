@@ -26,6 +26,9 @@ public class Main extends Application {
 				e.consume();
 				DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 				primaryStage.close();
+				if(LoginController.getLoggedUser() != null) {
+					DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+				}
 				if(DB_Utilities.getDataSource() != null) {
 					DB_Utilities.getDataSource().close();
 				}

@@ -20,11 +20,10 @@ public class DB_Messages extends DB_Utilities{
 	//id
     private static int last_id = 0;
     
-    public static void refresh(ObservableList<Message> obsList,Asset asset) {
+    public static void refresh(ObservableList<Message> obsList) {
     	try(Connection con = DB_Utilities.getDataSource().getConnection()){
-			String getAllMessagesQuery = "SELECT * FROM messages WHERE cor_asset_id=?";
+			String getAllMessagesQuery = "SELECT * FROM messages";
 			try(PreparedStatement psAssets = con.prepareStatement(getAllMessagesQuery)){
-				psAssets.setInt(1, asset.getAsset_id());
 				try(ResultSet rs = psAssets.executeQuery()){
 					while(rs.next()) {//while the reader still has a next row read it:
 						int message_id = rs.getInt("message_id");

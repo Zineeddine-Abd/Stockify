@@ -2,17 +2,9 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-
-import Components.Asset;
 import Components.User;
-import application.DB_Assets;
 import application.DB_Users;
-import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -97,9 +89,8 @@ public class AllUsersController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
 		allUsersObs = FXCollections.observableArrayList();
-		
-		
 		DB_Users.refresh(allUsersObs);
 		
 		  //Users table:
@@ -139,19 +130,25 @@ public class AllUsersController implements Initializable{
 			};
 			return cell;
 		});
-        
-        filteredUsers = new FilteredList<User>(allUsersObs);
+		
+		filteredUsers = new FilteredList<User>(allUsersObs);
         filterTableView();
         
         sortedUsers = new SortedList<User>(filteredUsers);
         sortedUsers.comparatorProperty().bind(usersTable.comparatorProperty());
         
         usersTable.setItems(sortedUsers);
-        
+         
         // Initialize search criteria ComboBox
         searchCriteriaComboBox.getItems().addAll(criteria);
         searchCriteriaComboBox.setValue(criteria[0]);
 	}
+	public void initUsers() {
+		
+	}
+	
+	
+	
 	
 	public void popupNewUser(ActionEvent event) {
 		Parent root;

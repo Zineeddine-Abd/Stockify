@@ -1,19 +1,15 @@
 package AdminUi;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Observable;
-import java.util.ResourceBundle;
 
 import Components.Asset;
 import Components.Message;
-import application.DB_Messages;
+import application.Helper;
 import application.Main;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -37,12 +33,14 @@ public class MessageController{
   		this.currentAsset = asset;
   	}
   	
-  	private ObservableList<Message> list;
+  	private ObservableList<Message> messagesList;
+  	private ObservableList<Message> filteredMessagesList;
 
 	public void setItems() {
-		list = FXCollections.observableArrayList();
-		DB_Messages.refresh(list,currentAsset);
-		allMessagesList.setItems(list);
+		messagesList = ((AdminController)Helper.currentAdminLoader.getController()).getMessagesList();
+		filteredMessagesList = new FilteredList<Message>(messagesList, message -> message.getCor_asset_id() == currentAsset.getAsset_id());
+		
+		allMessagesList.setItems(filteredMessagesList);
 		
 		allMessagesList.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
             @Override
@@ -96,7 +94,4 @@ public class MessageController{
 		}
 	}
 	
-	public void addMessage(Message msg) {
-		DB_Messages.addMessage(list, msg);
-	}
 }

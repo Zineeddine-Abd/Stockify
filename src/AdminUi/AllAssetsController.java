@@ -12,7 +12,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -116,8 +115,8 @@ public class AllAssetsController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		allAssetsObs = FXCollections.observableArrayList();
-		
 		DB_Assets.refresh(allAssetsObs);
+		
 		
 		assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
@@ -233,7 +232,7 @@ public class AllAssetsController implements Initializable{
 							}
 						});
 						
-						((AdminController)Helper.currentAdminLoader.getController()).updateNumberOfItems();
+						//((AdminController)Helper.currentAdminLoader.getController()).updateNumberOfItems();
 						
 						edit.setOnMouseClicked(event -> popupUpdateAsset(event, this.getTableRow().getItem()));
 						
@@ -253,8 +252,8 @@ public class AllAssetsController implements Initializable{
 			};
 			return cell;
 		});
-        
-        filteredAssets = new FilteredList<Asset>(allAssetsObs);
+		
+		filteredAssets = new FilteredList<Asset>(allAssetsObs);
         filterTableView();
         
         sortedAssets = new SortedList<Asset>(filteredAssets);
@@ -266,7 +265,14 @@ public class AllAssetsController implements Initializable{
         searchCriteriaComboBox.getItems().addAll(criteria);
         searchCriteriaComboBox.setValue(criteria[0]);
         
-        InvalidationListener listener = observable -> {
+       
+	}
+	public void initAssets() {
+//		FilteredList<Asset> filteredHards = new FilteredList<Asset>(allAssetsObs, asset -> asset.getAsset_category().equals("Hardware"));
+//		FilteredList<Asset> filteredSofts = new FilteredList<Asset>(allAssetsObs, asset -> asset.getAsset_category().equals("Software"));
+		InvalidationListener listener = observable -> {
+//			((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().numHardware.setText(String.valueOf(filteredHards.size()));
+//			((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().numSoftware.setText(String.valueOf(filteredSofts.size()));
         	((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().setItems(); 
         };
         

@@ -2,19 +2,10 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import Components.Asset;
 import Components.Room;
-import Components.User;
 import application.DB_Rooms;
-import application.DB_Users;
-import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -39,7 +30,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -79,13 +69,10 @@ public class AllRoomsController implements Initializable{
 	
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
 		allRooms = FXCollections.observableArrayList();
-		
-		
 		DB_Rooms.refresh(allRooms);
-		
-		
-		
+			
 		roomsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         roomIdColumn.setCellValueFactory(new PropertyValueFactory<Room, Integer>("room_id"));
         roomTypeColumn.setCellValueFactory(new PropertyValueFactory<Room, String>("room_type"));
@@ -142,8 +129,6 @@ public class AllRoomsController implements Initializable{
 			};
 			return cell;
 		});
-        
-        
 		
         filteredRooms = new FilteredList<Room>(allRooms);
         filterTableView();
@@ -157,6 +142,11 @@ public class AllRoomsController implements Initializable{
         searchCriteriaComboBox.getItems().addAll(criteria);
         searchCriteriaComboBox.setValue(criteria[0]);
 	}
+	public void initRooms() {
+		
+	}
+	
+	
 	
 	public void popupNewRoom(ActionEvent event) {
 		Parent root;

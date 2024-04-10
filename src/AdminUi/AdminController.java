@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
-import Components.Asset;
 import javafx.animation.Animation.Status;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -27,9 +25,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import application.DB_Messages;
 import application.Helper;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
@@ -143,6 +141,13 @@ public class AdminController implements Initializable{
 	private Parent root;
 	//****************************
 	
+	//message obs list
+	private ObservableList<Message> messagesList;
+	
+	public ObservableList<Message> getMessagesList(){
+		return messagesList;
+	}
+	
 	//SideBar Attributes*******************
 	private boolean isOpenedSideBar = false;
 	
@@ -152,13 +157,22 @@ public class AdminController implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		//init messages list
+		messagesList = FXCollections.observableArrayList();
+		DB_Messages.refresh(messagesList);
+		//initialize sub scenes after inject their controllers
+		allAssetsViewController.initAssets();
+		allUsersViewController.initUsers();
+		allRoomsViewController.initRooms();
+		dashboardViewController.setItems();
+		
+		
 		//initialize views array
 		views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView};
 		recentViews.add(DASHBOARD_VIEW);
 		
-		this.getDashboardViewController().setItems();
-		selectView(DASHBOARD_VIEW);
-		
+		updateNumberOfItems();
+		selectView(DASHBOARD_VIEW);	
 	}
 	
 	
@@ -348,5 +362,10 @@ public class AdminController implements Initializable{
 //			}
 			selectView(recentViews.peek());
 		}
+	}
+	
+	//Messages
+	public void addMessage(Message msg) {
+		DB_Messages.addMessage(messagesList, msg);
 	}
 }

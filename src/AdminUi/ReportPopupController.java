@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import Components.Asset;
 import Components.Message;
 import LoginUi.LoginController;
-import application.DB_Messages;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -58,7 +57,7 @@ public class ReportPopupController implements Initializable{
 		if(!messageAreaTextField.getText().isBlank()) {
 			Date date = java.sql.Date.valueOf(LocalDate.now());
 			Message msg = new Message(-1,messageAreaTextField.getText(),oldAsset.getAsset_id(),LoginController.getLoggedUser().getUser_id(),date);
-			MessageController controller = (MessageController)AdminController.currentMessagesLoader.getController();
+			AdminController controller = (AdminController)Helper.currentAdminLoader.getController();
 			controller.addMessage(msg);
 		}
 		

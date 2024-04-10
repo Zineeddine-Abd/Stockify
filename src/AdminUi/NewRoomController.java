@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Components.Room;
-import Components.User;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;

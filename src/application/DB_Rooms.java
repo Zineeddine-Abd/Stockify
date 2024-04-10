@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Components.Room;
-import Components.User;
 import javafx.collections.ObservableList;
 
 public class DB_Rooms extends DB_Utilities{

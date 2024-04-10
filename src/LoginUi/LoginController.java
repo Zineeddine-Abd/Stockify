@@ -12,7 +12,6 @@ import Components.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -70,7 +69,6 @@ public class LoginController{
 
 	
 	
-	
 	//Database linking for each user.
 	private void assignUser(ActionEvent event) throws IOException {
 		
@@ -92,8 +90,7 @@ public class LoginController{
 					String full_name = resultSet.getString("full_name");
 					String user_role = resultSet.getString("user_role");
 					
-					User currentLoggeduser = new User(user_id,username,password,email,full_name,user_role);
-	        		currentLoggedInUser = currentLoggeduser;
+					
 	        		
 	        		if(DB_Sessions.sessionExists(user_id)) {
 	        			incorrectInfo.setText("Another Device is already logged in!");
@@ -101,6 +98,10 @@ public class LoginController{
 			        	return;
 	        		}					
 	        		DB_Sessions.createSession(user_id);
+	        		
+	        		
+	        		currentLoggedInUser = new User(user_id,username,password,email,full_name,user_role);;
+	        		
 		        	switch(resultSet.getString("user_role")) {
 		        		case ADMIN:
 		        			directAdmin(event);
@@ -229,6 +230,9 @@ public class LoginController{
 	 public void closeLoginScreen(MouseEvent event) {
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
+		if(currentLoggedInUser != null) {
+			DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
+		}
 		if(DB_Utilities.getDataSource() != null) {
 			DB_Utilities.getDataSource().close();
 		}

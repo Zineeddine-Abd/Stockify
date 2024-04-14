@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 import Components.Asset;
 import application.DB_Assets;
+import application.DB_Rooms;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -487,5 +488,10 @@ public class AllAssetsController implements Initializable{
 			}
 		});
 	}
+	
+	public void refreshAssetsList() {
+		allAssetsObs.clear();
+    	DB_Assets.refresh(allAssetsObs);
+    }
 }
 

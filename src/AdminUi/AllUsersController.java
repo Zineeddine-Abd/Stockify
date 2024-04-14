@@ -284,4 +284,9 @@ public class AllUsersController implements Initializable{
 			}
 		});
     }
+    
+    public void refreshUsersList() {
+    	allUsersObs.clear();
+    	DB_Users.refresh(allUsersObs);
+    }
 }

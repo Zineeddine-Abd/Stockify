@@ -1,4 +1,7 @@
-/AdminUi/
-/application/
-/LoginUi/
+/database.properties
 /Components/
+/LoginUi/
+/ProfessorUi/
+/TechnicianUi/
+/application/
+/AdminUi/

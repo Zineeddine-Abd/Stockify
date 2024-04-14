@@ -3,6 +3,7 @@ package AdminUi;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Components.Action;
 import Components.Asset;
 import application.DB_Messages;
 import application.Helper;
@@ -47,7 +48,10 @@ public class DashboardController implements Initializable{
 		private Button RoomsButton;
 		@FXML
 		private ListView<Asset> reportedAssetsList;
-		private ObservableList<Asset> list;
+		private ObservableList<Asset> reportedAssetsObs;
+		@FXML
+		private ListView<Action> recentActions;
+		private ObservableList<Action> actionsObs;
 		//*****************************************/
 		
 		@Override
@@ -58,8 +62,8 @@ public class DashboardController implements Initializable{
 		
 		public void setItems() {
 			//Reported Assets List:
-			list = DB_Messages.getReportedAssets();
-			reportedAssetsList.setItems(list);
+			reportedAssetsObs = DB_Messages.getReportedAssets();
+			reportedAssetsList.setItems(reportedAssetsObs);
 			reportedAssetsList.setCellFactory(new Callback<ListView<Asset>, ListCell<Asset>>() {
 	            @Override
 	            public ListCell<Asset> call(ListView<Asset> param) {
@@ -78,11 +82,12 @@ public class DashboardController implements Initializable{
 	                };
 	            }
 	        });
+			
 		}
 		
 		public void refreshList() {
-			list = DB_Messages.getReportedAssets();
-			reportedAssetsList.setItems(list);
+			reportedAssetsObs = DB_Messages.getReportedAssets();
+			reportedAssetsList.setItems(reportedAssetsObs);
 		}
 		
 		public void triggerHardwarePane() {

@@ -24,6 +24,7 @@ public class DB_Assets extends DB_Utilities{
     	try(Connection con = DB_Utilities.getDataSource().getConnection()){
 			String getAllAssetsQuery = "SELECT * FROM assets";
 			try(PreparedStatement psAssets = con.prepareStatement(getAllAssetsQuery)){
+				//obsList.clear();
 				try(ResultSet rs = psAssets.executeQuery()){
 					while(rs.next()) {//while the reader still has a next row read it:
 						int asset_id = rs.getInt("asset_id");
@@ -74,9 +75,7 @@ public class DB_Assets extends DB_Utilities{
 			         } else {
 			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
-			    }
-				
-				createActionForAsset(Helper.INSERTION_MODE,asset);				
+			    }				
 				
 			}
 		}catch(SQLException e) {
@@ -98,8 +97,6 @@ public class DB_Assets extends DB_Utilities{
 						if(isTableEmpty("assets")) {					
 							resetSequenceTo1(con);
 						}
-						
-						createActionForAsset(Helper.DELETION_MODE,asset);
 					}
 				}
 		}catch(SQLException e) {
@@ -144,8 +141,6 @@ public class DB_Assets extends DB_Utilities{
 				oldAsset.setAsset_purchase_date(newAsset.getAsset_purchase_date());
 				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
 				oldAsset.setAsset_serial_number(newAsset.getAsset_serial_number());
-				
-				createActionForAsset(Helper.UPDATE_MODE,oldAsset);
 				
 			}
 		}catch(SQLException e) {

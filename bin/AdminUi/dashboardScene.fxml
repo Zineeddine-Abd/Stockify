@@ -67,7 +67,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-radius: 10px; -fx-border-radius: 10px;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#triggerAccessoryPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Accesories" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#triggerAccessoryPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Accessories" textFill="WHITE">
                      <font>
                         <Font size="28.0" />
                      </font>

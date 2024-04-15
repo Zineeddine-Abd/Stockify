@@ -278,7 +278,7 @@ public class AllRoomsController implements Initializable{
     	DB_Rooms.refresh(allRooms);
     	
     	try {
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

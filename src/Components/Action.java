@@ -84,9 +84,8 @@ public class Action {
 	@Override
 	public String toString() {
 		String result=null;
-		User actual_author = DB_Users.getUser(action_author);
 		try {
-			result = + this.getAction_id() + ":" + "[" +actual_author.getUsername() + "] : " + actual_author.getFull_name() +": "+ this.getAction_type() + " : component: " + this.getAffectedComp() + " with id: " + this.action_related_obj_id;
+			result = + this.getAction_id() + ":"+ this.getAction_type() + " : component: " + this.getAffectedComp() + " with id: " + this.action_related_obj_id;
 		}catch(NullPointerException e) {
 			Helper.displayErrorMessage("Error", e.getMessage());
 		}

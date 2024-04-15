@@ -94,6 +94,7 @@ public class DashboardController implements Initializable{
 			DB_Actions.refresh(actionsObs);
 			recentActions.setItems(actionsObs);
 			
+			
 		}
 		
 		public void refreshList() {

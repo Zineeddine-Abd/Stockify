@@ -57,8 +57,6 @@ public class DB_Users extends DB_Utilities{
 				ps.setString(5, user.getUser_role());
 				ps.executeUpdate();
 				
-				
-				
 				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 			         if (generatedKeys.next()) {
 			        	 //set the actual user id:
@@ -69,8 +67,6 @@ public class DB_Users extends DB_Utilities{
 			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
 			    }
-				
-				createActionForUser(Helper.INSERTION_MODE, user);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -88,7 +84,6 @@ public class DB_Users extends DB_Utilities{
 					
 					obsList.remove(user);
 					
-					createActionForUser(Helper.DELETION_MODE, user);
 				}
 				//log out all deleted users .//to be implemented later.
 			}
@@ -125,8 +120,6 @@ public class DB_Users extends DB_Utilities{
 				oldUser.setEmail(newUser.getEmail());
 				oldUser.setFull_name(newUser.getFull_name());
 				oldUser.setUser_role(newUser.getUser_role());
-				
-				createActionForUser(Helper.UPDATE_MODE, oldUser);
 				
 			}
 		}catch(SQLException e) {

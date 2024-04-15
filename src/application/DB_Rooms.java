@@ -63,7 +63,6 @@ public class DB_Rooms extends DB_Utilities{
 			         }
 			    }
 				
-				createActionForRoom(Helper.INSERTION_MODE, room);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -81,7 +80,6 @@ public class DB_Rooms extends DB_Utilities{
 					
 					obsList.remove(room);
 					
-					createActionForRoom(Helper.DELETION_MODE, room);
 				}
 			}
 		}catch(SQLException e) {
@@ -104,8 +102,6 @@ public class DB_Rooms extends DB_Utilities{
 				ps.setString(2,newRoom.getRoom_type());
 				ps.setInt(3,oldRoom.getRoom_id());
 				ps.executeUpdate();
-				
-				createActionForRoom(Helper.UPDATE_MODE, oldRoom);
 				
 				oldRoom.setRoom_name(newRoom.getRoom_name());
 				oldRoom.setRoom_type(newRoom.getRoom_type());

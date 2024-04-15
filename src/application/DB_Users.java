@@ -5,8 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
+import AdminUi.AdminController;
+import Components.Action;
+import Components.Room;
 import Components.User;
+import LoginUi.LoginController;
 import javafx.collections.ObservableList;
 
 public class DB_Users extends DB_Utilities{
@@ -35,6 +40,7 @@ public class DB_Users extends DB_Utilities{
 				}    
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
     }
@@ -58,13 +64,16 @@ public class DB_Users extends DB_Utilities{
 			        	 //set the actual user id:
 			             last_id = generatedKeys.getInt(1);
 			             user.setUser_id(last_id);
-				obsList.add(user);
+			             obsList.add(user);
 			         } else {
 			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
 			    }
+				
+				createActionForUser(Helper.INSERTION_MODE, user);
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -78,11 +87,13 @@ public class DB_Users extends DB_Utilities{
 					ps.executeUpdate();
 					
 					obsList.remove(user);
+					
+					createActionForUser(Helper.DELETION_MODE, user);
 				}
-				
 				//log out all deleted users .//to be implemented later.
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -115,8 +126,11 @@ public class DB_Users extends DB_Utilities{
 				oldUser.setFull_name(newUser.getFull_name());
 				oldUser.setUser_role(newUser.getUser_role());
 				
+				createActionForUser(Helper.UPDATE_MODE, oldUser);
+				
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -146,8 +160,15 @@ public class DB_Users extends DB_Utilities{
 			}
 		} catch (SQLException e) {
 			Helper.displayErrorMessage("Error",e.getMessage());
+			e.printStackTrace();
 		}
 		
 		return null;
 	}
+	
+	 private static void createActionForUser(String action_type,User related_user) {
+		Action action = new Action(0,related_user.getUser_id(),action_type,java.sql.Date.valueOf(LocalDate.now()),related_user,LoginController.getLoggedUser().getUser_id());
+		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
+		DB_Actions.createAction(action,recentActions);
+	 }
 }

@@ -2,6 +2,8 @@ package AdminUi;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import Components.Action;
 import Components.User;
 import LoginUi.LoginController;
 import application.Helper;
@@ -85,15 +87,14 @@ public class NewUserController implements Initializable{
 //			animatedInvalidInfolabel();
 //			return;
 //		}
-		
-		int id=0;
 		String username = usernameField.getText();
 		String pass_word = passwordField.getText();
 		String email = emailField.getText();
 		String full_name = fullNameField.getText();
 		String user_role = permissions.getValue();
 		
-		User newuser = new User(id,username,pass_word,email,full_name,user_role);
+		User newuser = new User(0,username,pass_word,email,full_name,user_role);
+		
 		if(oldUser == null) {
 			newUser(newuser);
 		}else {

@@ -276,6 +276,13 @@ public class AllRoomsController implements Initializable{
 	public void refreshRoomsList() {
 		allRooms.clear();
     	DB_Rooms.refresh(allRooms);
+    	
+    	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

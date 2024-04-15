@@ -5,9 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import AdminUi.AdminController;
+import Components.Action;
+import Components.Asset;
 import Components.Room;
+import Components.User;
+import LoginUi.LoginController;
 import javafx.collections.ObservableList;
 
 public class DB_Rooms extends DB_Utilities{
@@ -46,7 +52,6 @@ public class DB_Rooms extends DB_Utilities{
 				ps.executeUpdate();
 				
 				
-				
 				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 			         if (generatedKeys.next()) {
 			        	//set the actual user id:
@@ -58,9 +63,10 @@ public class DB_Rooms extends DB_Utilities{
 			         }
 			    }
 				
-				
+				createActionForRoom(Helper.INSERTION_MODE, room);
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -74,9 +80,12 @@ public class DB_Rooms extends DB_Utilities{
 					ps.executeUpdate();
 					
 					obsList.remove(room);
+					
+					createActionForRoom(Helper.DELETION_MODE, room);
 				}
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -96,13 +105,14 @@ public class DB_Rooms extends DB_Utilities{
 				ps.setInt(3,oldRoom.getRoom_id());
 				ps.executeUpdate();
 				
-				
+				createActionForRoom(Helper.UPDATE_MODE, oldRoom);
 				
 				oldRoom.setRoom_name(newRoom.getRoom_name());
 				oldRoom.setRoom_type(newRoom.getRoom_type());
 				
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -124,5 +134,37 @@ public class DB_Rooms extends DB_Utilities{
 		 }
 		 
 		 return rooms;
+	 }
+	 
+	 
+	 public static Room getRoom(int id) {
+			try (Connection con = DB_Utilities.getDataSource().getConnection())
+			{
+				String getAllUsersQuery = "SELECT * FROM rooms WHERE room_id=?";
+				try(PreparedStatement ps = con.prepareStatement(getAllUsersQuery)){
+					ps.setInt(1, id);
+					try (ResultSet rs = ps.executeQuery();){
+						//Users:
+						if(rs.next()) {//while the reader still has a next row read it:
+							int room_id = rs.getInt("room_id");
+							String room_name = rs.getString("room_name");
+							String room_type = rs.getString("room_type");
+							Room newroom = new Room(room_id,room_name,room_type);
+							
+							return newroom;
+						}
+					}    
+				}
+			} catch (SQLException e) {
+				Helper.displayErrorMessage("Error",e.getMessage());
+			}
+			
+			return null;
+		}
+	 
+	 private static void createActionForRoom(String action_type,Room related_room) {
+		Action action = new Action(0,related_room.getRoom_id(),action_type,java.sql.Date.valueOf(LocalDate.now()),related_room,LoginController.getLoggedUser().getUser_id());
+		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
+		DB_Actions.createAction(action,recentActions);
 	 }
 }

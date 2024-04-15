@@ -9,6 +9,10 @@ import javafx.scene.control.Alert.AlertType;
 
 public class Helper {
 	
+	public static final String INSERTION_MODE = "Insertion";
+	public static final String DELETION_MODE = "Deletion";
+	public static final String UPDATE_MODE = "Update";
+	
 	public static final String fxmlAdmin = "/AdminUi/adminScene.fxml";
 	public static final String fxmlTechnician = "/TechnicianUi/technicianScene.fxml";
 	public static final String fxmlProfessor = "/ProfessorUi/professorScene.fxml";
@@ -37,10 +41,14 @@ public class Helper {
     }
 	
 	public static void displayErrorMessage(String title, String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+		try {			
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle(title);
+			alert.setHeaderText(null);
+			alert.setContentText(message);
+			alert.showAndWait();
+		}catch(IllegalStateException e) {
+			return;
+		}
     }
 }

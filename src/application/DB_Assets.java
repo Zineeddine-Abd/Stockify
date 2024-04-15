@@ -6,8 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
+import AdminUi.AdminController;
+import Components.Action;
 import Components.Asset;
+import Components.Room;
+import LoginUi.LoginController;
 import javafx.collections.ObservableList;
 
 public class DB_Assets extends DB_Utilities{
@@ -37,6 +42,7 @@ public class DB_Assets extends DB_Utilities{
 				}
 			}
 		}catch (SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
     }
@@ -58,7 +64,6 @@ public class DB_Assets extends DB_Utilities{
 				ps.executeUpdate();
 				
 				
-				
 				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 			         if (generatedKeys.next()) {
 			             //set the actual asset id:
@@ -70,8 +75,12 @@ public class DB_Assets extends DB_Utilities{
 			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
 			    }
+				
+				createActionForAsset(Helper.INSERTION_MODE,asset);				
+				
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -89,9 +98,12 @@ public class DB_Assets extends DB_Utilities{
 						if(isTableEmpty("assets")) {					
 							resetSequenceTo1(con);
 						}
+						
+						createActionForAsset(Helper.DELETION_MODE,asset);
 					}
 				}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -133,8 +145,11 @@ public class DB_Assets extends DB_Utilities{
 				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
 				oldAsset.setAsset_serial_number(newAsset.getAsset_serial_number());
 				
+				createActionForAsset(Helper.UPDATE_MODE,oldAsset);
+				
 			}
 		}catch(SQLException e) {
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -148,5 +163,43 @@ public class DB_Assets extends DB_Utilities{
 			e.printStackTrace();
 		}
 	}
+	
+	 public static Asset getAsset(int id) {
+			try (Connection con = DB_Utilities.getDataSource().getConnection())
+			{
+				String getAllUsersQuery = "SELECT * FROM assets WHERE asset_id=?";
+				try(PreparedStatement ps = con.prepareStatement(getAllUsersQuery)){
+					ps.setInt(1, id);
+					try (ResultSet rs = ps.executeQuery();){
+						//Users:
+						if(rs.next()) {//while the reader still has a next row read it:
+							int asset_id = rs.getInt("asset_id");
+							String asset_category = rs.getString("asset_category");
+							String asset_type = rs.getString("asset_type");
+							String asset_model = rs.getString("asset_model");
+							String asset_status = rs.getString("asset_status");
+							String asset_room = rs.getString("asset_room");
+							Date asset_purchase_date = rs.getDate("asset_purchase_date");
+							int asset_warranty = rs.getInt("asset_warranty");
+							int asset_serial_number = rs.getInt("asset_serial_number");
+							
+							Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty,asset_serial_number);
+							
+							return asset;
+						}
+					}    
+				}
+			} catch (SQLException e) {
+				Helper.displayErrorMessage("Error",e.getMessage());
+			}
+			
+			return null;
+		}
+	 
+	 private static void createActionForAsset(String action_type,Asset related_asset) {
+		Action action = new Action(0,related_asset.getAsset_id(),action_type,java.sql.Date.valueOf(LocalDate.now()),related_asset,LoginController.getLoggedUser().getUser_id());
+		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
+		DB_Actions.createAction(action,recentActions);
+	 }
 	
 }

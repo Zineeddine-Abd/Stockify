@@ -5,8 +5,10 @@ import java.util.ResourceBundle;
 
 import Components.Action;
 import Components.Asset;
+import application.DB_Actions;
 import application.DB_Messages;
 import application.Helper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -52,6 +54,10 @@ public class DashboardController implements Initializable{
 		@FXML
 		private ListView<Action> recentActions;
 		private ObservableList<Action> actionsObs;
+		
+		public ObservableList<Action> getrecentActionsObsList() {
+			return this.actionsObs;
+		}
 		//*****************************************/
 		
 		@Override
@@ -82,6 +88,11 @@ public class DashboardController implements Initializable{
 	                };
 	            }
 	        });
+			
+			
+			actionsObs = FXCollections.observableArrayList();
+			DB_Actions.refresh(actionsObs);
+			recentActions.setItems(actionsObs);
 			
 		}
 		

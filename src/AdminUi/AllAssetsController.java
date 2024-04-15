@@ -359,6 +359,7 @@ public class AllAssetsController implements Initializable{
 			root = AdminController.currentReportPopupLoader.load();
 			ReportPopupController controller = (ReportPopupController)AdminController.currentReportPopupLoader.getController();
 			controller.setOldAsset(item);
+			controller.checkWarrantyValidation();
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -491,8 +492,7 @@ public class AllAssetsController implements Initializable{
 	
 	public void refreshAssetsList() {
 		allAssetsObs.clear();
-    	DB_Assets.refresh(allAssetsObs);
-    	
+		DB_Assets.refresh(allAssetsObs);
     }
 }
 

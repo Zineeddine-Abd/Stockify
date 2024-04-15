@@ -79,11 +79,11 @@ public class DB_Actions {
 					}
 					ps.setDate(5, action.getAction_date());
 					ps.setInt(6, action.getAction_author());
-
+					
 					ps.executeUpdate();
 					
-					try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-				         if (generatedKeys.next()) {
+					try(ResultSet generatedKeys = ps.getGeneratedKeys()){
+				         if(generatedKeys.next()) {
 				            last_id = generatedKeys.getInt(1);
 				            action.setAction_id(last_id);
 							obsList.add(action);

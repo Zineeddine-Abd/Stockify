@@ -132,6 +132,7 @@ public class DB_Users extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
+		newUser.setUser_id(oldUser.getUser_id());
 		createActionForUser(Helper.UPDATE_MODE, newUser);
 	}
 	

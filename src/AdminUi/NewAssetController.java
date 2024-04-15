@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -74,6 +75,8 @@ public class NewAssetController implements Initializable{
 	private Button cancelButton;
 	@FXML
 	private Label invalidInfo;
+	@FXML
+	private DatePicker assetPurchaseDate;
 	
 	//old asset
 	private Asset oldAsset;
@@ -174,6 +177,14 @@ public class NewAssetController implements Initializable{
 			animatedInvalidInfolabel();
 			return;
 		}
+		
+		if(assetPurchaseDate.getValue() == null) {
+			invalidInfo.setText("Invalid Date!");
+			animatedInvalidInfolabel();
+			return;
+		}
+		
+		
 		int id = 0;
 		String category = categoryChoiceBox.getValue();
 		String type = typeChoiceBox.getValue();
@@ -183,7 +194,7 @@ public class NewAssetController implements Initializable{
 		int warranty = Integer.parseInt(warrantyField.getText());
 		int serial_number = Integer.parseInt(serialField.getText());
 		
-		Date date = java.sql.Date.valueOf(LocalDate.now());
+		Date date = java.sql.Date.valueOf(assetPurchaseDate.getValue());
 		
 		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty,serial_number);
 		
@@ -213,6 +224,7 @@ public class NewAssetController implements Initializable{
 		locationDropDownBox.setValue(oldAsset.getAsset_room());
 		warrantyField.setText(String.valueOf(oldAsset.getAsset_warranty()));
 		serialField.setText(String.valueOf(oldAsset.getAsset_serial_number()));
+		assetPurchaseDate.setValue(oldAsset.getAsset_purchase_date().toLocalDate());
 	}
 	
 	private void clearInputs() {

@@ -3,6 +3,8 @@ package AdminUi;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 import Components.Asset;
@@ -18,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -34,6 +37,8 @@ public class ReportPopupController implements Initializable{
 	private Button cancelButton;
 	@FXML
 	private Label invalidInfo;
+	@FXML
+	private Label warrantyStatusLabel;
 	
 	private String[] reportStatuses = {"Broken","Under Maintenance","Ready To Use"};
 	
@@ -73,7 +78,6 @@ public class ReportPopupController implements Initializable{
 		
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, new_asset);
 		disposeWindow(event);
-		//java.lang.NullPointerException: Cannot invoke "javafx.fxml.FXMLLoader.getController()" because "AdminUi.AdminController.currentMessagesLoader" is null
 		((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().refreshList();
 	}
 	
@@ -88,5 +92,24 @@ public class ReportPopupController implements Initializable{
 	public void disposeWindow(ActionEvent event) {
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
+	}
+	
+	public void checkWarrantyValidation() {
+		LocalDate assetDate = oldAsset.getAsset_purchase_date().toLocalDate();
+		LocalDate today = LocalDate.now();
+		
+		Period period = Period.between(assetDate, today);
+        int monthsDifference = period.getMonths();
+		
+		if(monthsDifference >= oldAsset.getAsset_warranty() || oldAsset.getAsset_warranty() == 0) {
+			warrantyStatusLabel.setText("Expired!");
+			warrantyStatusLabel.setTextFill(Color.RED);
+		}else {
+			warrantyStatusLabel.setText("Valid!");
+			warrantyStatusLabel.setTextFill(Color.DARKGREEN);
+		}
+			
+		
+		
 	}
 }

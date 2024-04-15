@@ -91,6 +91,8 @@ public class DB_Assets extends DB_Utilities{
 				String deleteAsset = "DELETE FROM assets WHERE asset_id=?";
 				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){
 					for(Asset asset : selectedAssets) {
+						createActionForAsset(Helper.DELETION_MODE, asset);
+						
 						ps.setInt(1, asset.getAsset_id());
 						ps.executeUpdate();
 						
@@ -99,7 +101,6 @@ public class DB_Assets extends DB_Utilities{
 						if(isTableEmpty("assets")) {					
 							resetSequenceTo1(con);
 						}
-						createActionForAsset(Helper.DELETION_MODE, asset);
 					}
 				}
 		}catch(SQLException e) {
@@ -135,7 +136,6 @@ public class DB_Assets extends DB_Utilities{
 				ps.executeUpdate();
 				
 				
-				
 				oldAsset.setAsset_category(newAsset.getAsset_category());
 				oldAsset.setAsset_type(newAsset.getAsset_type());
 				oldAsset.setAsset_model(newAsset.getAsset_model());
@@ -145,12 +145,16 @@ public class DB_Assets extends DB_Utilities{
 				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
 				oldAsset.setAsset_serial_number(newAsset.getAsset_serial_number());
 				
+				newAsset.setAsset_id(oldAsset.getAsset_id());
 				createActionForAsset(Helper.UPDATE_MODE, newAsset);
 				
 			}
 		}catch(SQLException e) {
-			e.printStackTrace();
+			
 			Helper.displayErrorMessage("Error",e.getMessage());
+			e.printStackTrace();
+			e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	

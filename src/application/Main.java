@@ -35,7 +35,6 @@ public class Main extends Application {
 				}
 			});
 			
-			//connectToStockifyDB();
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

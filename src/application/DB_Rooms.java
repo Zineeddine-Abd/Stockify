@@ -118,6 +118,7 @@ public class DB_Rooms extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
+		newRoom.setRoom_id(oldRoom.getRoom_id());
 		createActionForRoom(Helper.UPDATE_MODE, newRoom);
 	}
 	

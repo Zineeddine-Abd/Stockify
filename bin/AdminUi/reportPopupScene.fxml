@@ -29,9 +29,22 @@
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
       </ChoiceBox>
+      <HBox prefHeight="17.0" prefWidth="315.0">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="15.0" />
+         </VBox.margin>
+         <children>
+            <Label text="Warranty Status:" />
+            <Label fx:id="warrantyStatusLabel">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
       <Label text="Add message: (optional)">
          <VBox.margin>
-            <Insets left="15.0" top="30.0" />
+            <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
       <TextArea fx:id="messageAreaTextField" prefHeight="158.0" prefWidth="345.0">

@@ -28,7 +28,7 @@ public class DB_Utilities {
 			dataSource.setMinimumIdle(5);
 			dataSource.setMaximumPoolSize(1000);
 			
-			dataSource.setLoginTimeout(5);
+			dataSource.setLoginTimeout(2);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

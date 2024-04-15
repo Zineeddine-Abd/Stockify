@@ -72,6 +72,7 @@ public class DB_Users extends DB_Utilities{
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
+		createActionForUser(Helper.INSERTION_MODE, user);
 	}
 	
 	public static void removeUser(ObservableList<User> obsList, ObservableList<User> selectedUsers) {
@@ -90,6 +91,10 @@ public class DB_Users extends DB_Utilities{
 		}catch(SQLException e) {
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+		
+		for(User user : selectedUsers) {
+			createActionForUser(Helper.DELETION_MODE, user);
 		}
 	}
 	
@@ -126,6 +131,8 @@ public class DB_Users extends DB_Utilities{
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
+		
+		createActionForUser(Helper.UPDATE_MODE, newUser);
 	}
 	
 	

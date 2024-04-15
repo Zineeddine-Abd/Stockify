@@ -68,6 +68,8 @@ public class DB_Rooms extends DB_Utilities{
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
+		
+		createActionForRoom(Helper.INSERTION_MODE, room);
 	}
 	
 	public static void removeRoom(ObservableList<Room> obsList, ObservableList<Room> selectedRooms) {
@@ -85,6 +87,10 @@ public class DB_Rooms extends DB_Utilities{
 		}catch(SQLException e) {
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+		
+		for(Room room : selectedRooms) {			
+			createActionForRoom(Helper.DELETION_MODE, room);
 		}
 	}
 	
@@ -111,6 +117,8 @@ public class DB_Rooms extends DB_Utilities{
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
+		
+		createActionForRoom(Helper.UPDATE_MODE, newRoom);
 	}
 	
 	

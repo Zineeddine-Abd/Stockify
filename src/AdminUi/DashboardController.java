@@ -64,6 +64,18 @@ public class DashboardController implements Initializable{
 		public void initialize(URL location, ResourceBundle resources) {
 			warningsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
 			recentActionsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
+			
+			HardwareButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			numHardware.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			
+			RoomsButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			numRooms.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			
+			SoftwareButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			numSoftware.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			
+			AccesoriesButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			numAccessory.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 		}
 		
 		public void setItems() {

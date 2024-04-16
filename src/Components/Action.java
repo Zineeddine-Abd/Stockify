@@ -2,24 +2,42 @@ package Components;
 
 import java.sql.Date;
 
+import application.DB_Assets;
+import application.DB_Rooms;
 import application.DB_Users;
 import application.Helper;
 
 public class Action {
 	private int action_id;
-	private int action_related_obj_id;
 	private Object related_object;
+	private int action_related_obj_id;
+	private User action_author;
 	private String action_type;
 	private Date action_date;
-	private int action_author;
+	private String importantInfoForObject;
 
-	public Action(int id,int related_obj_id,String action_type,Date date,Object obj,int author) {
+	public Action(int id,String action_type,int related_obj_id,String related_obj_type,Date date,int action_author_id) {
 		this.action_id = id;
-		this.action_related_obj_id = related_obj_id;
 		this.action_type = action_type;
 		this.action_date = date;
-		this.related_object = obj;
-		this.action_author = author;
+		this.action_author = DB_Users.getUser(action_author_id);
+		this.action_related_obj_id = related_obj_id;
+		
+		
+		switch(related_obj_type) {
+		case Helper.ASSET:
+			this.related_object = DB_Assets.getAsset(related_obj_id);
+			break;
+		case Helper.USER:
+			this.related_object = DB_Users.getUser(related_obj_id);
+			break;
+		case Helper.ROOM:
+			this.related_object = DB_Rooms.getRoom(related_obj_id);
+			break;
+		}
+		
+		importantInfoForObject = getObjectStringLabel();
+		
 	}
 	
 	public int getAction_id() {
@@ -62,31 +80,35 @@ public class Action {
 		this.related_object = obj;
 	}
 	
-	public int getAction_author() {
+	public User getActionAuthor() {
 		return action_author;
 	}
 	
-	public void setAction_author(int author) {
-		this.action_author = author;
+	public void setActionAuthor(User user) {
+		this.action_author = user;
 	}
 	
-	public String getAffectedComp() {
+	public String getObjectStringLabel() {
 		if(related_object instanceof Asset) {
-			return "Asset";
+			Asset asset = (Asset) related_object;
+			return asset.getAsset_category() + ":" + asset.getAsset_type() + ":" + asset.getAsset_model() + ":serial number = " + asset.getAsset_serial_number();
 		}else if(related_object instanceof User) {
-			return "User";
+			User user = (User) related_object;
+			return user.getFull_name() + ":email = " + user.getEmail() + " : " + user.getUser_role();
 		}else if(related_object instanceof Room) {
-			return "Room";
+			Room room = (Room) related_object;
+			return room.getRoom_name() + " : " + room.getRoom_type();
+		}else {			
+			return null;
 		}
-		return null;
 	}
+	
 	
 	@Override
 	public String toString() {
-		User author = DB_Users.getUser(action_author);
 		String result=null;
 		try {
-			result = + this.getAction_id() + ": "+ this.getAction_type() + " : " +author.getUsername() + " :component: " + this.getAffectedComp() + " with id: " + this.action_related_obj_id;
+			result = + this.getAction_id() + ": "+ this.getAction_type() + " : " +action_author.getUsername() + ", component: " + getObjectStringLabel() + " : " + this.action_related_obj_id;
 		}catch(NullPointerException e) {
 			Helper.displayErrorMessage("Error", e.getMessage());
 		}

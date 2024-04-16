@@ -77,7 +77,7 @@ public class DB_Assets extends DB_Utilities{
 			         }
 			    }
 				
-				createActionForAsset(Helper.INSERTION_MODE, asset);
+				createActionForAsset(Helper.INSERTION_MODE, asset.getAsset_id());
 				
 			}
 		}catch(SQLException e) {
@@ -90,8 +90,8 @@ public class DB_Assets extends DB_Utilities{
 		try (Connection con = dataSource.getConnection()) {
 				String deleteAsset = "DELETE FROM assets WHERE asset_id=?";
 				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){
+					
 					for(Asset asset : selectedAssets) {
-						createActionForAsset(Helper.DELETION_MODE, asset);
 						
 						ps.setInt(1, asset.getAsset_id());
 						ps.executeUpdate();
@@ -107,6 +107,7 @@ public class DB_Assets extends DB_Utilities{
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
+		
 	}
 	
 	public static void updateAsset(ObservableList<Asset> obsList, Asset oldAsset, Asset newAsset) {
@@ -145,8 +146,7 @@ public class DB_Assets extends DB_Utilities{
 				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
 				oldAsset.setAsset_serial_number(newAsset.getAsset_serial_number());
 				
-				newAsset.setAsset_id(oldAsset.getAsset_id());
-				createActionForAsset(Helper.UPDATE_MODE, newAsset);
+				createActionForAsset(Helper.UPDATE_MODE, oldAsset.getAsset_id());
 				
 			}
 		}catch(SQLException e) {
@@ -200,8 +200,8 @@ public class DB_Assets extends DB_Utilities{
 			return null;
 		}
 	 
-	 private static void createActionForAsset(String action_type,Asset related_asset) {
-		Action action = new Action(0,related_asset.getAsset_id(),action_type,java.sql.Date.valueOf(LocalDate.now()),related_asset,LoginController.getLoggedUser().getUser_id());
+	 private static void createActionForAsset(String action_type,int related_asset_id) {
+		Action action = new Action(0,action_type,related_asset_id,Helper.ASSET,java.sql.Date.valueOf(LocalDate.now()),LoginController.getLoggedUser().getUser_id());
 		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
 		DB_Actions.createAction(action,recentActions);
 	 }

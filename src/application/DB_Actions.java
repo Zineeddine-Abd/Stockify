@@ -30,24 +30,13 @@ public class DB_Actions {
 							int action_id = rs.getInt("action_id");
 							String action_type = rs.getString("action_type");
 							Date date = rs.getDate("action_date");
-							int action_author = rs.getInt("action_author");
+							int action_author_id = rs.getInt("action_author");
 							
-							//determine which object is specified in the action.
-							int related_action_asset_id = rs.getInt("cor_asset");
-							if(rs.wasNull()) {
-								int related_action_user_id = rs.getInt("cor_user");
-								if(rs.wasNull()) {
-									int related_action_room_id = rs.getInt("cor_room");
-									Room room = DB_Rooms.getRoom(related_action_room_id);
-									action = new Action(action_id, related_action_room_id, action_type, date, room,action_author);
-								}else {
-									User user = DB_Users.getUser(related_action_user_id);
-									action = new Action(action_id, related_action_user_id, action_type, date, user,action_author);
-								}
-							}else {
-								Asset asset = DB_Assets.getAsset(related_action_asset_id);
-								action = new Action(action_id, related_action_asset_id, action_type, date, asset,action_author);
-							}
+							int cor_obj_id = rs.getInt("cor_obj_id");
+							String cor_obj_type = rs.getString("cor_obj_type");
+							
+							action = new Action(action_id,action_type,cor_obj_id,cor_obj_type,date,action_author_id);
+							
 							obsList.add(action);
 						}
 					}
@@ -60,25 +49,33 @@ public class DB_Actions {
 	 
 	 public static void createAction(Action action,ObservableList<Action> obsList) {
 		 try(Connection con = DB_Utilities.getDataSource().getConnection()){
-				String insertMessage = "INSERT INTO actions (action_type,cor_asset,cor_user,cor_room,action_date,action_author) VALUES (?,?,?,?,?,?)";
+				String insertMessage = "INSERT INTO actions (action_type,cor_obj_id,cor_obj_type,action_date,action_author) VALUES (?,?,?,?,?)";
 				try(PreparedStatement ps = con.prepareStatement(insertMessage,Statement.RETURN_GENERATED_KEYS)){
 					
 					ps.setString(1, action.getAction_type());
+					
 					if(action.getRelated_object() instanceof Asset) {
-						ps.setInt(2, action.getAction_related_obj_id());
-						ps.setNull(3, Types.INTEGER);
-						ps.setNull(4, Types.INTEGER);
+						Asset asset = (Asset) action.getRelated_object();
+						
+						ps.setInt(2, asset.getAsset_id());
+						ps.setString(3,Helper.ASSET);
+						
 					}else if(action.getRelated_object() instanceof User) {
-						ps.setNull(2, Types.INTEGER);
-						ps.setInt(3, action.getAction_related_obj_id());
-						ps.setNull(4, Types.INTEGER);
+						User user = (User) action.getRelated_object();
+						
+						ps.setInt(2, user.getUser_id());
+						ps.setString(3,Helper.USER);
+						
 					}else if(action.getRelated_object() instanceof Room) {
-						ps.setNull(2, Types.INTEGER);
-						ps.setNull(3, Types.INTEGER);
-						ps.setInt(4, action.getAction_related_obj_id());
+						Room room = (Room) action.getRelated_object();
+						
+						ps.setInt(2, room.getRoom_id());
+						ps.setString(3,Helper.ROOM);
+						
 					}
-					ps.setDate(5, action.getAction_date());
-					ps.setInt(6, action.getAction_author());
+					
+					ps.setDate(4, action.getAction_date());
+					ps.setInt(5, action.getActionAuthor().getUser_id());
 					
 					ps.executeUpdate();
 					

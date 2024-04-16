@@ -72,7 +72,7 @@ public class DB_Users extends DB_Utilities{
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
-		createActionForUser(Helper.INSERTION_MODE, user);
+		createActionForUser(Helper.INSERTION_MODE, user.getUser_id());
 	}
 	
 	public static void removeUser(ObservableList<User> obsList, ObservableList<User> selectedUsers) {
@@ -93,9 +93,6 @@ public class DB_Users extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
-		for(User user : selectedUsers) {
-			createActionForUser(Helper.DELETION_MODE, user);
-		}
 	}
 	
 	public static void updateUser(ObservableList<User> obsList, User oldUser, User newUser) {
@@ -132,8 +129,8 @@ public class DB_Users extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
-		newUser.setUser_id(oldUser.getUser_id());
-		createActionForUser(Helper.UPDATE_MODE, newUser);
+
+		createActionForUser(Helper.UPDATE_MODE, oldUser.getUser_id());
 	}
 	
 	
@@ -167,8 +164,8 @@ public class DB_Users extends DB_Utilities{
 		return null;
 	}
 	
-	 private static void createActionForUser(String action_type,User related_user) {
-		Action action = new Action(0,related_user.getUser_id(),action_type,java.sql.Date.valueOf(LocalDate.now()),related_user,LoginController.getLoggedUser().getUser_id());
+	 private static void createActionForUser(String action_type,int related_user_id) {
+		Action action = new Action(0,action_type,related_user_id,Helper.USER,java.sql.Date.valueOf(LocalDate.now()),LoginController.getLoggedUser().getUser_id());
 		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
 		DB_Actions.createAction(action,recentActions);
 	 }

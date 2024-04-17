@@ -74,10 +74,10 @@ public class LoginController{
 		try (Connection con = DB_Utilities.getDataSource().getConnection()){
 			//Changes based on the driver and type of sqlDatabase used:
 			
-			String password = "'" + (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText()) +"'" ;
-			String username = "'" + usernameField.getText() + "'" ;
+			String password = (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText())  ;
+			String username =  usernameField.getText() ;
 			
-	        String sql = "SELECT * FROM users WHERE username=" + username + " AND pass_word="+password + " ;";
+	        String sql = "SELECT * FROM users WHERE username=" +"'" + username +"'" + " AND pass_word="+ "'" +password + "';";
 	        
 	        try(PreparedStatement statement = con.prepareStatement(sql);
 	        	ResultSet resultSet = statement.executeQuery();){

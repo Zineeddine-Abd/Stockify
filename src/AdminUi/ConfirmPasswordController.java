@@ -40,13 +40,12 @@ public class ConfirmPasswordController {
 	}
 	
 	
-	public void confirmGivenPassword() {
+	public void confirmGivenPassword(ActionEvent event) {
+		System.out.println(LoginController.getLoggedUser().getPass_word());
+		System.out.println(passField.getText());
 		if(passField.getText().equals(LoginController.getLoggedUser().getPass_word())) {
-			if(currentMode == UPDATE_MODE) {
-				((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().updateUser(oldUser, newUser);
-			}else if(currentMode == DELETION_MODE) {
-				((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().deleteSelectedUsers();
-			}
+			((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().confirmedPassword = true;
+			disposeWindow(event);
 		}else {
 			invalidInfo.setText("Passwords Do Not Match!");
 			animatedInvalidInfolabel();

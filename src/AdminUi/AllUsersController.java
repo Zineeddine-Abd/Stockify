@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Components.User;
+import application.DB_Sessions;
 import application.DB_Users;
 import application.Helper;
 import application.Main;
@@ -72,6 +73,7 @@ public class AllUsersController implements Initializable{
     //creating new asset/user mats:********************
   	private Stage fillFormula;
   	private Scene createNewScene;
+  	public boolean confirmedPassword = false;
   	//*************************************************
   	@FXML
     private TextField searchTextField;
@@ -182,6 +184,12 @@ public class AllUsersController implements Initializable{
 	public void popupUpdateUser(MouseEvent event, User user) {
 		Parent root;
 		
+		popupConfirmPassword(event, ConfirmPasswordController.UPDATE_MODE);
+		
+		if(!confirmedPassword) {
+			return;
+		}
+		confirmedPassword = false;
 		try {
 			AdminController.currentNewUserLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewUser));
 			root = AdminController.currentNewUserLoader.load();
@@ -236,7 +244,7 @@ public class AllUsersController implements Initializable{
 			fillFormula.initModality(Modality.WINDOW_MODAL);
 			fillFormula.initOwner(parentStage);
 			
-			fillFormula.show();
+			fillFormula.showAndWait();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -247,9 +255,20 @@ public class AllUsersController implements Initializable{
        DB_Users.addUser(allUsersObs, newuser);
 	}
 	
-    public void deleteSelectedUsers() {
-    	
+    public void deleteSelectedUsers(MouseEvent event) {
+    	popupConfirmPassword(event, ConfirmPasswordController.UPDATE_MODE);
+		
+		if(!confirmedPassword) {
+			return;
+		}
+		confirmedPassword = false;
+		
     	ObservableList<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems();
+    	
+    	if(SelectedUsersAreLoggedIn(selectedUsers)) {
+    		Helper.displayErrorMessage("Error", "One or more of the selected users is currently logged in! deletion cancelled.");
+    		return;
+    	}
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
     		DB_Users.removeUser(allUsersObs, selectedUsers);
@@ -326,5 +345,15 @@ public class AllUsersController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    public boolean SelectedUsersAreLoggedIn(ObservableList<User> selectedUsers) {
+    	for(User user: selectedUsers) {
+    		if(DB_Sessions.sessionExists(user.getUser_id())) {
+    			return true;
+    		}
+    	}
+    	
+    	return false;
     }
 }

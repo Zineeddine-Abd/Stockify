@@ -95,7 +95,7 @@ public class Asset {
 	}
 	
 	public String toString() {
-		return this.getAsset_id()+": "+this.getAsset_category()+": "+this.getAsset_type()+": "+this.getAsset_model()+": "+this.getAsset_status();
+		return this.getAsset_id()+": "+this.getAsset_category()+": "+this.getAsset_type()+": "+this.getAsset_model()+": "+this.getAsset_status() + " ";
 	}
 
 }

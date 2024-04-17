@@ -70,9 +70,12 @@ public class AdminController implements Initializable{
 	public static final String fxmlReportDetails = "/AdminUi/reportDetailsPopupScene.fxml";
 	public static final String fxmlMessages = "/AdminUi/messages.fxml";
 	
+	public static final String fxmlConfirmPassword = "/AdminUi/confirmPasswordScene.fxml";
+	
 	public static FXMLLoader currentNewAssetLoader;
 	public static FXMLLoader currentNewUserLoader;
 	public static FXMLLoader currentNewRoomLoader;
+	public static FXMLLoader currentConfirmPasswordLoader;
 	
 	public static FXMLLoader currentReportPopupLoader;
 	public static FXMLLoader currentReportDetailsPopupLoader;

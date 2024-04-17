@@ -27,7 +27,7 @@ public class ReportDetailsPopupController{
 	
 	public void setItems() {
 		User messageAuthor = DB_Users.getUser(message.getMessage_author());
-		messageAreaTextField.setText(message.getMessage() + "\n\nAuthor: " + messageAuthor.getFull_name() + "\n\nEmail : " + messageAuthor.getEmail());
+		messageAreaTextField.setText(message.getMessage() + "\n\nAuthor: " + messageAuthor.getFullName() + "\n\nEmail : " + messageAuthor.getEmail());
 	}
 
 }

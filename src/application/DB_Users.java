@@ -31,10 +31,11 @@ public class DB_Users extends DB_Utilities{
 						String username = userResultSet.getString("username");
 						String pass_word = userResultSet.getString("pass_word");
 						String email = userResultSet.getString("email");
-						String full_name = userResultSet.getString("full_name");
+						String first_name = userResultSet.getString("first_name");
+						String last_name = userResultSet.getString("last_name");
 						String user_role = userResultSet.getString("user_role");
 						
-						User newuser = new User(user_id,username,pass_word,email,full_name,user_role);
+						User newuser = new User(user_id,username,pass_word,email,first_name,last_name,user_role);
 						obsList.add(newuser);
 					}
 				}    
@@ -47,14 +48,15 @@ public class DB_Users extends DB_Utilities{
 	
 	public static void addUser(ObservableList<User> obsList, User user) {
 		try(Connection con = dataSource.getConnection()){
-			String insertUser = "INSERT INTO users (username,pass_word,email,full_name,user_role) VALUES(?,?,?,?,?);";
+			String insertUser = "INSERT INTO users (username,pass_word,email,first_name,last_name,user_role) VALUES(?,?,?,?,?,?);";
 			try(PreparedStatement ps = con.prepareStatement(insertUser,Statement.RETURN_GENERATED_KEYS);){
 				
 				ps.setString(1, user.getUsername());
 				ps.setString(2, user.getPass_word());
 				ps.setString(3, user.getEmail());
-				ps.setString(4, user.getFull_name());
-				ps.setString(5, user.getUser_role());
+				ps.setString(4, user.getFirst_name());
+				ps.setString(5, user.getLast_name());
+				ps.setString(6, user.getUser_role());
 				ps.executeUpdate();
 				
 				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -72,10 +74,14 @@ public class DB_Users extends DB_Utilities{
 			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
-		createActionForUser(Helper.INSERTION_MODE, user.getUser_id());
+		createActionForUser(Helper.INSERTION_MODE, user);
 	}
 	
 	public static void removeUser(ObservableList<User> obsList, ObservableList<User> selectedUsers) {
+		for(User user : selectedUsers) {
+			createActionForUser(Helper.DELETION_MODE, user);
+		}
+		
 		try (Connection con = dataSource.getConnection()) {
 			String deleteUser = "DELETE FROM users WHERE user_id=?";
 			try(PreparedStatement ps = con.prepareStatement(deleteUser)){
@@ -101,7 +107,8 @@ public class DB_Users extends DB_Utilities{
 					+ "username = ?,"
 					+ "pass_word = ?,"
 					+ "email = ?,"
-					+ "full_name = ?,"
+					+ "first_name = ?,"
+					+ "last_name = ?,"
 					+ "user_role = ? "
 					+ "WHERE user_id = ?";
 			try(PreparedStatement ps = con.prepareStatement(updateUser)){
@@ -110,9 +117,10 @@ public class DB_Users extends DB_Utilities{
 				ps.setString(1,newUser.getUsername());
 				ps.setString(2,newUser.getPass_word());
 				ps.setString(3,newUser.getEmail());
-				ps.setString(4,newUser.getFull_name());
-				ps.setString(5,newUser.getUser_role());
-				ps.setInt(6,oldUser.getUser_id());
+				ps.setString(4,newUser.getFirst_name());
+				ps.setString(5, newUser.getLast_name());
+				ps.setString(6,newUser.getUser_role());
+				ps.setInt(7,oldUser.getUser_id());
 				ps.executeUpdate();
 				
 				
@@ -120,7 +128,8 @@ public class DB_Users extends DB_Utilities{
 				oldUser.setUsername(newUser.getUsername());
 				oldUser.setPass_word(newUser.getPass_word());
 				oldUser.setEmail(newUser.getEmail());
-				oldUser.setFull_name(newUser.getFull_name());
+				oldUser.setFirst_name(newUser.getFirst_name());
+				oldUser.setLast_name(newUser.getLast_name());
 				oldUser.setUser_role(newUser.getUser_role());
 				
 			}
@@ -130,7 +139,7 @@ public class DB_Users extends DB_Utilities{
 		}
 		
 
-		createActionForUser(Helper.UPDATE_MODE, oldUser.getUser_id());
+		createActionForUser(Helper.UPDATE_MODE, oldUser);
 	}
 	
 	
@@ -147,10 +156,11 @@ public class DB_Users extends DB_Utilities{
 						String username = userResultSet.getString("username");
 						String pass_word = userResultSet.getString("pass_word");
 						String email = userResultSet.getString("email");
-						String full_name = userResultSet.getString("full_name");
+						String first_name = userResultSet.getString("first_name");
+						String last_name = userResultSet.getString("last_name");
 						String user_role = userResultSet.getString("user_role");
 						
-						User newuser = new User(user_id,username,pass_word,email,full_name,user_role);
+						User newuser = new User(user_id,username,pass_word,email,first_name,last_name,user_role);
 						
 						return newuser;
 					}
@@ -164,9 +174,9 @@ public class DB_Users extends DB_Utilities{
 		return null;
 	}
 	
-	 private static void createActionForUser(String action_type,int related_user_id) {
-		Action action = new Action(0,action_type,related_user_id,Helper.USER,java.sql.Date.valueOf(LocalDate.now()),LoginController.getLoggedUser().getUser_id());
+	private static void createActionForUser(String action_type,User user) {
+		Action action = new Action(0, action_type, user.toString() , Helper.USER, java.sql.Date.valueOf(LocalDate.now()));
 		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
 		DB_Actions.createAction(action,recentActions);
-	 }
+ }
 }

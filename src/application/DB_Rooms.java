@@ -69,10 +69,14 @@ public class DB_Rooms extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
-		createActionForRoom(Helper.INSERTION_MODE, room.getRoom_id());
+		createActionForRoom(Helper.INSERTION_MODE, room);
 	}
 	
 	public static void removeRoom(ObservableList<Room> obsList, ObservableList<Room> selectedRooms) {
+		for(Room room : selectedRooms) {
+			createActionForRoom(Helper.DELETION_MODE, room);
+		}
+		
 		try (Connection con = dataSource.getConnection()) {
 			String deleteRoom = "DELETE FROM rooms WHERE room_id=?";
 			try(PreparedStatement ps = con.prepareStatement(deleteRoom)){
@@ -115,7 +119,7 @@ public class DB_Rooms extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
-		createActionForRoom(Helper.UPDATE_MODE, oldRoom.getRoom_id());
+		createActionForRoom(Helper.UPDATE_MODE, oldRoom);
 	}
 	
 	
@@ -163,9 +167,9 @@ public class DB_Rooms extends DB_Utilities{
 			return null;
 		}
 	 
-	 private static void createActionForRoom(String action_type,int related_room_id) {
-		Action action = new Action(0,action_type,related_room_id,Helper.ROOM,java.sql.Date.valueOf(LocalDate.now()),LoginController.getLoggedUser().getUser_id());
-		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
-		DB_Actions.createAction(action,recentActions);
+	 private static void createActionForRoom(String action_type,Room room) {
+			Action action = new Action(0, action_type, room.toString() , Helper.ROOM, java.sql.Date.valueOf(LocalDate.now()));
+			ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
+			DB_Actions.createAction(action,recentActions);
 	 }
 }

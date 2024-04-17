@@ -77,7 +77,7 @@ public class DB_Assets extends DB_Utilities{
 			         }
 			    }
 				
-				createActionForAsset(Helper.INSERTION_MODE, asset.getAsset_id());
+				createActionForAsset(Helper.INSERTION_MODE, asset);
 				
 			}
 		}catch(SQLException e) {
@@ -87,6 +87,10 @@ public class DB_Assets extends DB_Utilities{
 	}
 	
 	public static void removeAsset(ObservableList<Asset> obsList, ObservableList<Asset> selectedAssets) {
+		for(Asset asset : selectedAssets) {
+			createActionForAsset(Helper.DELETION_MODE, asset);
+		}
+		
 		try (Connection con = dataSource.getConnection()) {
 				String deleteAsset = "DELETE FROM assets WHERE asset_id=?";
 				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){
@@ -146,7 +150,7 @@ public class DB_Assets extends DB_Utilities{
 				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
 				oldAsset.setAsset_serial_number(newAsset.getAsset_serial_number());
 				
-				createActionForAsset(Helper.UPDATE_MODE, oldAsset.getAsset_id());
+				createActionForAsset(Helper.UPDATE_MODE, oldAsset);
 				
 			}
 		}catch(SQLException e) {
@@ -200,8 +204,8 @@ public class DB_Assets extends DB_Utilities{
 			return null;
 		}
 	 
-	 private static void createActionForAsset(String action_type,int related_asset_id) {
-		Action action = new Action(0,action_type,related_asset_id,Helper.ASSET,java.sql.Date.valueOf(LocalDate.now()),LoginController.getLoggedUser().getUser_id());
+	 private static void createActionForAsset(String action_type,Asset asset) {
+		Action action = new Action(0, action_type, asset.toString() , Helper.ASSET, java.sql.Date.valueOf(LocalDate.now()));
 		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
 		DB_Actions.createAction(action,recentActions);
 	 }

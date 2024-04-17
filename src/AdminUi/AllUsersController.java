@@ -49,15 +49,15 @@ public class AllUsersController implements Initializable{
 
     @FXML
     private TableColumn<User, String> usernameColumn;
-    
-    @FXML
-    private TableColumn<User, String> pass_wordColumn;
 
     @FXML
     private TableColumn<User, String> emailColumn;
 
     @FXML
-    private TableColumn<User, String> full_nameColumn;
+    private TableColumn<User, String> firstNameColumn;
+    
+    @FXML
+    private TableColumn<User, String> lastNameColumn;
 
     @FXML
     private TableColumn<User, String> user_roleColumn;
@@ -68,8 +68,6 @@ public class AllUsersController implements Initializable{
 	//Top
     @FXML
 	private Button newUserButton;
-	
-    
     
     //creating new asset/user mats:********************
   	private Stage fillFormula;
@@ -79,7 +77,7 @@ public class AllUsersController implements Initializable{
     private TextField searchTextField;
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
-    private final String[] criteria = {"Name", "Password", "Email", "Full name", "Role"};
+    private final String[] criteria = {"Name", "Password", "Email", "First name", "Last name", "Role"};
   	
   	//observable lists***************
   	ObservableList<User> allUsersObs;
@@ -97,9 +95,9 @@ public class AllUsersController implements Initializable{
         usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         user_idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("user_id"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
-        pass_wordColumn.setCellValueFactory(new PropertyValueFactory<User, String>("pass_word"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-        full_nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("full_name"));
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("first_name"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("last_name"));
         user_roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("user_role"));
         
         editColumn.setReorderable(false);
@@ -143,12 +141,10 @@ public class AllUsersController implements Initializable{
         searchCriteriaComboBox.getItems().addAll(criteria);
         searchCriteriaComboBox.setValue(criteria[0]);
 	}
+	
 	public void initUsers() {
 		
 	}
-	
-	
-	
 	
 	public void popupNewUser(ActionEvent event) {
 		Parent root;
@@ -185,6 +181,7 @@ public class AllUsersController implements Initializable{
 	
 	public void popupUpdateUser(MouseEvent event, User user) {
 		Parent root;
+		
 		try {
 			AdminController.currentNewUserLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewUser));
 			root = AdminController.currentNewUserLoader.load();
@@ -193,6 +190,36 @@ public class AllUsersController implements Initializable{
 			controller.setTitleLabelText("Update User");
 			controller.setInfos();
 			
+			
+			fillFormula = new Stage();
+			fillFormula.setResizable(false);
+			
+			createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+			
+			fillFormula.setScene(createNewScene);
+			fillFormula.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			fillFormula.initModality(Modality.WINDOW_MODAL);
+			fillFormula.initOwner(parentStage);
+			
+			fillFormula.show();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void popupConfirmPassword(MouseEvent event,int mode) {
+		Parent root;
+		try {
+			AdminController.currentConfirmPasswordLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlConfirmPassword));
+			root = AdminController.currentConfirmPasswordLoader.load();
+			ConfirmPasswordController controller = (ConfirmPasswordController)AdminController.currentConfirmPasswordLoader.getController();
+			controller.setCurrentMode(mode);
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -220,15 +247,15 @@ public class AllUsersController implements Initializable{
        DB_Users.addUser(allUsersObs, newuser);
 	}
 	
-	  //Method to delete selected users from usersTable
     public void deleteSelectedUsers() {
+    	
     	ObservableList<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems();
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
     		DB_Users.removeUser(allUsersObs, selectedUsers);
     	}
     }
-
+    
     public void updateUser(User oldUser, User newUser) {
 		DB_Users.updateUser(allUsersObs, oldUser, newUser);
 		usersTable.refresh();
@@ -266,8 +293,8 @@ public class AllUsersController implements Initializable{
 						return true;
 					}
 		            break;
-		        case "Full name":
-		        	if(user.getFull_name().toLowerCase().contains(txt.toLowerCase())) {
+		        case "First name":
+		        	if(user.getFirst_name().toLowerCase().contains(txt.toLowerCase())) {
 						return true;
 					}
 		            break;
@@ -276,7 +303,11 @@ public class AllUsersController implements Initializable{
 						return true;
 					}
 		            break;
-		            
+		        case "Last name":
+		        	if(user.getLast_name().toLowerCase().contains(txt.toLowerCase())) {
+						return true;
+					}
+		            break;
 		        default:
 		        	return false;
 				}

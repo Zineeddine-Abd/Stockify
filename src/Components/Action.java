@@ -2,6 +2,7 @@ package Components;
 
 import java.sql.Date;
 
+import LoginUi.LoginController;
 import application.DB_Assets;
 import application.DB_Rooms;
 import application.DB_Users;
@@ -9,35 +10,17 @@ import application.Helper;
 
 public class Action {
 	private int action_id;
-	private Object related_object;
-	private int action_related_obj_id;
-	private User action_author;
 	private String action_type;
 	private Date action_date;
-	private String importantInfoForObject;
+	private String action_info;
+	private String cor_obj_type;
 
-	public Action(int id,String action_type,int related_obj_id,String related_obj_type,Date date,int action_author_id) {
+	public Action(int id,String action_type,String action_info,String cor_obj_type,Date date) {
 		this.action_id = id;
 		this.action_type = action_type;
 		this.action_date = date;
-		this.action_author = DB_Users.getUser(action_author_id);
-		this.action_related_obj_id = related_obj_id;
-		
-		
-		switch(related_obj_type) {
-		case Helper.ASSET:
-			this.related_object = DB_Assets.getAsset(related_obj_id);
-			break;
-		case Helper.USER:
-			this.related_object = DB_Users.getUser(related_obj_id);
-			break;
-		case Helper.ROOM:
-			this.related_object = DB_Rooms.getRoom(related_obj_id);
-			break;
-		}
-		
-		importantInfoForObject = getObjectStringLabel();
-		
+		this.action_info = action_info ;
+		this.cor_obj_type = cor_obj_type;
 	}
 	
 	public int getAction_id() {
@@ -46,14 +29,6 @@ public class Action {
 
 	public void setAction_id(int action_id) {
 		this.action_id = action_id;
-	}
-
-	public int getAction_related_obj_id() {
-		return action_related_obj_id;
-	}
-
-	public void setAction_related_obj_id(int action_related_obj_id) {
-		this.action_related_obj_id = action_related_obj_id;
 	}
 
 	public String getAction_type() {
@@ -72,47 +47,25 @@ public class Action {
 		this.action_date = date;
 	}
 	
-	public Object getRelated_object() {
-		return related_object;
+	public String getAction_info() {
+		return this.action_info;
 	}
 	
-	public void setRelated_object(Object obj) {
-		this.related_object = obj;
+	public void setAction_info(String action_info) {
+		this.action_info = action_info;
 	}
 	
-	public User getActionAuthor() {
-		return action_author;
+	public String getCor_obj_type() {
+		return cor_obj_type;
 	}
 	
-	public void setActionAuthor(User user) {
-		this.action_author = user;
+	public void setCor_obj_type(String str) {
+		this.cor_obj_type = str;
 	}
-	
-	public String getObjectStringLabel() {
-		if(related_object instanceof Asset) {
-			Asset asset = (Asset) related_object;
-			return asset.getAsset_category() + ":" + asset.getAsset_type() + ":" + asset.getAsset_model() + ":serial number = " + asset.getAsset_serial_number();
-		}else if(related_object instanceof User) {
-			User user = (User) related_object;
-			return user.getFull_name() + ":email = " + user.getEmail() + " : " + user.getUser_role();
-		}else if(related_object instanceof Room) {
-			Room room = (Room) related_object;
-			return room.getRoom_name() + " : " + room.getRoom_type();
-		}else {			
-			return null;
-		}
-	}
-	
 	
 	@Override
 	public String toString() {
-		String result=null;
-		try {
-			result = + this.getAction_id() + ": "+ this.getAction_type() + " : " +action_author.getUsername() + ", component: " + getObjectStringLabel() + " : " + this.action_related_obj_id;
-		}catch(NullPointerException e) {
-			Helper.displayErrorMessage("Error", e.getMessage());
-		}
-		return result;
+		return  this.getAction_id() + ":"+ this.action_type + " : " + this.cor_obj_type + " : " +  this.action_info + " On: " + this.getAction_date() + "\nBy: " +LoginController.getLoggedUser().toString();
 	}
 	
 }

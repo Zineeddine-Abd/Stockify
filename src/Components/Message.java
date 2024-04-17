@@ -55,10 +55,10 @@ public class Message {
 		User author=null;
 		try {
 			author = DB_Users.getUser(this.message_author);
-			return "[" + author.getFull_name() +"] On "+ this.getMessage_date() + " : Message " + this.getMessageid();
+			return "[" + author.getFullName() +"] On "+ this.getMessage_date() + " : Message " + this.getMessageid();
 		}catch(NullPointerException e) {
 			//
 		}
-		return "[" + author.getFull_name() +"] On "+ this.getMessage_date() + " : Message " + this.getMessageid();
+		return "[" + author.getFullName() +"] On "+ this.getMessage_date() + " : Message " + this.getMessageid();
 	}
 }

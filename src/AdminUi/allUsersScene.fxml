@@ -14,12 +14,12 @@
    <center>
     <TableView fx:id="usersTable" stylesheets="@table.css">
       <columns>
-        <TableColumn fx:id="user_idColumn" prefWidth="75.0" text="user_id" />
-        <TableColumn fx:id="usernameColumn" prefWidth="92.800048828125" text="username" />
-          <TableColumn fx:id="pass_wordColumn" prefWidth="74.39996337890625" text="pass_word" />
-          <TableColumn fx:id="emailColumn" prefWidth="74.39996337890625" text="email" />
-          <TableColumn fx:id="full_nameColumn" prefWidth="74.39996337890625" text="full_name" />
-          <TableColumn fx:id="user_roleColumn" prefWidth="74.39996337890625" text="user_role" />
+        <TableColumn fx:id="user_idColumn" prefWidth="50.0" text="user_id" />
+          <TableColumn fx:id="firstNameColumn" prefWidth="150.0" text="first_name" />
+            <TableColumn fx:id="lastNameColumn" prefWidth="150.0" text="last_name" />
+        <TableColumn fx:id="usernameColumn" prefWidth="150.0" text="username" />
+          <TableColumn fx:id="emailColumn" prefWidth="300.0" text="email" />
+          <TableColumn fx:id="user_roleColumn" prefWidth="130.0" text="user_role" />
             <TableColumn fx:id="editColumn" prefWidth="22.0" resizable="false" sortable="false" />
       </columns>
     </TableView>
@@ -32,7 +32,7 @@
                 <Insets left="15.0" right="15.0" top="15.0" />
              </HBox.margin>
           </Button>
-          <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#deleteSelectedUsers" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Delete">
+          <Button fx:id="deleteUserButton" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#deleteSelectedUsers" prefHeight="28.0" prefWidth="86.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Delete">
              <HBox.margin>
                 <Insets bottom="15.0" left="4.0" right="15.0" top="15.0" />
              </HBox.margin>

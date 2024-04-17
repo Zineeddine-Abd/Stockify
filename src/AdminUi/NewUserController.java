@@ -24,7 +24,9 @@ public class NewUserController implements Initializable{
 	@FXML
 	private ChoiceBox<String> permissions;
 	@FXML
-	private TextField fullNameField;
+	private TextField lastNameField;
+	@FXML
+	private TextField firstNameField;
 	@FXML
 	private TextField emailField;
 	@FXML
@@ -72,28 +74,34 @@ public class NewUserController implements Initializable{
 			animatedInvalidInfolabel();
 			return;
 		}
-//		if(!fullNameField.getText().matches("")) {
-//			invalidInfo.setText("Invalid name! no digits/special characters allowed!");
-//			animatedInvalidInfolabel();
-//			return;
-//		}
+		if(!firstNameField.getText().matches("^[a-zA-Z]+$")) {
+			invalidInfo.setText("Invalid First Name! No Special Characters allowed!");
+			animatedInvalidInfolabel();
+			return;
+		}
+		if(!lastNameField.getText().matches("^[a-zA-Z]+$")) {
+			invalidInfo.setText("Invalid First Name! No Special Characters allowed!");
+			animatedInvalidInfolabel();
+			return;
+		}
 		if(!emailField.getText().matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
 			invalidInfo.setText("Invalid email Format!");
 			animatedInvalidInfolabel();
 			return;
 		}
-//		if(confirmPasswordField.getText() != passwordField.getText()) {
-//			invalidInfo.setText("Passwords Do Not match!");
-//			animatedInvalidInfolabel();
-//			return;
-//		}
+		if(!confirmPasswordField.getText().equals(passwordField.getText())) {
+			invalidInfo.setText("Passwords Do Not match!");
+			animatedInvalidInfolabel();
+			return;
+		}
 		String username = usernameField.getText();
 		String pass_word = passwordField.getText();
 		String email = emailField.getText();
-		String full_name = fullNameField.getText();
+		String first_name = firstNameField.getText();
+		String last_name = lastNameField.getText();
 		String user_role = permissions.getValue();
 		
-		User newuser = new User(0,username,pass_word,email,full_name,user_role);
+		User newuser = new User(0,username,pass_word,email,first_name,last_name,user_role);
 		
 		if(oldUser == null) {
 			newUser(newuser);
@@ -116,7 +124,9 @@ public class NewUserController implements Initializable{
 		usernameField.setText(oldUser.getUsername());
 		passwordField.setText(oldUser.getPass_word());
 		emailField.setText(oldUser.getEmail());
-		fullNameField.setText(oldUser.getFull_name());
+		firstNameField.setText(oldUser.getFirst_name());
+		lastNameField.setText(oldUser.getLast_name());
+		confirmPasswordField.setText(oldUser.getPass_word());
 		permissions.setValue(oldUser.getUser_role());
 	}
 	

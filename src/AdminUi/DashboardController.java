@@ -105,7 +105,6 @@ public class DashboardController implements Initializable{
 			actionsObs = FXCollections.observableArrayList();
 			DB_Actions.refresh(actionsObs);
 			recentActions.setItems(actionsObs);
-			
 		}
 		
 		public void refreshList() {

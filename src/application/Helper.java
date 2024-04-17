@@ -11,6 +11,7 @@ public class Helper {
 	
 	public static final String INSERTION_MODE = "Insertion";
 	public static final String UPDATE_MODE = "Update";
+	public static final String DELETION_MODE = "Deletion";
 	
 	public static final String ASSET = "Asset";
 	public static final String USER = "User";

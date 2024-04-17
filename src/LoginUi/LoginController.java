@@ -47,7 +47,6 @@ public class LoginController{
 	private static final String ADMIN = "Administrator";
 	private static final String TECHNICIAN = "Technician";
 	private static final String PROFESSOR = "Professor";
-	private boolean promptLoggedUser = true;
 	public static final String[] permissions = {ADMIN,TECHNICIAN,PROFESSOR};
 	
 	
@@ -87,7 +86,8 @@ public class LoginController{
 	        		//username exists.~~
 	        		//password exists.~~
 					String email = resultSet.getString("email");
-					String full_name = resultSet.getString("full_name");
+					String first_name = resultSet.getString("first_name");
+					String last_name = resultSet.getString("last_name");
 					String user_role = resultSet.getString("user_role");
 					
 					
@@ -96,11 +96,11 @@ public class LoginController{
 	        			incorrectInfo.setText("Another Device is already logged in!");
 			        	animatedIncorrectInfolabel();
 			        	return;
-	        		}					
+	        		}
 	        		DB_Sessions.createSession(user_id);
 	        		
 	        		
-	        		currentLoggedInUser = new User(user_id,username,password,email,full_name,user_role);;
+	        		currentLoggedInUser = new User(user_id,username,password,email,first_name,last_name,user_role);;
 	        		
 		        	switch(resultSet.getString("user_role")) {
 		        		case ADMIN:
@@ -200,6 +200,7 @@ public class LoginController{
 		stage.setScene(scene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
+		stage.setMaximized(true);
 		stage.setOnCloseRequest(e ->{
 			DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
 			e.consume();

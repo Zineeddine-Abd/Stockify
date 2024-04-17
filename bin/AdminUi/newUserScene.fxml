@@ -26,16 +26,28 @@
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
       </ChoiceBox>
-      <Label text="Full Name:">
-         <VBox.margin>
-            <Insets left="15.0" right="15.0" top="15.0" />
-         </VBox.margin>
-      </Label>
-      <TextField fx:id="fullNameField">
-         <VBox.margin>
-            <Insets left="15.0" right="15.0" />
-         </VBox.margin>
-      </TextField>
+      <HBox prefHeight="32.0" prefWidth="345.0">
+         <children>
+            <VBox prefHeight="51.0" prefWidth="149.0">
+               <HBox.margin>
+                  <Insets left="15.0" top="20.0" />
+               </HBox.margin>
+               <children>
+                  <Label text="First Name:" />
+                  <TextField fx:id="firstNameField" />
+               </children>
+            </VBox>
+            <VBox>
+               <HBox.margin>
+                  <Insets left="15.0" top="20.0" />
+               </HBox.margin>
+               <children>
+                  <Label text="Last Name:" />
+                  <TextField fx:id="lastNameField" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
       <Label text="Email:">
          <VBox.margin>
             <Insets left="15.0" top="15.0" />

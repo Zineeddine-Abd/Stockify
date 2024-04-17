@@ -30,12 +30,10 @@ public class DB_Actions {
 							int action_id = rs.getInt("action_id");
 							String action_type = rs.getString("action_type");
 							Date date = rs.getDate("action_date");
-							int action_author_id = rs.getInt("action_author");
-							
-							int cor_obj_id = rs.getInt("cor_obj_id");
+							String action_info = rs.getString("action_info");
 							String cor_obj_type = rs.getString("cor_obj_type");
 							
-							action = new Action(action_id,action_type,cor_obj_id,cor_obj_type,date,action_author_id);
+							action = new Action(action_id,action_type,action_info,cor_obj_type,date);
 							
 							obsList.add(action);
 						}
@@ -49,33 +47,21 @@ public class DB_Actions {
 	 
 	 public static void createAction(Action action,ObservableList<Action> obsList) {
 		 try(Connection con = DB_Utilities.getDataSource().getConnection()){
-				String insertMessage = "INSERT INTO actions (action_type,cor_obj_id,cor_obj_type,action_date,action_author) VALUES (?,?,?,?,?)";
+				String insertMessage = "INSERT INTO actions (action_type,action_info,cor_obj_type,action_date) VALUES (?,?,?,?)";
 				try(PreparedStatement ps = con.prepareStatement(insertMessage,Statement.RETURN_GENERATED_KEYS)){
 					
 					ps.setString(1, action.getAction_type());
+					ps.setString(2, action.getAction_info());
 					
-					if(action.getRelated_object() instanceof Asset) {
-						Asset asset = (Asset) action.getRelated_object();
-						
-						ps.setInt(2, asset.getAsset_id());
-						ps.setString(3,Helper.ASSET);
-						
-					}else if(action.getRelated_object() instanceof User) {
-						User user = (User) action.getRelated_object();
-						
-						ps.setInt(2, user.getUser_id());
-						ps.setString(3,Helper.USER);
-						
-					}else if(action.getRelated_object() instanceof Room) {
-						Room room = (Room) action.getRelated_object();
-						
-						ps.setInt(2, room.getRoom_id());
-						ps.setString(3,Helper.ROOM);
-						
+					if(action.getCor_obj_type() == Helper.ASSET) {
+						ps.setString(3, Helper.ASSET);
+					}else if(action.getCor_obj_type() == Helper.USER) {
+						ps.setString(3, Helper.USER);
+					}else if(action.getCor_obj_type() == Helper.ROOM) {
+						ps.setString(3, Helper.ROOM);
 					}
 					
 					ps.setDate(4, action.getAction_date());
-					ps.setInt(5, action.getActionAuthor().getUser_id());
 					
 					ps.executeUpdate();
 					

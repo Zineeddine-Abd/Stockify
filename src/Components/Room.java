@@ -34,4 +34,9 @@ public class Room {
 		this.room_type = room_type;
 		this.room_name = room_name;
 	}
+	
+	@Override
+	public String toString() {
+		return room_id + " : " + room_type + " : " + room_name + " :";
+	}
 }

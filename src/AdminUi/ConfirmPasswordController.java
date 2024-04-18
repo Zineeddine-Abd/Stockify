@@ -41,8 +41,6 @@ public class ConfirmPasswordController {
 	
 	
 	public void confirmGivenPassword(ActionEvent event) {
-		System.out.println(LoginController.getLoggedUser().getPass_word());
-		System.out.println(passField.getText());
 		if(passField.getText().equals(LoginController.getLoggedUser().getPass_word())) {
 			((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().confirmedPassword = true;
 			disposeWindow(event);

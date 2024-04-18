@@ -15,7 +15,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Parent loginroot = FXMLLoader.load(getClass().getResource("/LoginUi/loginScene.fxml"));
-			Scene loginScene = new Scene(loginroot);	
+			Scene loginScene = new Scene(loginroot);
 			String css = this.getClass().getResource("/LoginUi/loginUI.css").toExternalForm();
 			loginScene.getStylesheets().add(css);
 			primaryStage.setScene(loginScene);

@@ -1,6 +1,7 @@
 package AdminUi;
 
 import Components.*;
+import LoginUi.LoginController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,9 +27,11 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import application.DB_Messages;
 import application.Helper;
+import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 
@@ -71,11 +74,13 @@ public class AdminController implements Initializable{
 	public static final String fxmlMessages = "/AdminUi/messages.fxml";
 	
 	public static final String fxmlConfirmPassword = "/AdminUi/confirmPasswordScene.fxml";
+	public static final String fxmlpopupAccountInfo = "/AdminUi/popupAccountInfoScene.fxml";
 	
 	public static FXMLLoader currentNewAssetLoader;
 	public static FXMLLoader currentNewUserLoader;
 	public static FXMLLoader currentNewRoomLoader;
 	public static FXMLLoader currentConfirmPasswordLoader;
+	public static FXMLLoader currentPopupAccountInfo;
 	
 	public static FXMLLoader currentReportPopupLoader;
 	public static FXMLLoader currentReportDetailsPopupLoader;
@@ -119,6 +124,8 @@ public class AdminController implements Initializable{
 	public AllRoomsController getAllRoomsViewController() {
 		return allRoomsViewController;
 	}
+	@FXML
+	private Button accountButton;
 	//*****************************************/
 	
 	//Array of panes
@@ -160,6 +167,8 @@ public class AdminController implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		//init account button:
+		accountButton.setText(LoginController.getLoggedUser().getFullName());
 		//init messages list
 		messagesList = FXCollections.observableArrayList();
 		DB_Messages.refresh(messagesList);
@@ -370,5 +379,33 @@ public class AdminController implements Initializable{
 	//Messages
 	public void addMessage(Message msg) {
 		DB_Messages.addMessage(messagesList, msg);
+	}
+	
+	public void popupAccountInfo(ActionEvent event) {
+		Parent root;
+		try {
+			currentPopupAccountInfo = new FXMLLoader(getClass().getResource(AdminController.fxmlpopupAccountInfo));
+			root = AdminController.currentPopupAccountInfo.load();
+			
+			stage = new Stage();
+			stage.setResizable(false);
+			
+				
+			Scene createNewScene = new Scene(root);
+			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+			
+			stage.setScene(createNewScene);
+			stage.getIcons().add(Main.itAssetLogo);
+			
+			//make it as a dialog box
+			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(parentStage);
+			
+			stage.show();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

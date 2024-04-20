@@ -3,7 +3,6 @@ package AdminUi;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -15,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -107,11 +107,19 @@ public class NewAssetController implements Initializable{
 	}
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		parentVBox.getChildren().remove(hardwareVbox);
-		parentVBox.getChildren().remove(softwareVbox);
+		
+		
+		parentVBox.getChildren().removeAll(hardwareVbox, softwareVbox);
+		
+		parentVBox.heightProperty().addListener((obs, oldVal, newVal) -> {
+			Scene mainScene = parentVBox.getScene();
+			Stage mainStage = (Stage) mainScene.getWindow();
+			mainStage.setHeight(mainStage.getHeight() + newVal.doubleValue() - oldVal.doubleValue());
+		});
 		
 		categoryChoiceBox.getItems().addAll(categories); // add asset categories.
 		locationDropDownBox.getItems().addAll(rooms);
+		
 		
 		categoryChoiceBox.setOnAction(event->{
 			typeChoiceBox.getItems().clear();
@@ -119,24 +127,27 @@ public class NewAssetController implements Initializable{
 			if(categoryChoiceBox.getValue() == HARDWARE) {
 				typeChoiceBox.getItems().addAll(hardware_type);
 				
-				parentVBox.getChildren().add(hardwareVbox);
-				
+				if(!parentVBox.getChildren().contains(hardwareVbox)) {
+					parentVBox.getChildren().add(hardwareVbox);
+				}
 				if(parentVBox.getChildren().contains(softwareVbox)) {					
 					parentVBox.getChildren().remove(softwareVbox);
 				}
 			}else if(categoryChoiceBox.getValue() == SOFTWARE) {
 				typeChoiceBox.getItems().addAll(software_type);
 				
-				parentVBox.getChildren().add(softwareVbox);
-				
+				if(!parentVBox.getChildren().contains(softwareVbox)) {
+					parentVBox.getChildren().add(softwareVbox);
+				}
 				if(parentVBox.getChildren().contains(hardwareVbox)) {					
 					parentVBox.getChildren().remove(hardwareVbox);
 				}
-				
 			}else if(categoryChoiceBox.getValue() == ACCESSORY) {
 				typeChoiceBox.getItems().addAll(accessory_type);
-			}
+			}	
 		});
+		
+		
 		typeChoiceBox.setOnAction(event->{
 			modelChoiceBox.getItems().clear();
 			if(typeChoiceBox.getValue() == "Desktop" || typeChoiceBox.getValue() == "Laptop") {
@@ -245,11 +256,16 @@ public class NewAssetController implements Initializable{
 	}
 	
 	public void setHardwareFields() {
-		parentVBox.getChildren().remove(hardwareVbox);
+		if(parentVBox.getChildren().contains(hardwareVbox)) {
+			parentVBox.getChildren().remove(hardwareVbox);
+		}
 		categoryChoiceBox.setValue("Hardware");
 	}
 	public void setSoftwareFields() {
-		parentVBox.getChildren().remove(softwareVbox);
+		if(parentVBox.getChildren().contains(softwareVbox)) {
+			parentVBox.getChildren().remove(softwareVbox);
+		}
+		
 		categoryChoiceBox.setValue("Software");
 	}
 	

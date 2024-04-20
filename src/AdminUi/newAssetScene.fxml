@@ -89,22 +89,22 @@
       </ChoiceBox>
       <VBox fx:id="parentVBox" prefWidth="100.0">
          <children>
-            <VBox fx:id="softwareVbox" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="hardwareVbox" prefWidth="345.0">
                <children>
-                  <VBox fx:id="hardwareVbox" prefHeight="75.0" prefWidth="345.0">
-                     <children>
-                        <Label text="Hardware Serial Number : (Optional)">
-                           <VBox.margin>
-                              <Insets left="15.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="serialNumField">
-                           <VBox.margin>
-                              <Insets left="15.0" right="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                     </children>
-                  </VBox>
+                  <Label text="Hardware Serial Number : (Optional)">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="serialNumField">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+            <VBox fx:id="softwareVbox" prefWidth="100.0">
+               <children>
                   <Label text="Software License Key:">
                      <VBox.margin>
                         <Insets left="15.0" />
@@ -127,7 +127,7 @@
                   </TextField>
                </children>
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets />
                </VBox.margin>
             </VBox>
          </children>

@@ -197,10 +197,12 @@ public class LoginController{
 		scene = new Scene(root);
 		
 		stage = new Stage();
+		
 		stage.setScene(scene);
 		stage.getIcons().add(Main.itAssetLogo);
 		stage.setTitle("Stockify");
 		stage.setMaximized(true);
+		
 		stage.setOnCloseRequest(e ->{
 			DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
 			e.consume();
@@ -210,8 +212,9 @@ public class LoginController{
 			}
 		});
 		stage.centerOnScreen();
-//		stage.setMaximized(true);
+		
 		stage.show();
+		
 	}
 	
 	 

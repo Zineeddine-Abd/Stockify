@@ -40,6 +40,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -328,7 +330,7 @@ public class AssetsTableController implements Initializable{
 	
 	
 	public void popupNewAsset(ActionEvent event){
-		Parent root;
+		VBox root;
 			
 		try {
 			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
@@ -361,7 +363,8 @@ public class AssetsTableController implements Initializable{
 			fillFormula.initModality(Modality.WINDOW_MODAL);
 			fillFormula.initOwner(parentStage);
 			
-			fillFormula.show();
+			fillFormula.show();	
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

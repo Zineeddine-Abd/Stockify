@@ -35,9 +35,8 @@ public class DB_Assets extends DB_Utilities{
 						String asset_room = rs.getString("asset_room");
 						Date asset_purchase_date = rs.getDate("asset_purchase_date");
 						int asset_warranty = rs.getInt("asset_warranty");
-						int asset_serial_number = rs.getInt("asset_serial_number");
 						
-						Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty,asset_serial_number);
+						Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty);
 						obsList.add(asset);
 					}
 				}
@@ -50,7 +49,7 @@ public class DB_Assets extends DB_Utilities{
 	
 	public static void addAsset(ObservableList<Asset> obsList, Asset asset) {
 		try(Connection con = dataSource.getConnection()){
-			String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty,asset_serial_number) VALUES (?,?,?,?,?,?,?,?)";
+			String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty) VALUES (?,?,?,?,?,?,?)";
 			try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
 				
 //				ps.setInt(1, 0);
@@ -61,7 +60,6 @@ public class DB_Assets extends DB_Utilities{
 				ps.setString(5,asset.getAsset_room());
 				ps.setDate(6,asset.getAsset_purchase_date());
 				ps.setInt(7,asset.getAsset_warranty());
-				ps.setInt(8,asset.getAsset_serial_number());
 				ps.executeUpdate();
 				
 				
@@ -123,8 +121,7 @@ public class DB_Assets extends DB_Utilities{
 					+ "asset_status = ?,"
 					+ "asset_room = ?,"
 					+ "asset_purchase_date = ?,"
-					+ "asset_warranty = ?,"
-					+ "asset_serial_number = ? "
+					+ "asset_warranty = ? "
 					+ "WHERE asset_id = ?";
 			try(PreparedStatement ps = con.prepareStatement(updateAsset)){
 				
@@ -136,8 +133,7 @@ public class DB_Assets extends DB_Utilities{
 				ps.setString(5,newAsset.getAsset_room());
 				ps.setDate(6,newAsset.getAsset_purchase_date());
 				ps.setInt(7,newAsset.getAsset_warranty());
-				ps.setInt(8,newAsset.getAsset_serial_number());
-				ps.setInt(9,oldAsset.getAsset_id());
+				ps.setInt(8,oldAsset.getAsset_id());
 				ps.executeUpdate();
 				
 				
@@ -148,7 +144,6 @@ public class DB_Assets extends DB_Utilities{
 				oldAsset.setAsset_room(newAsset.getAsset_room());
 				oldAsset.setAsset_purchase_date(newAsset.getAsset_purchase_date());
 				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
-				oldAsset.setAsset_serial_number(newAsset.getAsset_serial_number());
 				
 				createActionForAsset(Helper.UPDATE_MODE, oldAsset);
 				
@@ -189,9 +184,8 @@ public class DB_Assets extends DB_Utilities{
 							String asset_room = rs.getString("asset_room");
 							Date asset_purchase_date = rs.getDate("asset_purchase_date");
 							int asset_warranty = rs.getInt("asset_warranty");
-							int asset_serial_number = rs.getInt("asset_serial_number");
 							
-							Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty,asset_serial_number);
+							Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty);
 							
 							return asset;
 						}

@@ -15,7 +15,7 @@
          <children>
             <AnchorPane prefHeight="54.0" prefWidth="541.0">
                <children>
-                  <Label fx:id="titleLabel" alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="406.0" style="-fx-border-color: black; -fx-border-width: 0px 0px 2px 0px;" text="My Credentials" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <Label fx:id="titleLabel" alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="406.0" style="-fx-border-color: black; -fx-border-width: 0px 0px 2px 0px; -fx-background-color: #1c232b;" text="My Credentials" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="40.0" />
                      </font>
@@ -35,7 +35,10 @@
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
-                  <TextField fx:id="firstNameField" editable="false" prefHeight="28.0" prefWidth="170.0" />
+                  <TextField fx:id="firstNameField" editable="false" prefHeight="28.0" prefWidth="170.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
                </children>
             </VBox>
             <VBox prefHeight="46.0" prefWidth="294.0">
@@ -47,7 +50,10 @@
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
-                  <TextField fx:id="lastNameField" editable="false" prefHeight="28.0" prefWidth="162.0" />
+                  <TextField fx:id="lastNameField" editable="false" prefHeight="28.0" prefWidth="162.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
                </children>
             </VBox>
          </children>
@@ -64,6 +70,9 @@
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
+         <font>
+            <Font size="15.0" />
+         </font>
       </TextField>
       <Label text="Username:">
          <VBox.margin>
@@ -77,6 +86,9 @@
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
+         <font>
+            <Font size="15.0" />
+         </font>
       </TextField>
       <HBox prefHeight="48.0" prefWidth="346.0">
          <children>

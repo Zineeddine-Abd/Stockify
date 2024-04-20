@@ -17,9 +17,9 @@
          <center>
             <StackPane alignment="TOP_LEFT" BorderPane.alignment="CENTER">
                <children>
-               	<fx:include fx:id="dashboardView" source="dashboardScene.fxml" />
+               	  <fx:include fx:id="dashboardView" source="dashboardScene.fxml" />
                   <fx:include fx:id="allUsersView" source="allUsersScene.fxml" />
-                  <fx:include fx:id="allAssetsView" source="allAssetsScene.fxml" />
+                  <fx:include fx:id="allAssetsView" source="assetsTable.fxml" />
                   <fx:include fx:id="allRoomsView" source="allRoomsScene.fxml" />
                </children>
             </StackPane>
@@ -105,7 +105,7 @@
                   <Insets />
                </VBox.margin>
                <graphic>
-                  <FontAwesomeIconView fill="#67809c" glyphName="DESKTOP" size="25" />
+                  <FontAwesomeIconView fill="#67809c" glyphName="INBOX" size="25" />
                </graphic>
             </Button>
             <Button fx:id="roomsButton" layoutX="20.0" layoutY="191.0" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="43.0" prefWidth="200.0" text="Rooms">

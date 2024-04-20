@@ -93,7 +93,7 @@ public class DashboardController implements Initializable{
 	                            setText(null);
 	                        } else {
 	                        	setText(item.toString());
-	                        	AllAssetsController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+	                        	AssetsTableController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
 	                            setOnMouseClicked(event->controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem()));
 	                        }
 	                    }

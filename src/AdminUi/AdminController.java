@@ -41,10 +41,6 @@ public class AdminController implements Initializable{
 	//sidebar mats:*****************
 	@FXML
 	private VBox sideBar;
-	
-//	@FXML
-//	private BorderPane dashboard; // Main Border pane (holds all content here (dashboard for now))
-	
 	@FXML
 	private Button collapser;
 	@FXML
@@ -92,9 +88,9 @@ public class AdminController implements Initializable{
 	@FXML
 	private BorderPane allAssetsView;
 	@FXML
-	private AllAssetsController allAssetsViewController;
+	private AssetsTableController allAssetsViewController;
 	
-	public AllAssetsController getAllAssetsViewController() {
+	public AssetsTableController getAllAssetsViewController() {
 		return allAssetsViewController;
 	}
 	
@@ -173,7 +169,6 @@ public class AdminController implements Initializable{
 		messagesList = FXCollections.observableArrayList();
 		DB_Messages.refresh(messagesList);
 		//initialize sub scenes after inject their controllers
-		allAssetsViewController.initAssets();
 		allUsersViewController.initUsers();
 		allRoomsViewController.initRooms();
 		dashboardViewController.setItems();

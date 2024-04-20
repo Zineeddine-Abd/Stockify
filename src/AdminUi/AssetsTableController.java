@@ -5,13 +5,17 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 import Components.Asset;
+import Components.Hardware;
+import Components.Software;
 import application.DB_Assets;
-import application.DB_Rooms;
+import application.DB_Hardwares;
+import application.DB_Softwares;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.InvalidationListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -40,19 +44,40 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class AllAssetsController implements Initializable{
-
-	//Table_View assets components:********************
+public class AssetsTableController implements Initializable{
+    //stage and scene:********************
+  	private Stage fillFormula;
+  	private Scene createNewScene;
+  	//*************************************************
+  	//switching buttons :
+  	public static final int ASSET_BUTTON = 0;
+  	public static final int HARDWARE_BUTTON = 1;
+  	public static final int SOFTWARE_BUTTON = 2;
+  	
+  	
+  	@FXML
+  	private Button assetsButton;
+  	@FXML
+  	private Button hardwaresButton;
+  	@FXML
+  	private Button softwaresButton;
+  	
+  	private String DEFAULT_STYLE;
+  	
+  	Button[] buttonsAbove;
+  	
+  	private Button currentView;//used to determine which button is now clicked.
+  	
+	//assets Table Columns starts here:********************
 	@FXML
     private TableView<Asset> assetsTable;
 	
 	public TableView<Asset> getAssetsTable(){
 		return assetsTable;
 	}
-
     @FXML
     private TableColumn<Asset, Integer> assetIdColumn;
-
+    
     @FXML
     private TableColumn<Asset, String> assetCategoryColumn;
     
@@ -61,7 +86,7 @@ public class AllAssetsController implements Initializable{
 
     @FXML
     private TableColumn<Asset, String> modelColumn;
-
+    
     @FXML
     private TableColumn<Asset, String> statusColumn;
 
@@ -73,21 +98,23 @@ public class AllAssetsController implements Initializable{
 
     @FXML
     private TableColumn<Asset, Integer> assetWarrantyColumn;
-
-    @FXML
-    private TableColumn<Asset, Integer> assetSerialNumberColumn;
     
     @FXML
     private TableColumn<Asset, String> editColumn;
+	//ends here ************************************************
+    
+    //hardware table columns:
+	@FXML
+    private TableColumn<Hardware, String> hardwareSerialNumberColumn;
 	
+	//Software Table Columns here:
+	@FXML
+	private TableColumn<Software , String> softwareLicenseKey;
+	@FXML
+	private TableColumn<Software , String> softwareVersion;
 	@FXML
 	private Button newAssetButton;
 	
-    
-    //creating new asset/user mats:********************
-  	private Stage fillFormula;
-  	private Scene createNewScene;
-  	//*************************************************
   	@FXML
     public TextField searchTextField;
   	
@@ -101,10 +128,12 @@ public class AllAssetsController implements Initializable{
     	return searchCriteriaComboBox;
     }
     
-    private final String[] criteria = {"Category", "Type", "Model", "Status", "Location"};
+    private final String[] assetCriteria = {"Category", "Type", "Model", "Status", "Location"};
     
     //observable lists***************
     private ObservableList<Asset> allAssetsObs;
+    private ObservableList<Hardware> allHardwaresObs;
+    private ObservableList<Software> allSoftwaresObs;
     FilteredList<Asset> filteredAssets;
     SortedList<Asset> sortedAssets;
     //********************************
@@ -113,11 +142,18 @@ public class AllAssetsController implements Initializable{
     	return allAssetsObs;
     }
     
+    
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		allAssetsObs = FXCollections.observableArrayList();
+		allHardwaresObs = FXCollections.observableArrayList();
+		allSoftwaresObs = FXCollections.observableArrayList();
+		
 		DB_Assets.refresh(allAssetsObs);
 		
+		HideAllNonHardCols();
+		HideAllNonSoftCols();
 		
 		assetsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         assetIdColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_id"));
@@ -128,7 +164,6 @@ public class AllAssetsController implements Initializable{
         roomColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_room"));
         assetPurchaseDateColumn.setCellValueFactory(new PropertyValueFactory<Asset, Date>("asset_purchase_date"));
         assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_warranty"));
-        assetSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_serial_number"));
         
         
         assetsTable.setRowFactory(tv -> new TableRow<Asset>() {
@@ -156,6 +191,8 @@ public class AllAssetsController implements Initializable{
                     }
                 }
             }
+            
+            //try and add the top HBox in All Assets ( the actual one) to the stackpane to include it because it depends on the category type (hard soft acc)
 
             @Override
             public void updateSelected(boolean selected) {
@@ -181,8 +218,6 @@ public class AllAssetsController implements Initializable{
                 }
             }
         });
-        
-        
         
         editColumn.setReorderable(false);
 		editColumn.setCellFactory((col)->{
@@ -262,12 +297,22 @@ public class AllAssetsController implements Initializable{
         
         assetsTable.setItems(sortedAssets);
         
-        // Initialize search criteria ComboBox
-        searchCriteriaComboBox.getItems().addAll(criteria);
-        searchCriteriaComboBox.setValue(criteria[0]);
+        // Initialize search criteria ComboBox for asset
+        searchCriteriaComboBox.getItems().addAll(assetCriteria);
+        searchCriteriaComboBox.setValue(assetCriteria[0]);
         
-       
+        setFilterPredicate("Hardware");
+        DB_Hardwares.refreshHardwares(allHardwaresObs,filteredAssets);
+        
+        setFilterPredicate("Software");
+        DB_Softwares.refreshSoftwares(allSoftwaresObs, filteredAssets);
+        
+        setFilterPredicate(null);
+        //buttons above init for styling purposes :D 
+        DEFAULT_STYLE = assetsButton.getStyle();
+        buttonsAbove = new Button[] {assetsButton,hardwaresButton,softwaresButton};
 	}
+	
 	public void initAssets() {
 //		FilteredList<Asset> filteredHards = new FilteredList<Asset>(allAssetsObs, asset -> asset.getAsset_category().equals("Hardware"));
 //		FilteredList<Asset> filteredSofts = new FilteredList<Asset>(allAssetsObs, asset -> asset.getAsset_category().equals("Software"));
@@ -292,6 +337,12 @@ public class AllAssetsController implements Initializable{
 			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
 			controller.setOldAsset(null);
 			controller.setTitleLabelText("New Asset");
+			if(currentView == hardwaresButton) {
+				controller.setHardwareFields();
+			}else if(currentView == softwaresButton) {
+				controller.setSoftwareFields();
+			}
+			
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -450,7 +501,6 @@ public class AllAssetsController implements Initializable{
 	}
 	
 	private void setFilterPredicate(String txt) {
-		
 		filteredAssets.setPredicate((asset)-> {
 			if(txt == null || txt.isBlank()) {
 				return true;
@@ -494,5 +544,52 @@ public class AllAssetsController implements Initializable{
 		allAssetsObs.clear();
 		DB_Assets.refresh(allAssetsObs);
     }
+	
+	//switching methods here:
+	
+	public void setAssetColumns(ActionEvent event) {
+		setButtonStyle(ASSET_BUTTON);
+		setFilterPredicate(null);
+		
+		HideAllNonHardCols();
+		HideAllNonSoftCols();
+		
+	}
+	
+	public void setHardwareColumns(ActionEvent event) {
+		setButtonStyle(HARDWARE_BUTTON);
+		
+		setFilterPredicate("Hardware");
+		hardwareSerialNumberColumn.setVisible(true);
+		HideAllNonHardCols();
+	}
+	
+	public void setSoftwareColumns(ActionEvent event) {
+		setButtonStyle(SOFTWARE_BUTTON);
+		
+		setFilterPredicate("Software");
+		softwareLicenseKey.setVisible(true);
+		softwareVersion.setVisible(true);
+		HideAllNonSoftCols();
+	}
+	
+	public void setButtonStyle(int button) {
+		for(int i=0;i<buttonsAbove.length;i++) {
+			if(i != button) {
+				buttonsAbove[i].setStyle(DEFAULT_STYLE);
+			}else {
+				currentView = buttonsAbove[i];
+				buttonsAbove[i].setStyle(DEFAULT_STYLE + "-fx-background-color:#8DA0B5;");
+			}
+		}
+	}
+	
+	public void HideAllNonHardCols() {
+		softwareLicenseKey.setVisible(false);
+		softwareVersion.setVisible(false);
+	}
+	public void HideAllNonSoftCols() {
+		hardwareSerialNumberColumn.setVisible(false);
+	}
+	
 }
-

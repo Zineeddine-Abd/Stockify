@@ -2,15 +2,15 @@ package Components;
 
 import java.sql.Date;
 
-public class Asset {
+public class Asset extends Component{
 	
 	private int asset_id;
 	private String asset_room;
     private String asset_category, asset_type, asset_model, asset_status;
     Date asset_purchase_date;
-    private int asset_warranty, asset_serial_number;
+    private int asset_warranty;
     
-    public Asset(int assetId,String asset_category, String assetType, String model, String status, String room,Date purchase_date, int warranty,int serial_number) {
+    public Asset(int assetId,String asset_category, String assetType, String model, String status, String room,Date purchase_date, int warranty) {
         this.asset_id = assetId;
         this.asset_category = asset_category;
         this.asset_type = assetType;
@@ -19,7 +19,6 @@ public class Asset {
         this.asset_room = room;
         this.asset_purchase_date = purchase_date;
         this.asset_warranty = warranty;
-        this.asset_serial_number = serial_number;
     }
 
 	public int getAsset_id() {
@@ -84,14 +83,6 @@ public class Asset {
 
 	public void setAsset_warranty(int asset_warranty) {
 		this.asset_warranty = asset_warranty;
-	}
-
-	public int getAsset_serial_number() {
-		return asset_serial_number;
-	}
-
-	public void setAsset_serial_number(int asset_serial_number) {
-		this.asset_serial_number = asset_serial_number;
 	}
 	
 	public String toString() {

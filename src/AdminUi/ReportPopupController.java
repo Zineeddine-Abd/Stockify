@@ -72,9 +72,8 @@ public class ReportPopupController implements Initializable{
 		String status = statusChoiceBox.getValue();
 		String room = oldAsset.getAsset_room();
 		int warranty = oldAsset.getAsset_warranty();
-		int serial_number = oldAsset.getAsset_serial_number();
 		Date date = oldAsset.getAsset_purchase_date();
-		Asset new_asset = new Asset(oldAsset.getAsset_id(),category,type,model,status,room,date,warranty,serial_number);
+		Asset new_asset = new Asset(oldAsset.getAsset_id(),category,type,model,status,room,date,warranty);
 		
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, new_asset);
 		disposeWindow(event);

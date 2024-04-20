@@ -20,6 +20,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -68,7 +69,7 @@ public class NewAssetController implements Initializable{
 	private ChoiceBox<String> locationDropDownBox;
 	
 	@FXML
-	private TextField serialField,warrantyField;
+	private TextField warrantyField;
 	@FXML
 	private Button submitButton;
 	@FXML
@@ -78,6 +79,19 @@ public class NewAssetController implements Initializable{
 	@FXML
 	private DatePicker assetPurchaseDate;
 	
+	
+	@FXML
+	private VBox parentVBox;
+	@FXML
+	private VBox hardwareVbox;
+	@FXML
+	private VBox softwareVbox;
+	@FXML
+	private TextField serialNumField;
+	@FXML
+	private TextField softLicenseKeyField;
+	@FXML
+	private TextField softVersionField;
 	//old asset
 	private Asset oldAsset;
 	
@@ -91,21 +105,33 @@ public class NewAssetController implements Initializable{
 	public void setTitleLabelText(String text) {
 		this.titleLabel.setText(text);
 	}
-	
-	
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		parentVBox.getChildren().remove(hardwareVbox);
+		parentVBox.getChildren().remove(softwareVbox);
 		
 		categoryChoiceBox.getItems().addAll(categories); // add asset categories.
 		locationDropDownBox.getItems().addAll(rooms);
 		
 		categoryChoiceBox.setOnAction(event->{
 			typeChoiceBox.getItems().clear();
+			
 			if(categoryChoiceBox.getValue() == HARDWARE) {
 				typeChoiceBox.getItems().addAll(hardware_type);
 				
+				parentVBox.getChildren().add(hardwareVbox);
+				
+				if(parentVBox.getChildren().contains(softwareVbox)) {					
+					parentVBox.getChildren().remove(softwareVbox);
+				}
 			}else if(categoryChoiceBox.getValue() == SOFTWARE) {
 				typeChoiceBox.getItems().addAll(software_type);
+				
+				parentVBox.getChildren().add(softwareVbox);
+				
+				if(parentVBox.getChildren().contains(hardwareVbox)) {					
+					parentVBox.getChildren().remove(hardwareVbox);
+				}
 				
 			}else if(categoryChoiceBox.getValue() == ACCESSORY) {
 				typeChoiceBox.getItems().addAll(accessory_type);
@@ -147,12 +173,6 @@ public class NewAssetController implements Initializable{
 			return;
 		}
 		
-		if(!serialField.getText().matches("[0-9]+$")) {//Serial Number.
-			invalidInfo.setText("Invalid Serial number!");
-			animatedInvalidInfolabel();
-			return;
-		}
-		
 		try {				
 			if(!warrantyField.getText().matches("[0-9]+$") || Integer.parseInt(warrantyField.getText()) < 0 ) {//warranty in months.
 				invalidInfo.setText("Invalid warranty value!");
@@ -184,7 +204,6 @@ public class NewAssetController implements Initializable{
 			return;
 		}
 		
-		
 		int id = 0;
 		String category = categoryChoiceBox.getValue();
 		String type = typeChoiceBox.getValue();
@@ -192,11 +211,10 @@ public class NewAssetController implements Initializable{
 		String status = statusChoiceBox.getValue();
 		String room = locationDropDownBox.getValue();
 		int warranty = Integer.parseInt(warrantyField.getText());
-		int serial_number = Integer.parseInt(serialField.getText());
 		
 		Date date = java.sql.Date.valueOf(assetPurchaseDate.getValue());
 		
-		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty,serial_number);
+		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty);
 		
 		if(oldAsset == null) {
 			newAsset(new_asset);
@@ -223,17 +241,17 @@ public class NewAssetController implements Initializable{
 		statusChoiceBox.setValue(oldAsset.getAsset_status());
 		locationDropDownBox.setValue(oldAsset.getAsset_room());
 		warrantyField.setText(String.valueOf(oldAsset.getAsset_warranty()));
-		serialField.setText(String.valueOf(oldAsset.getAsset_serial_number()));
 		assetPurchaseDate.setValue(oldAsset.getAsset_purchase_date().toLocalDate());
 	}
 	
-	private void clearInputs() {
-		//	assetTypeInput.clear();
-//        modelInput.clear();
-        serialField.clear();
-        warrantyField.clear();
-    }
-	
+	public void setHardwareFields() {
+		parentVBox.getChildren().remove(hardwareVbox);
+		categoryChoiceBox.setValue("Hardware");
+	}
+	public void setSoftwareFields() {
+		parentVBox.getChildren().remove(softwareVbox);
+		categoryChoiceBox.setValue("Software");
+	}
 	
 	public void animatedInvalidInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),invalidInfo);
@@ -243,6 +261,7 @@ public class NewAssetController implements Initializable{
 	}
 	public void disposeWindow(ActionEvent event) {
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		parentVBox.getChildren().removeAll(hardwareVbox,softwareVbox);
 		stage.close();
 	}
 

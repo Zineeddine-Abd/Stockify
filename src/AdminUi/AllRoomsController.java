@@ -102,7 +102,7 @@ public class AllRoomsController implements Initializable{
 						
 						
 						
-						FontAwesomeIconView assets = new FontAwesomeIconView(FontAwesomeIcon.DESKTOP);
+						FontAwesomeIconView assets = new FontAwesomeIconView(FontAwesomeIcon.INBOX);
 						assets.setGlyphSize(18);
 						assets.setCursor(Cursor.HAND);
 						assets.hoverProperty().addListener((obs, oldVal, newVal) -> {
@@ -113,7 +113,7 @@ public class AllRoomsController implements Initializable{
 							}
 						});
 						assets.setOnMouseClicked(event -> {     		
-				        	AllAssetsController currentAssetController = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+							AssetsTableController currentAssetController = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
 				        	currentAssetController.getSearchTextField().setText("" + this.getTableRow().getItem().getRoom_name());
 				        	currentAssetController.getSearchCriteriaComboBox().setValue("Location");
 				        	((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();

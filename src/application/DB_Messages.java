@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import AdminUi.AdminController;
-import AdminUi.AllAssetsController;
+import AdminUi.AssetsTableController;
 import Components.Asset;
 import Components.Message;
 import javafx.collections.FXCollections;
@@ -85,7 +85,7 @@ public class DB_Messages extends DB_Utilities{
 							reportedAssetIDS.add(cor_asset_id);
 						}
 					}
-				AllAssetsController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+					AssetsTableController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
 				for(Asset element : controller.getAllAssetsObs()) {
 					if(reportedAssetIDS.contains(element.getAsset_id())) {
 						allReportedAssets.add(element);

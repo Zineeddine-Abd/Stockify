@@ -209,7 +209,7 @@ public class AssetsTableController implements Initializable{
                     } else {
                         setTextFill(Color.BLACK); // Default text color
                         if (item.getAsset_status().equals("Broken")) {
-                            setStyle("-fx-background-color: #ffcccc;");
+                            setStyle("-fx-background-color: #FB9494;");
                         } else if (item.getAsset_status().equals("Under Maintenance")) {
                             setStyle("-fx-background-color: #FFB266;");
                         } else if (item.getAsset_status().equals("Ready To Use")) {
@@ -231,7 +231,7 @@ public class AssetsTableController implements Initializable{
                     if (getItem() != null) {
                         Asset item = getItem(); // Access the item
                         if (item.getAsset_status().equals("Broken")) {
-                            setStyle("-fx-background-color: #ffcccc;");
+                            setStyle("-fx-background-color: #FB9494;");
                         } else if (item.getAsset_status().equals("Under Maintenance")) {
                             setStyle("-fx-background-color: #FFB266;");
                         } else if (item.getAsset_status().equals("Ready To Use")) {

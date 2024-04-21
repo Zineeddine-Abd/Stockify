@@ -65,23 +65,6 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
             </VBox>
-            <VBox prefHeight="200.0" style="-fx-border-color: black; -fx-background-radius: 10px; -fx-border-radius: 10px;">
-               <children>
-                  <Button fx:id="AccesoriesButton" mnemonicParsing="false" onAction="#triggerAccessoryPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Accessories" textFill="WHITE">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Button>
-                  <Label fx:id="numAccessory" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="28.0" />
-                     </font>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </HBox.margin>
-            </VBox>
          </children>
       </HBox>
    </top>
@@ -111,7 +94,7 @@
                <top>
                   <AnchorPane BorderPane.alignment="CENTER">
                      <children>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Warnings" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Warnings" textFill="#f2f2f2" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font size="30.0" />
                            </font>

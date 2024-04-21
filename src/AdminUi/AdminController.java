@@ -274,7 +274,6 @@ public class AdminController implements Initializable{
 		getDashboardViewController().numRooms.setText(String.valueOf(roomsCount));
 		getDashboardViewController().numHardware.setText(String.valueOf(hardwaresCount));
 		getDashboardViewController().numSoftware.setText(String.valueOf(softwaresCount));
-		getDashboardViewController().numAccessory.setText(String.valueOf(accessoriesCount));
 	}
 	
 	public void triggerDashBoardPane() {

@@ -18,6 +18,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 
@@ -29,8 +30,6 @@ public class DashboardController implements Initializable{
 	public Label numHardware;
 	@FXML
 	public Label numSoftware;
-	@FXML
-	public Label numAccessory;
 	@FXML
 	private HBox pans;
 	@FXML
@@ -44,8 +43,6 @@ public class DashboardController implements Initializable{
 		private Button HardwareButton;
 		@FXML
 		private Button SoftwareButton;
-		@FXML
-		private Button AccesoriesButton;
 		@FXML
 		private Button RoomsButton;
 		@FXML
@@ -74,8 +71,6 @@ public class DashboardController implements Initializable{
 			SoftwareButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			numSoftware.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			
-			AccesoriesButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
-			numAccessory.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 		}
 		
 		public void setItems() {
@@ -91,10 +86,25 @@ public class DashboardController implements Initializable{
 	                        super.updateItem(item, empty);
 	                        if (empty || item == null) {
 	                            setText(null);
-	                        } else {
+	                        } else if (isSelected()) {
+	                            setTextFill(Color.WHITE);
+	                            setStyle("-fx-background-color: #0096c9;"); 
+	                        }else{
+	                        	if (item.getAsset_status().equals("Broken")) {
+	                                setStyle("-fx-background-color: #FB9494;");
+	                            } else if (item.getAsset_status().equals("Under Maintenance")) {
+	                                setStyle("-fx-background-color: #FFB266;");
+	                            } else if (item.getAsset_status().equals("Ready To Use")) {
+	                                setStyle("-fx-background-color: #B2FF66;");
+	                            } else {
+	                                setStyle("");
+	                            }
+	                        	
+	                        	setTextFill(Color.BLACK);
 	                        	setText(item.toString());
 	                        	AssetsTableController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
 	                            setOnMouseClicked(event->controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem()));
+	                            
 	                        }
 	                    }
 	                };
@@ -105,6 +115,38 @@ public class DashboardController implements Initializable{
 			actionsObs = FXCollections.observableArrayList();
 			DB_Actions.refresh(actionsObs);
 			recentActions.setItems(actionsObs);
+			
+			recentActions.setCellFactory(new Callback<ListView<Action>, ListCell<Action>>() {
+	            @Override
+	            public ListCell<Action> call(ListView<Action> param) {
+	                return new ListCell<Action>() {
+	                    @Override
+	                    protected void updateItem(Action item, boolean empty) {
+	                        super.updateItem(item, empty);
+	                        if (empty || item == null) {
+	                            setText(null);
+	                        } else if (isSelected()) {
+	                            setTextFill(Color.WHITE);
+	                            setStyle("-fx-background-color: #0096c9;"); 
+	                        }else{
+	                        	if (item.getAction_type().equals("Update")) {
+	                                setStyle("-fx-background-color: #f5ed7d;");
+	                            }else if(item.getAction_type().equals("Insertion")) {
+	                            	setStyle("-fx-background-color: #B2FF66");
+	                            }else if(item.getAction_type().equals("Deletion")) {
+	                            	setStyle("-fx-background-color: #FB9494");
+	                            } else {
+	                                setStyle("");
+	                            }
+	                        	
+	                        	setTextFill(Color.BLACK);
+	                        	setText(item.toString());
+	                            
+	                        }
+	                    }
+	                };
+	            }
+	        });
 		}
 		
 		public void refreshList() {
@@ -113,24 +155,14 @@ public class DashboardController implements Initializable{
 		}
 		
 		public void triggerHardwarePane() {
-			
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchCriteriaComboBox.setValue("Category");
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("Hardware");
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().setHardwareColumns(null);
 			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
 		}
 		
 		public void triggerSoftwarePane() {
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchCriteriaComboBox.setValue("Category");
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("Software");
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
-			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
-		}
-		
-		public void triggerAccessoryPane() {
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchCriteriaComboBox.setValue("Category");
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("Accessory");
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().setSoftwareColumns(null);
 			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
 		}
 		

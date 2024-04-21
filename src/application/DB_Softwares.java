@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import Components.Asset;
 import Components.Hardware;
@@ -12,7 +13,7 @@ import javafx.collections.ObservableList;
 
 public class DB_Softwares extends DB_Utilities{
 	
-	public static void refreshSoftwares(ObservableList<Software> softwares,ObservableList<Asset> correspondingAssets) {
+	public static void refreshSoftwares(ObservableList<Asset> softwares,ObservableList<Asset> correspondingAssets) {
 		try(Connection con = DB_Utilities.getDataSource().getConnection()){
 			String getAllAssetsQuery = "SELECT * FROM softwares WHERE software_id=?";
 			try(PreparedStatement psAssets = con.prepareStatement(getAllAssetsQuery)){
@@ -30,6 +31,48 @@ public class DB_Softwares extends DB_Utilities{
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
+	
+	public static void addSoftware(Software software,ObservableList<Asset> softwares) {
+		try(Connection con = dataSource.getConnection()){
+			String insertAsset = "INSERT INTO softwares (software_id,software_license_key,software_version) VALUES (?,?,?)";
+			try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
+				ps.setInt(1, software.getAsset_id());
+				ps.setString(2, software.getSoftware_license_key());
+				ps.setString(3, software.getSoftware_version());
+				
+				ps.executeUpdate();
+				
+				DB_Assets.createActionForAsset(Helper.INSERTION_MODE, software);
+				
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
+	
+	public static void updateSoftware(Software oldSoft,Software newSoft) {
+		try(Connection con = dataSource.getConnection()){
+			String updateAsset = "UPDATE softwares SET "
+					+ "software_license_key = ? ,"
+					+ "software_version = ?"
+					+ "WHERE hardware_id = ?";
+			try(PreparedStatement ps = con.prepareStatement(updateAsset)){
+				
+				ps.setString(1,oldSoft.getSoftware_license_key());
+				ps.setString(2, oldSoft.getSoftware_version());
+				ps.setInt(3,oldSoft.getAsset_id());
+				ps.executeUpdate();
+				
+				oldSoft.setSoftware_license_key(newSoft.getSoftware_license_key());
+				oldSoft.setSoftware_version(newSoft.getSoftware_version());
+				
+			}
+		}catch(SQLException e) {
+			
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}

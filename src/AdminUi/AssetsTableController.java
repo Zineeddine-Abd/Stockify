@@ -15,6 +15,7 @@ import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,13 +108,13 @@ public class AssetsTableController implements Initializable{
     
     //hardware table columns:
 	@FXML
-    private TableColumn<Hardware, String> hardwareSerialNumberColumn;
+    private TableColumn<Asset, String> hardwareSerialNumberColumn;
 	
 	//Software Table Columns here:
 	@FXML
-	private TableColumn<Software , String> softwareLicenseKey;
+	private TableColumn<Asset , String> softwareLicenseKey;
 	@FXML
-	private TableColumn<Software , String> softwareVersion;
+	private TableColumn<Asset , String> softwareVersion;
 	@FXML
 	private Button newAssetButton;
 	
@@ -134,8 +135,8 @@ public class AssetsTableController implements Initializable{
     
     //observable lists***************
     private ObservableList<Asset> allAssetsObs;
-    private ObservableList<Hardware> allHardwaresObs;
-    private ObservableList<Software> allSoftwaresObs;
+    private ObservableList<Asset> allHardwaresObs;
+    private ObservableList<Asset> allSoftwaresObs;
     FilteredList<Asset> filteredAssets;
     SortedList<Asset> sortedAssets;
     //********************************
@@ -143,8 +144,6 @@ public class AssetsTableController implements Initializable{
     public ObservableList<Asset> getAllAssetsObs(){
     	return allAssetsObs;
     }
-    
-    
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -166,6 +165,35 @@ public class AssetsTableController implements Initializable{
         roomColumn.setCellValueFactory(new PropertyValueFactory<Asset, String>("asset_room"));
         assetPurchaseDateColumn.setCellValueFactory(new PropertyValueFactory<Asset, Date>("asset_purchase_date"));
         assetWarrantyColumn.setCellValueFactory(new PropertyValueFactory<Asset, Integer>("asset_warranty"));
+        
+        hardwareSerialNumberColumn.setCellValueFactory(
+                cellData -> {
+                    Asset asset = cellData.getValue();
+                    if (asset instanceof Hardware) {
+                        return new ReadOnlyStringWrapper(((Hardware)asset).getHardware_serial_number()).getReadOnlyProperty();
+                    } else {
+                        return new ReadOnlyStringWrapper("").getReadOnlyProperty(); // Handle non-Hardware objects
+                    }
+                }
+        );
+        
+        softwareLicenseKey.setCellValueFactory( cellData -> {
+            Asset asset = cellData.getValue();
+            if (asset instanceof Software) {
+                return new ReadOnlyStringWrapper(((Software)asset).getSoftware_license_key()).getReadOnlyProperty();
+            } else {
+                return new ReadOnlyStringWrapper("").getReadOnlyProperty(); // Handle non-Hardware objects
+            }
+        });
+        
+        softwareVersion.setCellValueFactory( cellData -> {
+            Asset asset = cellData.getValue();
+            if (asset instanceof Software) {
+                return new ReadOnlyStringWrapper(((Software)asset).getSoftware_version()).getReadOnlyProperty();
+            } else {
+                return new ReadOnlyStringWrapper("").getReadOnlyProperty(); // Handle non-Hardware objects
+            }
+        });
         
         
         assetsTable.setRowFactory(tv -> new TableRow<Asset>() {
@@ -372,14 +400,22 @@ public class AssetsTableController implements Initializable{
 	
 	public void popupUpdateAsset(MouseEvent event, Asset asset){
 		Parent root;
-			
 		try {
 			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
 			
 			
 			root = AdminController.currentNewAssetLoader.load();
 			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
-			controller.setOldAsset(asset);
+			if(asset instanceof Hardware) {
+				Hardware hard = (Hardware) asset;
+				controller.setOldAsset(hard);
+			}else if(asset instanceof Software) {
+				Software soft = (Software) asset;
+				controller.setOldAsset(soft);
+			}else {
+				controller.setOldAsset(asset);
+			}
+			
 			controller.setTitleLabelText("Update Asset");
 			controller.setInfos();
 			
@@ -471,8 +507,6 @@ public class AssetsTableController implements Initializable{
 	}
 	
 	
-	
-	
 	public void addAsset(Asset newAsset) {
        DB_Assets.addAsset(allAssetsObs, newAsset);
     }
@@ -489,9 +523,31 @@ public class AssetsTableController implements Initializable{
     }
     
     public void updateAsset(Asset oldAsset, Asset newAsset) {
-		DB_Assets.updateAsset(allAssetsObs, oldAsset, newAsset);
+		DB_Assets.updateAsset(oldAsset, newAsset);
 		assetsTable.refresh();
 	}
+    
+    public void addHardware(Hardware hardware) {
+    	DB_Hardwares.addHardware(hardware,allHardwaresObs);
+    }
+    
+    public void updateHardware(Asset oldAsset,Hardware newHardware) {
+    	if(oldAsset instanceof Hardware) {    		
+    		Hardware oldHard = (Hardware) oldAsset;
+    		DB_Hardwares.updateHardware(oldHard,newHardware);
+    	}
+    }
+    
+    public void addSoftware(Software software) {
+    	DB_Softwares.addSoftware(software,allSoftwaresObs);
+    }
+    
+    public void updateSoftware(Asset oldAsset,Software newSoftware) {
+    	if(oldAsset instanceof Software) {
+    		Software oldSoft = (Software) oldAsset;
+    		DB_Softwares.updateSoftware(oldSoft,newSoftware);
+    	}
+    }
     
     //Filtering methods******************************************************
 	public void filterTableView() {

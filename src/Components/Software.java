@@ -12,6 +12,12 @@ public class Software extends Asset {
         this.software_license_key = license_key;
         this.software_version = version;
     }
+	
+	public Software(Asset asset , String licenseKey,String version) {
+		super(asset.getAsset_id(),asset.getAsset_category(),asset.getAsset_type(),asset.getAsset_model(),asset.getAsset_status(),asset.getAsset_room(),asset.getAsset_purchase_date(),asset.getAsset_warranty());
+		this.software_license_key = licenseKey;
+		this.software_version = version;
+	}
 
 	public String getSoftware_version() {
 		return software_version;

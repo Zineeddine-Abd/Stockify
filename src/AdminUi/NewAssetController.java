@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Components.Asset;
+import Components.Hardware;
+import Components.Software;
 import application.DB_Rooms;
 import application.Helper;
 import javafx.animation.FadeTransition;
@@ -56,7 +58,17 @@ public class NewAssetController implements Initializable{
 	private String[] keyboard_mouse_models = {"HP","Razer","Logitech"};
 	private String[] components_models = {"SanDisk","Samsung","Toshiba","GIGABYTE" , "Kingston Technology" , "ADATA Technology" , "Corsair"};
 	private ArrayList<String> rooms = DB_Rooms.getRooms();
-
+	
+	public static final int ASSET_MODE = 0;
+	public static final int HARDWARE_MODE = 1;
+	public static final int SOFTWARE_MODE = 2;
+	
+	private int currentMode;
+	
+	public void setCurrentMode(int mode) {
+		currentMode = mode;
+	}
+	
 	@FXML
 	private ChoiceBox<String> categoryChoiceBox;
 	@FXML
@@ -222,15 +234,58 @@ public class NewAssetController implements Initializable{
 		String status = statusChoiceBox.getValue();
 		String room = locationDropDownBox.getValue();
 		int warranty = Integer.parseInt(warrantyField.getText());
-		
 		Date date = java.sql.Date.valueOf(assetPurchaseDate.getValue());
-		
 		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty);
 		
 		if(oldAsset == null) {
 			newAsset(new_asset);
 		}else {
 			updateAsset(new_asset);
+		}
+		
+		switch(categoryChoiceBox.getValue()) {
+			case "Hardware":
+				if(!serialNumField.getText().matches("^[a-zA-Z0-9]+$") && serialNumField.getText() != null) {
+					invalidInfo.setText("Invalid Serial Number!");
+					animatedInvalidInfolabel();
+					return;
+				}
+				String serial_num = serialNumField.getText();
+				Hardware new_hard = new Hardware(new_asset,serial_num);
+				
+				if(oldAsset == null) {
+					newHardware(new_hard);
+				}else {
+					updateHardware(new_hard);
+				}
+				
+				break;
+			case "Software":
+				
+				if(!softLicenseKeyField.getText().matches("^[a-zA-Z0-9]+$") && softLicenseKeyField.getText() != null) {
+					invalidInfo.setText("Invalid License Key!");
+					animatedInvalidInfolabel();
+					return;
+				}
+				
+				if(!softVersionField.getText().matches("^[\\d.,]+$") && softVersionField.getText() != null) {
+					invalidInfo.setText("Invalid Version!");
+					animatedInvalidInfolabel();
+					return;
+				}
+				
+				String licenseKey = softLicenseKeyField.getText();
+				String version = softVersionField.getText();
+				
+				Software software = new Software(new_asset,licenseKey,version);
+				if(oldAsset == null) {
+					newSoftware(software);
+				}else {
+					updateSoftware(software);
+				}
+				
+				break;
+			
 		}
 	    
 		disposeWindow(event);
@@ -243,6 +298,22 @@ public class NewAssetController implements Initializable{
 	
 	private void updateAsset(Asset newAsset) {
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, newAsset);
+	}
+	
+	private void newHardware(Hardware hard) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addHardware(hard);
+	}
+	
+	private void updateHardware(Hardware hardware) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateHardware(oldAsset,hardware);
+	}
+	
+	private void newSoftware(Software soft) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addSoftware(soft);
+	}
+	
+	private void updateSoftware(Software software) {
+		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateSoftware(oldAsset, software);
 	}
 	
 	void setInfos() {

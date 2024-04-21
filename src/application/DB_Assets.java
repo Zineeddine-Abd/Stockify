@@ -52,7 +52,6 @@ public class DB_Assets extends DB_Utilities{
 			String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty) VALUES (?,?,?,?,?,?,?)";
 			try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
 				
-//				ps.setInt(1, 0);
 				ps.setString(1,asset.getAsset_category());
 				ps.setString(2,asset.getAsset_type());
 				ps.setString(3,asset.getAsset_model());
@@ -94,7 +93,6 @@ public class DB_Assets extends DB_Utilities{
 				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){
 					
 					for(Asset asset : selectedAssets) {
-						
 						ps.setInt(1, asset.getAsset_id());
 						ps.executeUpdate();
 						
@@ -112,7 +110,7 @@ public class DB_Assets extends DB_Utilities{
 		
 	}
 	
-	public static void updateAsset(ObservableList<Asset> obsList, Asset oldAsset, Asset newAsset) {
+	public static void updateAsset(Asset oldAsset, Asset newAsset) {
 		try(Connection con = dataSource.getConnection()){
 			String updateAsset = "UPDATE assets SET "
 					+ "asset_category = ?,"
@@ -149,11 +147,7 @@ public class DB_Assets extends DB_Utilities{
 				
 			}
 		}catch(SQLException e) {
-			
 			Helper.displayErrorMessage("Error",e.getMessage());
-			e.printStackTrace();
-			e.printStackTrace();
-			e.printStackTrace();
 		}
 	}
 	
@@ -198,7 +192,7 @@ public class DB_Assets extends DB_Utilities{
 			return null;
 		}
 	 
-	 private static void createActionForAsset(String action_type,Asset asset) {
+	 public static void createActionForAsset(String action_type,Asset asset) {
 		Action action = new Action(0, action_type, asset.toString() , Helper.ASSET, java.sql.Date.valueOf(LocalDate.now()));
 		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
 		DB_Actions.createAction(action,recentActions);

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import Components.Asset;
 import Components.Hardware;
@@ -13,8 +14,9 @@ import javafx.collections.ObservableList;
 
 public class DB_Hardwares extends DB_Utilities{
 	
-	public static void refreshHardwares(ObservableList<Hardware> hardwares,ObservableList<Asset> correspondingAssets) {
-		int i=0;
+	public static int last_id = 0;
+	
+	public static void refreshHardwares(ObservableList<Asset> hardwares,ObservableList<Asset> correspondingAssets) {
 		try(Connection con = DB_Utilities.getDataSource().getConnection()){
 			String getAllAssetsQuery = "SELECT * FROM hardwares WHERE hardware_id=?";
 			try(PreparedStatement psAssets = con.prepareStatement(getAllAssetsQuery)){
@@ -25,13 +27,49 @@ public class DB_Hardwares extends DB_Utilities{
 							String serial_number = rs.getString("hardware_serial_number");
 							Hardware hardware = new Hardware(coresAsset.getAsset_id(),coresAsset.getAsset_category(),coresAsset.getAsset_type(),coresAsset.getAsset_model(),coresAsset.getAsset_status(),coresAsset.getAsset_room(),coresAsset.getAsset_purchase_date(),coresAsset.getAsset_warranty(),serial_number);
 							hardwares.add(hardware);
-							i++;
 						}
 					}
 				}
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
+	
+	public static void addHardware(Hardware hardware, ObservableList<Asset> hardwareObsList) {
+		try(Connection con = dataSource.getConnection()){
+			String insertAsset = "INSERT INTO hardwares (hardware_id,hardware_serial_number) VALUES (?,?)";
+			try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
+				ps.setInt(1, hardware.getAsset_id());
+				ps.setString(2, hardware.getHardware_serial_number());
+				ps.executeUpdate();
+				
+				DB_Assets.createActionForAsset(Helper.INSERTION_MODE, hardware);
+				
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
+	
+	public static void updateHardware(Hardware oldHard,Hardware newHard) {
+		try(Connection con = dataSource.getConnection()){
+			String updateAsset = "UPDATE hardwares SET "
+					+ "hardware_serial_number = ? "
+					+ "WHERE hardware_id = ?";
+			try(PreparedStatement ps = con.prepareStatement(updateAsset)){
+				
+				ps.setString(1,newHard.getHardware_serial_number());
+				ps.setInt(2,newHard.getAsset_id());
+				ps.executeUpdate();
+				
+				oldHard.setHardware_serial_number(newHard.getHardware_serial_number());
+				
+			}
+		}catch(SQLException e) {
+			
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}

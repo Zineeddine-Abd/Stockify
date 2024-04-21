@@ -35,7 +35,7 @@ public class DB_Softwares extends DB_Utilities{
 		}
 	}
 	
-	public static void addSoftware(Software software,ObservableList<Asset> softwares) {
+	public static void addSoftware(Software software) {
 		try(Connection con = dataSource.getConnection()){
 			String insertAsset = "INSERT INTO softwares (software_id,software_license_key,software_version) VALUES (?,?,?)";
 			try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
@@ -75,5 +75,29 @@ public class DB_Softwares extends DB_Utilities{
 			
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
+	}
+	
+	public static Software getSoftware(Asset asset) {
+		Software soft = null;
+		try (Connection con = DB_Utilities.getDataSource().getConnection())
+		{
+			String getAllUsersQuery = "SELECT * FROM softwares WHERE software_id=?";
+			try(PreparedStatement ps = con.prepareStatement(getAllUsersQuery)){
+				ps.setInt(1, asset.getAsset_id());
+				try (ResultSet rs = ps.executeQuery();){
+					if(rs.next()) {
+						String license_key = rs.getString("software_license_key");
+						String version = rs.getString("software_version");
+						
+						soft = new Software(asset,license_key,version);
+						
+					}
+				}    
+			}
+		} catch (SQLException e) {
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+		
+		return soft;
 	}
 }

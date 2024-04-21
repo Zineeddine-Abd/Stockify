@@ -324,6 +324,17 @@ public class NewAssetController implements Initializable{
 		locationDropDownBox.setValue(oldAsset.getAsset_room());
 		warrantyField.setText(String.valueOf(oldAsset.getAsset_warranty()));
 		assetPurchaseDate.setValue(oldAsset.getAsset_purchase_date().toLocalDate());
+		switch(oldAsset.getAsset_category()) {
+		case "Hardware":
+			Hardware hardware = (Hardware) oldAsset;
+			serialNumField.setText(hardware.getHardware_serial_number());
+			break;
+		case "Software":
+			Software software = (Software) oldAsset;
+			softLicenseKeyField.setText(software.getSoftware_license_key());
+			softVersionField.setText(software.getSoftware_version());
+			break;
+		}
 	}
 	
 	public void setHardwareFields() {

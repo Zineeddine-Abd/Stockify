@@ -94,7 +94,7 @@ public class DB_Messages extends DB_Utilities{
 				}
 				return allReportedAssets;
 			}
-		}catch (SQLException e) {
+		}catch (SQLException | NullPointerException e) {
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		return null;

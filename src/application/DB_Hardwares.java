@@ -37,7 +37,7 @@ public class DB_Hardwares extends DB_Utilities{
 		}
 	}
 	
-	public static void addHardware(Hardware hardware, ObservableList<Asset> hardwareObsList) {
+	public static void addHardware(Hardware hardware) {
 		try(Connection con = dataSource.getConnection()){
 			String insertAsset = "INSERT INTO hardwares (hardware_id,hardware_serial_number) VALUES (?,?)";
 			try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
@@ -69,8 +69,34 @@ public class DB_Hardwares extends DB_Utilities{
 				
 			}
 		}catch(SQLException e) {
-			
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
+	
+	public static Hardware getHardware(Asset asset) {
+		Hardware hard = null;
+		try (Connection con = DB_Utilities.getDataSource().getConnection())
+		{
+			String getAllUsersQuery = "SELECT * FROM hardwares WHERE hardware_id=?";
+			try(PreparedStatement ps = con.prepareStatement(getAllUsersQuery)){
+				ps.setInt(1, asset.getAsset_id());
+				try (ResultSet rs = ps.executeQuery();){
+					if(rs.next()) {
+						String serial_num = rs.getString("hardware_serial_number");
+						hard = new Hardware(asset,serial_num);
+					}
+					
+					if(hard == null) {
+						throw new NullPointerException();
+					}
+				}
+			}
+		} catch (SQLException | NullPointerException e) {
+			hard = new Hardware(asset, "");
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+		
+		return hard;
+	}
+	
 }

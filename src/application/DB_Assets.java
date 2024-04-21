@@ -11,12 +11,13 @@ import java.time.LocalDate;
 import AdminUi.AdminController;
 import Components.Action;
 import Components.Asset;
+import Components.Hardware;
 import Components.Room;
+import Components.Software;
 import LoginUi.LoginController;
 import javafx.collections.ObservableList;
 
 public class DB_Assets extends DB_Utilities{
-
 	//id
     private static int last_id = 0;
     
@@ -24,7 +25,6 @@ public class DB_Assets extends DB_Utilities{
     	try(Connection con = DB_Utilities.getDataSource().getConnection()){
 			String getAllAssetsQuery = "SELECT * FROM assets";
 			try(PreparedStatement psAssets = con.prepareStatement(getAllAssetsQuery)){
-				//obsList.clear();
 				try(ResultSet rs = psAssets.executeQuery()){
 					while(rs.next()) {//while the reader still has a next row read it:
 						int asset_id = rs.getInt("asset_id");
@@ -37,7 +37,17 @@ public class DB_Assets extends DB_Utilities{
 						int asset_warranty = rs.getInt("asset_warranty");
 						
 						Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty);
-						obsList.add(asset);
+						
+						if(asset.getAsset_category().equals("Hardware")) {
+							Hardware hardware = DB_Hardwares.getHardware(asset);
+							obsList.add(hardware);
+						}else if(asset.getAsset_category().equals("Software")) {
+							Software software = DB_Softwares.getSoftware(asset);
+							obsList.add(software);
+						}else {
+							obsList.add(asset);
+						}
+						
 					}
 				}
 			}

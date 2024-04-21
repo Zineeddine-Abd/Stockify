@@ -131,13 +131,13 @@ public class AssetsTableController implements Initializable{
     	return searchCriteriaComboBox;
     }
     
-    private final String[] assetCriteria = {"Category", "Type", "Model", "Status", "Location"};
-    
+    private final String[] assetCriteria = {"Id","Category", "Type", "Model", "Status", "Location"};
+    private final String[] hardwareCriteria = {"Id" ,"Type", "Model", "Status", "Location" , "Serial Number"};
+    private final String[] softwareCriteria = {"Id", "Type", "Model", "Status", "Location" ,"License Key","Version"};
     //observable lists***************
     private ObservableList<Asset> allAssetsObs;
-    private ObservableList<Asset> allHardwaresObs;
-    private ObservableList<Asset> allSoftwaresObs;
     FilteredList<Asset> filteredAssets;
+    FilteredList<Asset> filteredListTempo;
     SortedList<Asset> sortedAssets;
     //********************************
     
@@ -148,10 +148,9 @@ public class AssetsTableController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		allAssetsObs = FXCollections.observableArrayList();
-		allHardwaresObs = FXCollections.observableArrayList();
-		allSoftwaresObs = FXCollections.observableArrayList();
 		
 		DB_Assets.refresh(allAssetsObs);
+		
 		
 		HideAllNonHardCols();
 		HideAllNonSoftCols();
@@ -319,7 +318,12 @@ public class AssetsTableController implements Initializable{
 			return cell;
 		});
 		
-		filteredAssets = new FilteredList<Asset>(allAssetsObs);
+		filteredListTempo = new FilteredList<Asset>(allAssetsObs);
+		
+		
+		
+		filteredAssets = new FilteredList<Asset>(filteredListTempo);
+		
         filterTableView();
         
         sortedAssets = new SortedList<Asset>(filteredAssets);
@@ -330,17 +334,12 @@ public class AssetsTableController implements Initializable{
         // Initialize search criteria ComboBox for asset
         searchCriteriaComboBox.getItems().addAll(assetCriteria);
         searchCriteriaComboBox.setValue(assetCriteria[0]);
-        
-        setFilterPredicate("Hardware");
-        DB_Hardwares.refreshHardwares(allHardwaresObs,filteredAssets);
-        
-        setFilterPredicate("Software");
-        DB_Softwares.refreshSoftwares(allSoftwaresObs, filteredAssets);
-        
         setFilterPredicate(null);
         //buttons above init for styling purposes :D 
         DEFAULT_STYLE = assetsButton.getStyle();
         buttonsAbove = new Button[] {assetsButton,hardwaresButton,softwaresButton};
+        
+        setButtonStyle(ASSET_BUTTON);
 	}
 	
 	public void initAssets() {
@@ -528,7 +527,7 @@ public class AssetsTableController implements Initializable{
 	}
     
     public void addHardware(Hardware hardware) {
-    	DB_Hardwares.addHardware(hardware,allHardwaresObs);
+    	DB_Hardwares.addHardware(hardware);
     }
     
     public void updateHardware(Asset oldAsset,Hardware newHardware) {
@@ -539,7 +538,7 @@ public class AssetsTableController implements Initializable{
     }
     
     public void addSoftware(Software software) {
-    	DB_Softwares.addSoftware(software,allSoftwaresObs);
+    	DB_Softwares.addSoftware(software);
     }
     
     public void updateSoftware(Asset oldAsset,Software newSoftware) {
@@ -550,6 +549,18 @@ public class AssetsTableController implements Initializable{
     }
     
     //Filtering methods******************************************************
+    public void setFilterPredicateTempo(String txt) {
+    	filteredListTempo.setPredicate(asset->{
+    		if(txt.equals("Hardware")) {
+    			return asset.getAsset_category().equals("Hardware");
+    		}else if(txt.equals("Software")) {
+    			return asset.getAsset_category().equals("Software");
+    		}
+    		return true;
+    	});
+    }
+    
+    
 	public void filterTableView() {
 		searchTextField.textProperty().addListener((obs, oldTxt, newTxt)->{
 			setFilterPredicate(newTxt);
@@ -564,6 +575,9 @@ public class AssetsTableController implements Initializable{
 			if(txt == null || txt.isBlank()) {
 				return true;
 			}else {
+				if(searchCriteriaComboBox.getValue() == null) {
+					return false;
+				}
 				switch (searchCriteriaComboBox.getValue()) {
 				case "Category":
 					if(asset.getAsset_category().toLowerCase().contains(txt.toLowerCase())) {	
@@ -590,7 +604,31 @@ public class AssetsTableController implements Initializable{
 						return true;
 					}
 		            break;
-		            
+		        case "Serial Number":
+		        	if(asset instanceof Hardware) {
+		        		if(((Hardware)asset).getHardware_serial_number().toLowerCase().contains(txt.toLowerCase())) {
+							return true;
+						}
+		        	}
+		            break;
+		        case "License Key":
+		        	if(asset instanceof Software) {
+		        		if(((Software)asset).getSoftware_license_key().toLowerCase().contains(txt.toLowerCase())) {
+							return true;
+						}
+		        	}
+		            break;
+		        case "Version":
+		        	if(asset instanceof Software) {
+		        		if(((Software)asset).getSoftware_version().toLowerCase().contains(txt.toLowerCase())) {
+							return true;
+						}
+		        	}
+		            break;
+		        case "Id":
+		        	if((asset.getAsset_id() + "").toLowerCase().contains(txt.toLowerCase())) {
+		        		return true;
+		        	}
 		        default:
 		        	return false;
 				}
@@ -607,28 +645,43 @@ public class AssetsTableController implements Initializable{
 	//switching methods here:
 	
 	public void setAssetColumns(ActionEvent event) {
+		searchCriteriaComboBox.getItems().clear();
+		searchCriteriaComboBox.getItems().addAll(assetCriteria);
+		searchCriteriaComboBox.setValue(assetCriteria[0]);
 		setButtonStyle(ASSET_BUTTON);
-		setFilterPredicate(null);
 		
+		setFilterPredicateTempo("");
 		HideAllNonHardCols();
 		HideAllNonSoftCols();
-		
 	}
 	
+	
 	public void setHardwareColumns(ActionEvent event) {
+		searchCriteriaComboBox.getItems().clear();
+        searchCriteriaComboBox.getItems().addAll(hardwareCriteria);
+        searchCriteriaComboBox.setValue(hardwareCriteria[0]);
+        searchTextField.setText("");
+        
 		setButtonStyle(HARDWARE_BUTTON);
-		
-		setFilterPredicate("Hardware");
 		hardwareSerialNumberColumn.setVisible(true);
+		setFilterPredicateTempo("Hardware");
+		
+		
 		HideAllNonHardCols();
 	}
 	
+	
 	public void setSoftwareColumns(ActionEvent event) {
-		setButtonStyle(SOFTWARE_BUTTON);
+		searchCriteriaComboBox.getItems().clear();
+		searchCriteriaComboBox.getItems().addAll(softwareCriteria);
+        searchCriteriaComboBox.setValue(softwareCriteria[0]);
 		
-		setFilterPredicate("Software");
+		setButtonStyle(SOFTWARE_BUTTON);
+		setFilterPredicateTempo("Software");
+		
 		softwareLicenseKey.setVisible(true);
 		softwareVersion.setVisible(true);
+		
 		HideAllNonSoftCols();
 	}
 	

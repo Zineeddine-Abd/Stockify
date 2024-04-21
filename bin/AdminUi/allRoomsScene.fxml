@@ -14,10 +14,10 @@
    <center>
      <TableView fx:id="roomsTable" editable="true" stylesheets="@table.css">
         <columns>
-           <TableColumn fx:id="roomIdColumn" prefWidth="75.0" text="room_id" />
-           <TableColumn fx:id="roomTypeColumn" prefWidth="92.800048828125" text="room_type" />
-           <TableColumn fx:id="roomNameColumn" prefWidth="74.39993896484373" text="room_name" />
-            <TableColumn fx:id="editColumn" editable="false" prefWidth="52.0" resizable="false" sortable="false" />
+           <TableColumn fx:id="roomIdColumn" prefWidth="128.80001527071" text="room_id" />
+           <TableColumn fx:id="roomTypeColumn" prefWidth="192.00001525878906" text="room_type" />
+           <TableColumn fx:id="roomNameColumn" minWidth="0.0" prefWidth="200.7999267578125" text="room_name" />
+            <TableColumn fx:id="editColumn" editable="false" minWidth="9.60003662109375" prefWidth="72.79998779296875" resizable="false" sortable="false" />
         </columns>
      </TableView>
    </center>

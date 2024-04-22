@@ -31,6 +31,8 @@ public class DashboardController implements Initializable{
 	@FXML
 	public Label numSoftware;
 	@FXML
+	public Label numAssets;
+	@FXML
 	private HBox pans;
 	@FXML
 	private BorderPane recentActionsPane;
@@ -39,6 +41,8 @@ public class DashboardController implements Initializable{
 	
 	
 	//All Assets Section Mats:******************/
+		@FXML
+		private Button assetsButton;
 		@FXML
 		private Button HardwareButton;
 		@FXML
@@ -71,6 +75,8 @@ public class DashboardController implements Initializable{
 			SoftwareButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			numSoftware.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			
+			assetsButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+			numAssets.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 		}
 		
 		public void setItems() {
@@ -163,6 +169,12 @@ public class DashboardController implements Initializable{
 		public void triggerSoftwarePane() {
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().setSoftwareColumns(null);
+			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
+		}
+		
+		public void triggerAssetsPane() {
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
+			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().setAssetColumns(null);
 			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
 		}
 		

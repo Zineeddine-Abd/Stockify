@@ -268,12 +268,13 @@ public class AdminController implements Initializable{
 		ObservableList<Asset> allAssets = getAllAssetsViewController().getAllAssetsObs();
 		long hardwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Hardware")).count();
 		long softwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Software")).count();
-		long accessoriesCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Accessory")).count();
+		long AssetsCount = allAssets.stream().count();
 				
 		
 		getDashboardViewController().numRooms.setText(String.valueOf(roomsCount));
 		getDashboardViewController().numHardware.setText(String.valueOf(hardwaresCount));
 		getDashboardViewController().numSoftware.setText(String.valueOf(softwaresCount));
+		getDashboardViewController().numAssets.setText(String.valueOf(AssetsCount));
 	}
 	
 	public void triggerDashBoardPane() {

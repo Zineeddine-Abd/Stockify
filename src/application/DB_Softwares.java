@@ -45,7 +45,6 @@ public class DB_Softwares extends DB_Utilities{
 				
 				ps.executeUpdate();
 				
-				DB_Assets.createActionForAsset(Helper.INSERTION_MODE, software);
 				
 			}
 		}catch(SQLException e) {
@@ -59,7 +58,7 @@ public class DB_Softwares extends DB_Utilities{
 			String updateAsset = "UPDATE softwares SET "
 					+ "software_license_key = ? ,"
 					+ "software_version = ?"
-					+ "WHERE hardware_id = ?";
+					+ "WHERE software_id = ?";
 			try(PreparedStatement ps = con.prepareStatement(updateAsset)){
 				
 				ps.setString(1,oldSoft.getSoftware_license_key());

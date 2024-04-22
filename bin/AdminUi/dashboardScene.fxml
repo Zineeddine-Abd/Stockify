@@ -14,6 +14,26 @@
    <top>
       <HBox alignment="CENTER" prefHeight="156.0" style="-fx-background-color: #E0E0E0; -fx-border-color: Black; -fx-border-width: 1px;" BorderPane.alignment="CENTER">
          <children>
+            <VBox layoutX="140.0" layoutY="26.0" prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+               <children>
+                  <Button fx:id="assetsButton" mnemonicParsing="false" onAction="#triggerAssetsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Assets" textFill="WHITE">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+                  <Label fx:id="numAssets" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+            </VBox>
             <VBox prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

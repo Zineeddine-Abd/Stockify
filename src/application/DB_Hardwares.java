@@ -45,8 +45,6 @@ public class DB_Hardwares extends DB_Utilities{
 				ps.setString(2, hardware.getHardware_serial_number());
 				ps.executeUpdate();
 				
-				DB_Assets.createActionForAsset(Helper.INSERTION_MODE, hardware);
-				
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -63,6 +61,8 @@ public class DB_Hardwares extends DB_Utilities{
 				
 				ps.setString(1,newHard.getHardware_serial_number());
 				ps.setInt(2,newHard.getAsset_id());
+				
+				System.out.println();
 				ps.executeUpdate();
 				
 				oldHard.setHardware_serial_number(newHard.getHardware_serial_number());

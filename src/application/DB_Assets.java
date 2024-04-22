@@ -77,6 +77,13 @@ public class DB_Assets extends DB_Utilities{
 			             //set the actual asset id:
 			            last_id = generatedKeys.getInt(1);
 			            asset.setAsset_id(last_id);
+			            
+			            if(asset instanceof Hardware) {
+			            	DB_Hardwares.addHardware((Hardware)asset);
+			            }else if(asset instanceof Software) {
+			            	DB_Softwares.addSoftware((Software)asset);
+			            }
+			            
 						obsList.add(asset);
 			            
 			         } else {
@@ -152,6 +159,12 @@ public class DB_Assets extends DB_Utilities{
 				oldAsset.setAsset_room(newAsset.getAsset_room());
 				oldAsset.setAsset_purchase_date(newAsset.getAsset_purchase_date());
 				oldAsset.setAsset_warranty(newAsset.getAsset_warranty());
+				
+				if(newAsset instanceof Hardware) {
+	            	DB_Hardwares.updateHardware((Hardware)oldAsset, (Hardware)newAsset);
+	            }else if(newAsset instanceof Software) {
+	            	DB_Softwares.updateSoftware((Software)oldAsset, (Software)newAsset);
+	            }
 				
 				createActionForAsset(Helper.UPDATE_MODE, oldAsset);
 				

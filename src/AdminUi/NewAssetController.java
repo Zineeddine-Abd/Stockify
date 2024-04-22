@@ -237,11 +237,7 @@ public class NewAssetController implements Initializable{
 		Date date = java.sql.Date.valueOf(assetPurchaseDate.getValue());
 		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty);
 		
-		if(oldAsset == null) {
-			newAsset(new_asset);
-		}else {
-			updateAsset(new_asset);
-		}
+		
 		
 		switch(categoryChoiceBox.getValue()) {
 			case "Hardware":
@@ -254,9 +250,9 @@ public class NewAssetController implements Initializable{
 				Hardware new_hard = new Hardware(new_asset,serial_num);
 				
 				if(oldAsset == null) {
-					newHardware(new_hard);
+					newAsset(new_hard);
 				}else {
-					updateHardware(new_hard);
+					updateAsset(new_hard);
 				}
 				
 				break;
@@ -277,11 +273,11 @@ public class NewAssetController implements Initializable{
 				String licenseKey = softLicenseKeyField.getText();
 				String version = softVersionField.getText();
 				
-				Software software = new Software(new_asset,licenseKey,version);
+				Software new_soft = new Software(new_asset,licenseKey,version);
 				if(oldAsset == null) {
-					newSoftware(software);
+					newAsset(new_soft);
 				}else {
-					updateSoftware(software);
+					updateAsset(new_soft);
 				}
 				
 				break;

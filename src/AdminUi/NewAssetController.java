@@ -35,28 +35,38 @@ public class NewAssetController implements Initializable{
 	public static final String LOST_STOLEN = "Lost/Stolen";
 	public static final String UNDER_MAINTENANCE = "Under Maintenance";
 	public static final String BROKEN = "Broken";
-	
+	public static final String READY_TO_USE = "Ready To Use";
+//CATEGORIES:
 	private final String HARDWARE = "Hardware";
 	private final String SOFTWARE = "Software";
-	private final String ACCESSORY = "Accessory";
-	
-	private String[] categories = {HARDWARE,SOFTWARE,ACCESSORY};
-	private String[] hardware_type = {"Desktop" , "Laptop", "Projector", "Scanner", "Printer", "Switch" ,"Hub","Router","Modem" };
-	private String[] software_type = {"Anti-Virus","License"};
-	private String[] accessory_type = {"Keyboard","Mouse","Cable","HDD","SSD","RAM"};
+	private final String ACCESSORY = "Accessory/External Peripherals";
+	private final String NETWORKING = "Networking Equipment";
+	private String[] categories = {HARDWARE,SOFTWARE,ACCESSORY,NETWORKING};
+//TYPES:
+	private String[] hardware_type = {"Desktop" ,"Monitor", "Laptop", "Projector", "Scanner", "Printer"};
+	private String[] software_type = {"Anti-Virus", "IDE" , "Operating System"};
+	private String[] accessory_type = {"Keyboard","Mouse","Cable","HDD","SSD","RAM","Motherboard","CPU"};
+	private String[] networking_type = {"Switch" ,"Hub","Router","Modem" ,"Network Attached Storage","Firewall","Load Balancer"};
 	public static String[] statuses = {IN_INVENTORY,IN_USE,LOST_STOLEN};//all status for now , feel free to add any more statuses.
-	
-	//*******hardware models:*********************
-	private String[] desktop_laptop_models = {"HP","Dell","Lenovo","Acer","Apple","MSI","Razer"};
+//MODELS:
+	//hardware models:
+	private String[] monitor_models = {"HP","MSI","LG","Condor","Dell","Asus","Lenovo","Acer","Apple"};
 	private String[] projector_scanner_printer_models = {"Canon" , "Epson" , "HP" , "Toshiba"};
-	private String[] networking_equipment_models = {"Dell EMC" , "Cisco Systems", "TP-Link" , "D-Link" , "Juniper Networks" , "None of the Above"};
-	//*******software models:*********************
+	//networking models:
+	private String[] SHRM_models = {"Dell EMC" , "Cisco Systems", "TP-Link" , "D-Link" , "Juniper Networks"};
+	private String[] firewall_models = {"Cisco","Palo Alto Networks","Fortinet","McAfee","Sophos"};
+	private String[] loadBalancer_models = {"F5 Networks","A10 Networks","HAProxy"};
+	private String[] nas_models = {"Synology","QNAP Systems","Asustor","Netgear","Seagate"};
+	//software models:
 	private String[] anti_virus_models = {"Kasperky","AVG","Avast"};
-
+	private String[] ide_models = {"Eclipse IDE" , "IntelliJ Idea" , "NetBeans" , "VSCode" , "CodeBlocks" , "Anaconda"};
+	private String[] os_models = {"Windows XP","Windows 7" , "Windows 8" , "Windows 10" , "Windows 11" , "Ubuntu" , "Linux mint" , "Kali Linux","Debian","Fedora"};
+	//Accessory models:
+	private String[] keyboard_mouse_models = {"HP","Razer","Logitech","Corsair","Kingston","SteelSeries","MSI","Asus"};
+	private String[] components_models = {"Asus","MSI","SanDisk","Samsung","Toshiba","GIGABYTE" , "Kingston Technology" , "ADATA Technology" , "Corsair"};
+	private String[] mb_cpu_models = {"Intel","AMD","GIGABYTE","MSI","Asus"};
 	
-	//*******Accessory models:********************
-	private String[] keyboard_mouse_models = {"HP","Razer","Logitech"};
-	private String[] components_models = {"SanDisk","Samsung","Toshiba","GIGABYTE" , "Kingston Technology" , "ADATA Technology" , "Corsair"};
+	
 	private ArrayList<String> rooms = DB_Rooms.getRooms();
 	
 	public static final int ASSET_MODE = 0;
@@ -142,9 +152,11 @@ public class NewAssetController implements Initializable{
 				if(!parentVBox.getChildren().contains(hardwareVbox)) {
 					parentVBox.getChildren().add(hardwareVbox);
 				}
+				
 				if(parentVBox.getChildren().contains(softwareVbox)) {					
 					parentVBox.getChildren().remove(softwareVbox);
 				}
+				
 			}else if(categoryChoiceBox.getValue() == SOFTWARE) {
 				typeChoiceBox.getItems().addAll(software_type);
 				
@@ -156,24 +168,39 @@ public class NewAssetController implements Initializable{
 				}
 			}else if(categoryChoiceBox.getValue() == ACCESSORY) {
 				typeChoiceBox.getItems().addAll(accessory_type);
-			}	
+			}else if(categoryChoiceBox.getValue() == NETWORKING) {
+				typeChoiceBox.getItems().addAll(networking_type);
+			}
 		});
 		
 		
 		typeChoiceBox.setOnAction(event->{
 			modelChoiceBox.getItems().clear();
-			if(typeChoiceBox.getValue() == "Desktop" || typeChoiceBox.getValue() == "Laptop") {
-				modelChoiceBox.getItems().addAll(desktop_laptop_models);
+			
+			if(typeChoiceBox.getValue() == "Desktop" || typeChoiceBox.getValue() == "Laptop" || typeChoiceBox.getValue() == "Monitor") {
+				modelChoiceBox.getItems().addAll(monitor_models);
 			}else if(typeChoiceBox.getValue() == "Projector" || typeChoiceBox.getValue() == "Scanner" || typeChoiceBox.getValue() == "Printer") {
 				modelChoiceBox.getItems().addAll(projector_scanner_printer_models);
 			}else if(typeChoiceBox.getValue() == "Hub" || typeChoiceBox.getValue() == "Switch" || typeChoiceBox.getValue() == "Router" || typeChoiceBox.getValue() == "Modem") {
-				modelChoiceBox.getItems().addAll(networking_equipment_models);
+				modelChoiceBox.getItems().addAll(SHRM_models);
 			}else if(typeChoiceBox.getValue() == "Keyboard" || typeChoiceBox.getValue() == "Mouse") {
 				modelChoiceBox.getItems().addAll(keyboard_mouse_models);
 			}else if(typeChoiceBox.getValue() == "HDD" || typeChoiceBox.getValue() == "SSD" || typeChoiceBox.getValue() == "RAM") {
 				modelChoiceBox.getItems().addAll(components_models);
+			}else if(typeChoiceBox.getValue() == "Motherboard" || typeChoiceBox.getValue() == "CPU") {
+				modelChoiceBox.getItems().addAll(mb_cpu_models);
 			}else if(typeChoiceBox.getValue() == "Anti-Virus") {
 				modelChoiceBox.getItems().addAll(anti_virus_models);
+			}else if(typeChoiceBox.getValue() == "IDE") {
+				modelChoiceBox.getItems().addAll(ide_models);
+			}else if(typeChoiceBox.getValue() == "Operating System") {
+				modelChoiceBox.getItems().addAll(os_models);
+			}else if(typeChoiceBox.getValue() == "Firewall") {
+				modelChoiceBox.getItems().addAll(firewall_models);
+			}else if(typeChoiceBox.getValue() == "Load Balancer") {
+				modelChoiceBox.getItems().addAll(loadBalancer_models);
+			}else if(typeChoiceBox.getValue() == "Network Attached Storage") {
+				modelChoiceBox.getItems().addAll(nas_models);
 			}
 		});
 		statusChoiceBox.getItems().addAll(statuses);
@@ -227,7 +254,6 @@ public class NewAssetController implements Initializable{
 			return;
 		}
 		
-		int id = 0;
 		String category = categoryChoiceBox.getValue();
 		String type = typeChoiceBox.getValue();
 		String model = modelChoiceBox.getValue();
@@ -235,55 +261,62 @@ public class NewAssetController implements Initializable{
 		String room = locationDropDownBox.getValue();
 		int warranty = Integer.parseInt(warrantyField.getText());
 		Date date = java.sql.Date.valueOf(assetPurchaseDate.getValue());
-		Asset new_asset = new Asset(id,category,type,model,status,room,date,warranty);
+		Asset new_asset = new Asset(0,category,type,model,status,room,date,warranty);
 		
-		
-		
-		switch(categoryChoiceBox.getValue()) {
-			case "Hardware":
-				if(!serialNumField.getText().matches("^[a-zA-Z0-9]+$") && serialNumField.getText() != null) {
-					invalidInfo.setText("Invalid Serial Number!");
-					animatedInvalidInfolabel();
-					return;
-				}
-				String serial_num = serialNumField.getText();
-				Hardware new_hard = new Hardware(new_asset,serial_num);
-				
-				if(oldAsset == null) {
-					newAsset(new_hard);
-				}else {
-					updateAsset(new_hard);
-				}
-				
-				break;
-			case "Software":
-				
-				if(!softLicenseKeyField.getText().matches("^[a-zA-Z0-9]+$") && softLicenseKeyField.getText() != null) {
-					invalidInfo.setText("Invalid License Key!");
-					animatedInvalidInfolabel();
-					return;
-				}
-				
-				if(!softVersionField.getText().matches("^[\\d.,]+$") && softVersionField.getText() != null) {
-					invalidInfo.setText("Invalid Version!");
-					animatedInvalidInfolabel();
-					return;
-				}
-				
-				String licenseKey = softLicenseKeyField.getText();
-				String version = softVersionField.getText();
-				
-				Software new_soft = new Software(new_asset,licenseKey,version);
-				if(oldAsset == null) {
-					newAsset(new_soft);
-				}else {
-					updateAsset(new_soft);
-				}
-				
-				break;
+		try {
 			
+			switch(categoryChoiceBox.getValue()) {
+				case "Hardware":
+					if(!serialNumField.getText().matches("^[a-zA-Z0-9]+$") && serialNumField.getText() != null) {
+						invalidInfo.setText("Invalid Serial Number!");
+						animatedInvalidInfolabel();
+						return;
+					}
+					String serial_num = serialNumField.getText();
+					Hardware new_hard = new Hardware(new_asset,serial_num);
+					
+					if(oldAsset == null) {
+						newAsset(new_hard);
+					}else {
+						updateAsset(new_hard);
+					}
+					return;
+				case "Software":
+					
+					if(!softLicenseKeyField.getText().matches("^[a-zA-Z0-9]+$") && softLicenseKeyField.getText() != null) {
+						invalidInfo.setText("Invalid License Key!");
+						animatedInvalidInfolabel();
+						return;
+					}
+					
+					if(!softVersionField.getText().matches("^[\\d.,]+$") && softVersionField.getText() != null) {
+						invalidInfo.setText("Invalid Version!");
+						animatedInvalidInfolabel();
+						return;
+					}
+					
+					String licenseKey = softLicenseKeyField.getText();
+					String version = softVersionField.getText();
+					
+					Software new_soft = new Software(new_asset,licenseKey,version);
+					
+					if(oldAsset == null) {
+						newAsset(new_soft);
+					}else {
+						updateAsset(new_soft);
+					}
+					return;
+			}
+			
+			if(oldAsset == null) {
+				newAsset(new_asset);
+			}else {
+				updateAsset(new_asset);
+			}
+		}catch(NullPointerException e) {
+			Helper.displayErrorMessage("Error", e.getMessage());
 		}
-	    
+		
 		disposeWindow(event);
 	}
 	
@@ -296,21 +329,21 @@ public class NewAssetController implements Initializable{
 		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, newAsset);
 	}
 	
-	private void newHardware(Hardware hard) {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addHardware(hard);
-	}
-	
-	private void updateHardware(Hardware hardware) {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateHardware(oldAsset,hardware);
-	}
-	
-	private void newSoftware(Software soft) {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addSoftware(soft);
-	}
-	
-	private void updateSoftware(Software software) {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateSoftware(oldAsset, software);
-	}
+//	private void newHardware(Hardware hard) {
+//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addHardware(hard);
+//	}
+//	
+//	private void updateHardware(Hardware hardware) {
+//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateHardware(oldAsset,hardware);
+//	}
+//	
+//	private void newSoftware(Software soft) {
+//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addSoftware(soft);
+//	}
+//	
+//	private void updateSoftware(Software software) {
+//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateSoftware(oldAsset, software);
+//	}
 	
 	void setInfos() {
 		categoryChoiceBox.setValue(oldAsset.getAsset_category());

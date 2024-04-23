@@ -3,12 +3,18 @@ package application;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
 import com.zaxxer.hikari.HikariDataSource;
+
+import Components.Asset;
+import Components.Hardware;
+import Components.Software;
 
 
 public class DB_Utilities {
@@ -43,7 +49,18 @@ public class DB_Utilities {
 	}
 	
 	
-	
+	public static void executeClear() {
+		try(Connection con = DB_Utilities.getDataSource().getConnection()){
+			String query = "ALTER TABLE assets "
+					+ "DROP CONSTRAINT assets_asset_category_check;";
+			try(PreparedStatement psAssets = con.prepareStatement(query)){
+				psAssets.executeUpdate();
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			Helper.displayErrorMessage("Error",e.getMessage());
+		}
+	}
 		
 	
 	protected static boolean isTableEmpty(String table) {

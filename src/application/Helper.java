@@ -17,6 +17,9 @@ public class Helper {
 	public static final String USER = "User";
 	public static final String ROOM = "Room";
 	
+	public static final String HARDWARE = "Hardware";
+	public static final String SOFTWARE = "Software";
+	
 	public static final String fxmlAdmin = "/AdminUi/adminScene.fxml";
 	public static final String fxmlTechnician = "/TechnicianUi/technicianScene.fxml";
 	public static final String fxmlProfessor = "/ProfessorUi/professorScene.fxml";

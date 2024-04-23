@@ -45,24 +45,19 @@ public class DB_Softwares extends DB_Utilities{
 				
 				ps.executeUpdate();
 				
-				
 			}
 		}catch(SQLException e) {
-			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
 	
 	public static void updateSoftware(Software oldSoft,Software newSoft) {
 		try(Connection con = dataSource.getConnection()){
-			String updateAsset = "UPDATE softwares SET "
-					+ "software_license_key = ? ,"
-					+ "software_version = ?"
-					+ "WHERE software_id = ?";
-			try(PreparedStatement ps = con.prepareStatement(updateAsset)){
+			String testUpdate = "UPDATE softwares SET software_license_key = ?, software_version = ? WHERE software_id=?";
+			try(PreparedStatement ps = con.prepareStatement(testUpdate)){
 				
-				ps.setString(1,oldSoft.getSoftware_license_key());
-				ps.setString(2, oldSoft.getSoftware_version());
+				ps.setString(1,newSoft.getSoftware_license_key());
+				ps.setString(2, newSoft.getSoftware_version());
 				ps.setInt(3,oldSoft.getAsset_id());
 				ps.executeUpdate();
 				
@@ -71,7 +66,7 @@ public class DB_Softwares extends DB_Utilities{
 				
 			}
 		}catch(SQLException e) {
-			
+			e.printStackTrace();
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -87,7 +82,6 @@ public class DB_Softwares extends DB_Utilities{
 					if(rs.next()) {
 						String license_key = rs.getString("software_license_key");
 						String version = rs.getString("software_version");
-						
 						soft = new Software(asset,license_key,version);
 						
 					}

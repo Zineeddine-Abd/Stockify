@@ -220,6 +220,7 @@ public class LoginController{
 	 
 	 Stage draggableStage;
 	 double x, y;
+	 
 	 public void getInitialMousePosition(MouseEvent event) {
 		draggableStage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		x =  event.getScreenX() - draggableStage.getX();

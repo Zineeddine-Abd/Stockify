@@ -41,6 +41,7 @@ public class ReportPopupController implements Initializable{
 	private Label warrantyStatusLabel;
 	
 	private String[] reportStatuses = {"Broken","Under Maintenance","Ready To Use"};
+	private String[] reportSoftwareStatuses = {"Active" , "Inactive" ,"Under Maintenance", "Ready To Use" };
 	
 	private Asset oldAsset;
 	
@@ -49,7 +50,11 @@ public class ReportPopupController implements Initializable{
 	}
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		statusChoiceBox.getItems().addAll(reportStatuses);
+		if(oldAsset.getAsset_category().equals(Helper.SOFTWARE)) {
+			statusChoiceBox.getItems().addAll(reportSoftwareStatuses);
+		}else if(oldAsset.getAsset_category().equals(Helper.SOFTWARE)) {			
+			statusChoiceBox.getItems().addAll(reportStatuses);
+		}
 	}
 	
 	public void validateReportInfo(ActionEvent event) {

@@ -86,7 +86,7 @@ public class Asset extends Component{
 	}
 	
 	public String toString() {
-		return this.getAsset_id()+": "+this.getAsset_category()+": "+this.getAsset_type()+": "+this.getAsset_model()+": "+this.getAsset_status() + " ";
+		return this.getAsset_id()+": "+this.getAsset_category()+": "+this.getAsset_type()+": "+this.getAsset_model()+": "+this.getAsset_status() + " :Room = " + this.getAsset_room() + " ";
 	}
 
 }

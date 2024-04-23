@@ -230,11 +230,11 @@ public class AssetsTableController implements Initializable{
                     // Reset background color to its original state
                     if (getItem() != null) {
                         Asset item = getItem(); // Access the item
-                        if (item.getAsset_status().equals("Broken")) {
+                        if (item.getAsset_status().equals(NewAssetController.BROKEN)) {
                             setStyle("-fx-background-color: #FB9494;");
-                        } else if (item.getAsset_status().equals("Under Maintenance")) {
+                        } else if (item.getAsset_status().equals(NewAssetController.UNDER_MAINTENANCE)) {
                             setStyle("-fx-background-color: #FFB266;");
-                        } else if (item.getAsset_status().equals("Ready To Use")) {
+                        } else if (item.getAsset_status().equals(NewAssetController.READY_TO_USE)) {
                             setStyle("-fx-background-color: #B2FF66;");
                         } else {
                             setStyle("");
@@ -372,7 +372,6 @@ public class AssetsTableController implements Initializable{
 				controller.setSoftwareFields();
 			}
 			
-			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
 			
@@ -401,7 +400,6 @@ public class AssetsTableController implements Initializable{
 		Parent root;
 		try {
 			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
-			
 			
 			root = AdminController.currentNewAssetLoader.load();
 			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
@@ -510,9 +508,7 @@ public class AssetsTableController implements Initializable{
        DB_Assets.addAsset(allAssetsObs, newAsset);
     }
 	
-	 
     public void deleteSelectedAssets() {
-    	
     	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
@@ -530,8 +526,8 @@ public class AssetsTableController implements Initializable{
     	DB_Hardwares.addHardware(hardware);
     }
     
-    public void updateHardware(Asset oldAsset,Hardware newHardware) {
-    	if(oldAsset instanceof Hardware) {    		
+    public void updateHardware(Asset oldAsset,Hardware newHardware){
+    	if(oldAsset instanceof Hardware) {
     		Hardware oldHard = (Hardware) oldAsset;
     		DB_Hardwares.updateHardware(oldHard,newHardware);
     	}
@@ -544,17 +540,18 @@ public class AssetsTableController implements Initializable{
     public void updateSoftware(Asset oldAsset,Software newSoftware) {
     	if(oldAsset instanceof Software) {
     		Software oldSoft = (Software) oldAsset;
+    		
     		DB_Softwares.updateSoftware(oldSoft,newSoftware);
     	}
     }
     
-    //Filtering methods******************************************************
+    //Filtering methods*********************************************
     public void setFilterPredicateTempo(String txt) {
     	filteredListTempo.setPredicate(asset->{
     		if(txt.equals("Hardware")) {
-    			return asset.getAsset_category().equals("Hardware");
+    			return asset.getAsset_category().equals(Helper.HARDWARE);
     		}else if(txt.equals("Software")) {
-    			return asset.getAsset_category().equals("Software");
+    			return asset.getAsset_category().equals(Helper.SOFTWARE);
     		}
     		return true;
     	});
@@ -664,8 +661,7 @@ public class AssetsTableController implements Initializable{
         
 		setButtonStyle(HARDWARE_BUTTON);
 		hardwareSerialNumberColumn.setVisible(true);
-		setFilterPredicateTempo("Hardware");
-		
+		setFilterPredicateTempo(Helper.HARDWARE);
 		
 		HideAllNonHardCols();
 	}
@@ -677,7 +673,7 @@ public class AssetsTableController implements Initializable{
         searchCriteriaComboBox.setValue(softwareCriteria[0]);
 		
 		setButtonStyle(SOFTWARE_BUTTON);
-		setFilterPredicateTempo("Software");
+		setFilterPredicateTempo(Helper.SOFTWARE);
 		
 		softwareLicenseKey.setVisible(true);
 		softwareVersion.setVisible(true);

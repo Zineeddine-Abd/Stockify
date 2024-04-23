@@ -37,28 +37,32 @@ public class MessageController{
   	private ObservableList<Message> filteredMessagesList;
 
 	public void setItems() {
-		messagesList = ((AdminController)Helper.currentAdminLoader.getController()).getMessagesList();
-		filteredMessagesList = new FilteredList<Message>(messagesList, message -> message.getCor_asset_id() == currentAsset.getAsset_id());
-		
-		allMessagesList.setItems(filteredMessagesList);
-		
-		allMessagesList.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
-            @Override
-            public ListCell<Message> call(ListView<Message> param) {
-                return new ListCell<Message>() {
-                    @Override
-                    protected void updateItem(Message item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setText(null);
-                        } else {
-                            setText(item.toString());
-                            setOnMouseClicked(event->showReportDetails(event, this.getListView().getSelectionModel().getSelectedItem()));
-                        }
-                    }
-                };
-            }
-        });
+		try {
+			messagesList = ((AdminController)Helper.currentAdminLoader.getController()).getMessagesList();
+			filteredMessagesList = new FilteredList<Message>(messagesList, message -> message.getCor_asset_id() == currentAsset.getAsset_id());
+			
+			allMessagesList.setItems(filteredMessagesList);
+			
+			allMessagesList.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
+	            @Override
+	            public ListCell<Message> call(ListView<Message> param) {
+	                return new ListCell<Message>() {
+	                    @Override
+	                    protected void updateItem(Message item, boolean empty) {
+	                        super.updateItem(item, empty);
+	                        if (empty || item == null) {
+	                            setText(null);
+	                        } else {
+	                            setText(item.toString());
+	                            setOnMouseClicked(event->showReportDetails(event, this.getListView().getSelectionModel().getSelectedItem()));
+	                        }
+	                    }
+	                };
+	            }
+	        });
+		}catch(NullPointerException e) {
+			System.exit(1);
+		}
 	}
 	
 	

@@ -1,4 +1,5 @@
 package application;
+import AdminUi.GlobalExceptionHandler;
 import LoginUi.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			
 			Parent loginroot = FXMLLoader.load(getClass().getResource("/LoginUi/loginScene.fxml"));
 			Scene loginScene = new Scene(loginroot);
 			String css = this.getClass().getResource("/LoginUi/loginUI.css").toExternalForm();
@@ -33,6 +35,8 @@ public class Main extends Application {
 					DB_Utilities.getDataSource().close();
 				}
 			});
+			
+			Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
 			
 			primaryStage.show();
 		} catch(Exception e) {

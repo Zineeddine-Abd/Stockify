@@ -52,6 +52,10 @@ public class DashboardController implements Initializable{
 		@FXML
 		private ListView<Asset> reportedAssetsList;
 		private ObservableList<Asset> reportedAssetsObs;
+		
+		public ObservableList<Asset> getReportedAssetsList(){
+			return reportedAssetsObs;
+		}
 		@FXML
 		private ListView<Action> recentActions;
 		private ObservableList<Action> actionsObs;
@@ -83,6 +87,16 @@ public class DashboardController implements Initializable{
 			//Reported Assets List:
 			reportedAssetsObs = DB_Messages.getReportedAssets();
 			reportedAssetsList.setItems(reportedAssetsObs);
+			actionsObs = FXCollections.observableArrayList();
+			DB_Actions.refresh(actionsObs);
+			recentActions.setItems(actionsObs);
+			
+			setCellFactories();
+			
+		}
+		
+		public void setCellFactories() {
+			
 			reportedAssetsList.setCellFactory(new Callback<ListView<Asset>, ListCell<Asset>>() {
 	            @Override
 	            public ListCell<Asset> call(ListView<Asset> param) {
@@ -117,11 +131,6 @@ public class DashboardController implements Initializable{
 	            }
 	        });
 			
-			
-			actionsObs = FXCollections.observableArrayList();
-			DB_Actions.refresh(actionsObs);
-			recentActions.setItems(actionsObs);
-			
 			recentActions.setCellFactory(new Callback<ListView<Action>, ListCell<Action>>() {
 	            @Override
 	            public ListCell<Action> call(ListView<Action> param) {
@@ -131,6 +140,7 @@ public class DashboardController implements Initializable{
 	                        super.updateItem(item, empty);
 	                        if (empty || item == null) {
 	                            setText(null);
+	                            setStyle("-fx-background-color: #FFFFFF;");
 	                        } else if (isSelected()) {
 	                            setTextFill(Color.WHITE);
 	                            setStyle("-fx-background-color: #0096c9;"); 
@@ -156,8 +166,13 @@ public class DashboardController implements Initializable{
 		}
 		
 		public void refreshList() {
+			setCellFactories();
+			
 			reportedAssetsObs = DB_Messages.getReportedAssets();
 			reportedAssetsList.setItems(reportedAssetsObs);
+			
+			getrecentActionsObsList().clear();
+			DB_Actions.refresh(getrecentActionsObsList());
 		}
 		
 		public void triggerHardwarePane() {

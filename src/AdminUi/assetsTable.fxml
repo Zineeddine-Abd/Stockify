@@ -78,13 +78,13 @@
             <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="98.0" text="Purchase date" />
             <TableColumn fx:id="assetTypeColumn" prefWidth="75.0" text="Asset Type" />
             <TableColumn fx:id="modelColumn" prefWidth="92.0" text="Asset Model" />
-            <TableColumn fx:id="roomColumn" prefWidth="98.0" text="Asset Room" />
-            <TableColumn fx:id="statusColumn" prefWidth="82.0" text="Asset status" />
+            <TableColumn fx:id="roomColumn" prefWidth="90.0" text="Asset Room" />
+            <TableColumn fx:id="statusColumn" prefWidth="90.0" text="Asset status" />
             <TableColumn fx:id="assetWarrantyColumn" prefWidth="102.0" text="Asset Warranty" />
             <TableColumn fx:id="hardwareSerialNumberColumn" minWidth="2.0" prefWidth="108.0" text="Serial Number" />
-            <TableColumn fx:id="softwareLicenseKey" minWidth="2.0" prefWidth="71.0" text="License Key" />
-            <TableColumn fx:id="softwareVersion" minWidth="2.0" prefWidth="60.0" text="Version" />
-            <TableColumn fx:id="editColumn" minWidth="2.0" prefWidth="73.0" />
+            <TableColumn fx:id="softwareLicenseKey" minWidth="2.0" prefWidth="133.0" text="License Key" />
+            <TableColumn fx:id="softwareVersion" minWidth="2.0" prefWidth="135.0" text="Version" />
+            <TableColumn fx:id="editColumn" minWidth="2.0" prefWidth="81.0" />
         </columns>
       </TableView>
    </center>

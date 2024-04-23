@@ -38,10 +38,10 @@ public class DB_Assets extends DB_Utilities{
 						
 						Asset asset = new Asset(asset_id,asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty);
 						
-						if(asset.getAsset_category().equals("Hardware")) {
+						if(asset.getAsset_category().equals(Helper.HARDWARE)) {
 							Hardware hardware = DB_Hardwares.getHardware(asset);
 							obsList.add(hardware);
-						}else if(asset.getAsset_category().equals("Software")) {
+						}else if(asset.getAsset_category().equals(Helper.SOFTWARE)) {
 							Software software = DB_Softwares.getSoftware(asset);
 							obsList.add(software);
 						}else {

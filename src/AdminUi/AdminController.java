@@ -24,17 +24,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import application.DB_Actions;
+import application.DB_Assets;
 import application.DB_Messages;
+import application.DB_Sessions;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-
 
 
 public class AdminController implements Initializable{
@@ -48,8 +51,6 @@ public class AdminController implements Initializable{
 	private Pane bar;
 	@FXML
 	private FontAwesomeIconView menuIcon;
-	//****************************
-	
 	//All Assets Section Mats:******************/
 	@FXML
 	private Button AllAssetsButton;
@@ -165,22 +166,28 @@ public class AdminController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//init account button:
+		try {
+			//init messages list
+			messagesList = FXCollections.observableArrayList();
+			DB_Messages.refresh(messagesList);
+			
+			//initialize sub scenes after inject their controllers
+			allUsersViewController.initUsers();
+			allRoomsViewController.initRooms();
+			dashboardViewController.setItems();
+			
+			
+			//initialize views array
+			views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView};
+			recentViews.add(DASHBOARD_VIEW);
+			
+			updateNumberOfItems();
+			selectView(DASHBOARD_VIEW);	
+		}catch(NullPointerException e) {
+			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+			System.exit(1);
+		}
 		accountButton.setText(LoginController.getLoggedUser().getFullName());
-		//init messages list
-		messagesList = FXCollections.observableArrayList();
-		DB_Messages.refresh(messagesList);
-		//initialize sub scenes after inject their controllers
-		allUsersViewController.initUsers();
-		allRoomsViewController.initRooms();
-		dashboardViewController.setItems();
-		
-		
-		//initialize views array
-		views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView};
-		recentViews.add(DASHBOARD_VIEW);
-		
-		updateNumberOfItems();
-		selectView(DASHBOARD_VIEW);	
 	}
 	
 	
@@ -252,29 +259,33 @@ public class AdminController implements Initializable{
 	public void LogOut(ActionEvent event) throws IOException {
 		Helper.currentLoginLoader = new FXMLLoader(getClass().getResource(Helper.fxmlLogin));
 		root = Helper.currentLoginLoader.load();
+		DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		loginScene = new Scene(root);
 		stage.setScene(loginScene);
 		stage.setTitle("Stockify - Login");
-		
 		stage.show();
 	}
 	
 	public void updateNumberOfItems() {
-		
-		ObservableList<Room> allRooms = getAllRoomsViewController().allRooms;
-		long roomsCount = allRooms.size();
-		
-		ObservableList<Asset> allAssets = getAllAssetsViewController().getAllAssetsObs();
-		long hardwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Hardware")).count();
-		long softwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Software")).count();
-		long AssetsCount = allAssets.stream().count();
-				
-		
-		getDashboardViewController().numRooms.setText(String.valueOf(roomsCount));
-		getDashboardViewController().numHardware.setText(String.valueOf(hardwaresCount));
-		getDashboardViewController().numSoftware.setText(String.valueOf(softwaresCount));
-		getDashboardViewController().numAssets.setText(String.valueOf(AssetsCount));
+		try {			
+			ObservableList<Room> allRooms = getAllRoomsViewController().allRooms;
+			long roomsCount = allRooms.size();
+			
+			ObservableList<Asset> allAssets = getAllAssetsViewController().getAllAssetsObs();
+			long hardwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Hardware")).count();
+			long softwaresCount = allAssets.stream().filter(item -> item.getAsset_category().equals("Software")).count();
+			long AssetsCount = allAssets.stream().count();
+			getDashboardViewController().numRooms.setText(String.valueOf(roomsCount));
+			getDashboardViewController().numHardware.setText(String.valueOf(hardwaresCount));
+			getDashboardViewController().numSoftware.setText(String.valueOf(softwaresCount));
+			getDashboardViewController().numAssets.setText(String.valueOf(AssetsCount));
+		}catch(NullPointerException e) {
+			
+			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+			System.exit(0);
+		}
 	}
 	
 	public void triggerDashBoardPane() {
@@ -314,7 +325,6 @@ public class AdminController implements Initializable{
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
 			selectView(ROOMS_VIEW);
 			closeSideBar();
-		
 	}
 
 	
@@ -403,5 +413,13 @@ public class AdminController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void refreshDashboardItems() {
+		updateNumberOfItems();
+		messagesList.clear();
+		DB_Messages.refresh(messagesList);
+		DashboardController controller = getDashboardViewController();
+		controller.refreshList();
 	}
 }

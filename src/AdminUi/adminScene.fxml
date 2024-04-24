@@ -21,6 +21,7 @@
                   <fx:include fx:id="allUsersView" source="allUsersScene.fxml" />
                   <fx:include fx:id="allAssetsView" source="assetsTable.fxml" />
                   <fx:include fx:id="allRoomsView" source="allRoomsScene.fxml" />
+                  <fx:include fx:id="settingsView" source="settingsScene.fxml" />
                </children>
             </StackPane>
          </center>
@@ -132,7 +133,7 @@
                   <FontAwesomeIconView fill="#67809c" glyphName="BUILDING" size="25" />
                </graphic>
             </Button>
-            <Button layoutX="20.0" layoutY="260.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="200.0" text="Settings">
+            <Button layoutX="20.0" layoutY="260.0" mnemonicParsing="false" onAction="#triggerSettingsPane" prefHeight="43.0" prefWidth="200.0" text="Settings">
                <font>
                   <Font size="24.0" />
                </font>

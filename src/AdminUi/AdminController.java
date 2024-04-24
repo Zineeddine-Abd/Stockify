@@ -122,6 +122,16 @@ public class AdminController implements Initializable{
 	public AllRoomsController getAllRoomsViewController() {
 		return allRoomsViewController;
 	}
+	
+	@FXML
+	private BorderPane settingsView;
+	@FXML
+	private HelpController settingsViewController;
+	
+	public HelpController getSettingsViewController() {
+		return settingsViewController;
+	}
+	
 	@FXML
 	private Button accountButton;
 	//*****************************************/
@@ -139,7 +149,7 @@ public class AdminController implements Initializable{
 	public static int USERS_VIEW = 1;
 	public static int ASSETS_VIEW = 2;
 	public static int ROOMS_VIEW = 3;
-	public static int BACKUP_VIEW = 4;
+	public static int HELP_VIEW = 4;
 	
 	
     
@@ -178,7 +188,7 @@ public class AdminController implements Initializable{
 			
 			
 			//initialize views array
-			views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView};
+			views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView,settingsView};
 			recentViews.add(DASHBOARD_VIEW);
 			
 			updateNumberOfItems();
@@ -325,6 +335,16 @@ public class AdminController implements Initializable{
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
 			selectView(ROOMS_VIEW);
 			closeSideBar();
+	}
+	
+	public void triggerSettingsPane() {
+		if(!recentViews.peek().equals(HELP_VIEW)) {
+			recentViews.add(HELP_VIEW);
+		}
+		getAllAssetsViewController().searchTextField.setText("");
+		selectView(HELP_VIEW);
+		closeSideBar();
+		
 	}
 
 	

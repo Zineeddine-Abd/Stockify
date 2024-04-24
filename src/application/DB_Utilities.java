@@ -49,19 +49,6 @@ public class DB_Utilities {
 	}
 	
 	
-	public static void executeClear() {
-		try(Connection con = DB_Utilities.getDataSource().getConnection()){
-			String query = "ALTER TABLE assets "
-					+ "DROP CONSTRAINT assets_asset_category_check;";
-			try(PreparedStatement psAssets = con.prepareStatement(query)){
-				psAssets.executeUpdate();
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-			Helper.displayErrorMessage("Error",e.getMessage());
-		}
-	}
-		
 	
 	protected static boolean isTableEmpty(String table) {
 		try (Connection con = dataSource.getConnection();

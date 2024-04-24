@@ -93,7 +93,7 @@ public class LoginController{
 					
 	        		
 	        		if(DB_Sessions.sessionExists(user_id)) {
-	        			incorrectInfo.setText("Another Device is already logged in!");
+	        			incorrectInfo.setText("Same account launched from another device!");
 			        	animatedIncorrectInfolabel();
 			        	return;
 	        		}

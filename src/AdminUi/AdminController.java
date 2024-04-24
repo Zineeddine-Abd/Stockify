@@ -135,8 +135,15 @@ public class AdminController implements Initializable{
 	
 	@FXML
 	private Button accountButton;
+	public Button getAccountButton() {
+		return accountButton;
+	}
 	@FXML
 	private Button logOutButton;
+	public Button getLogOutButton() {
+		return logOutButton;
+	}
+
 	
 	//*****************************************/
 	
@@ -181,13 +188,6 @@ public class AdminController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//init account button:
 		accountButton.setText(LoginController.getLoggedUser().getFullName());
-//		accountButton.prefWidthProperty().addListener((obs, oldVal, newVal) -> {
-//			logOutButton.setLayoutX(logOutButton.getLayoutX() + newVal.doubleValue() - oldVal.doubleValue());
-//		});
-		System.out.println(accountButton.getWidth());
-		System.out.println(accountButton.getPrefWidth());
-		System.out.println(accountButton.getMaxWidth());
-		System.out.println(accountButton.getMinWidth());
 		try {
 			//init messages list
 			messagesList = FXCollections.observableArrayList();
@@ -475,4 +475,5 @@ public class AdminController implements Initializable{
 		DashboardController controller = getDashboardViewController();
 		controller.refreshList();
 	}
+	
 }

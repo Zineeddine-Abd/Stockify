@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import AdminUi.AdminController;
 import Components.Session;
 import Components.User;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.*;
@@ -179,6 +181,9 @@ public class LoginController{
 		Helper.currentAdminLoader = new FXMLLoader(getClass().getResource(Helper.fxmlAdmin));
 		root = Helper.currentAdminLoader.load();
 		newStage(event, root);
+		
+		AdminController controller = (AdminController)(Helper.currentAdminLoader.getController());
+		AnchorPane.setRightAnchor(controller.getLogOutButton(), controller.getAccountButton().getWidth()+100);
 	}
 	public void directTechnician(ActionEvent event) throws IOException {
 		Helper.currentTechnicianLoader = new FXMLLoader(getClass().getResource(Helper.fxmlTechnician));

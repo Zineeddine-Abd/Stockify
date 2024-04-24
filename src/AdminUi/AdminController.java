@@ -35,6 +35,7 @@ import application.DB_Actions;
 import application.DB_Assets;
 import application.DB_Messages;
 import application.DB_Sessions;
+import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -134,6 +135,9 @@ public class AdminController implements Initializable{
 	
 	@FXML
 	private Button accountButton;
+	@FXML
+	private Button logOutButton;
+	
 	//*****************************************/
 	
 	//Array of panes
@@ -176,6 +180,14 @@ public class AdminController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//init account button:
+		accountButton.setText(LoginController.getLoggedUser().getFullName());
+//		accountButton.prefWidthProperty().addListener((obs, oldVal, newVal) -> {
+//			logOutButton.setLayoutX(logOutButton.getLayoutX() + newVal.doubleValue() - oldVal.doubleValue());
+//		});
+		System.out.println(accountButton.getWidth());
+		System.out.println(accountButton.getPrefWidth());
+		System.out.println(accountButton.getMaxWidth());
+		System.out.println(accountButton.getMinWidth());
 		try {
 			//init messages list
 			messagesList = FXCollections.observableArrayList();
@@ -197,7 +209,7 @@ public class AdminController implements Initializable{
 			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 			System.exit(1);
 		}
-		accountButton.setText(LoginController.getLoggedUser().getFullName());
+		
 	}
 	
 	
@@ -272,9 +284,30 @@ public class AdminController implements Initializable{
 		DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		stage.close();
+		
+		if(LoginController.getLoggedUser() != null) {
+			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+		}
+		
 		loginScene = new Scene(root);
+		stage = new Stage();
+		
 		stage.setScene(loginScene);
 		stage.setTitle("Stockify - Login");
+		stage.getIcons().add(Main.itAssetLogo);
+		stage.initStyle(StageStyle.UNDECORATED);
+		stage.setOnCloseRequest(e ->{
+			e.consume();
+			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+			stage.close();
+			if(LoginController.getLoggedUser() != null) {
+				DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+			}
+			if(DB_Utilities.getDataSource() != null) {
+				DB_Utilities.getDataSource().close();
+			}
+		});
 		stage.show();
 	}
 	

@@ -25,11 +25,11 @@
          </children></Pane>
       <Pane layoutX="210.0" prefHeight="500.0" prefWidth="540.0" stylesheets="@loginUI.css">
          <children>
-            <TextField fx:id="usernameField" layoutX="50.0" layoutY="167.0" prefHeight="37.0" prefWidth="460.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" text="ayoub">
+            <TextField fx:id="usernameField" layoutX="50.0" layoutY="167.0" prefHeight="37.0" prefWidth="460.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
                <font>
                   <Font size="16.0" />
                </font></TextField>
-            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="232.0" prefHeight="37.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" text="ayoub1010">
+            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="232.0" prefHeight="37.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
                <font>
                   <Font size="16.0" />
                </font></PasswordField>
@@ -67,9 +67,9 @@
                <font>
                   <Font size="14.0" />
                </font></FontAwesomeIconView>
-            <Label layoutX="121.0" layoutY="59.0" text="Welcome Back!">
+            <Label layoutX="50.0" layoutY="59.0" text="Welcome Back!">
                <font>
-                  <Font name="Arial Bold" size="43.0" />
+                  <Font name="Calibri Bold" size="43.0" />
                </font>
             </Label>
             <FontAwesomeIconView fx:id="closeIcon" fill="#1c232b" glyphName="CLOSE" layoutX="515.0" layoutY="25.0" onMouseClicked="#closeLoginScreen" size="18" wrappingWidth="11.571428298950195">
@@ -79,6 +79,11 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></FontAwesomeIconView>
+            <Label layoutX="50.0" layoutY="108.0" text="Log in to your Account:">
+               <font>
+                  <Font name="Calibri Light" size="24.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

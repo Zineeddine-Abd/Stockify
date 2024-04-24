@@ -447,6 +447,12 @@ public class AssetsTableController implements Initializable{
 			ReportPopupController controller = (ReportPopupController)AdminController.currentReportPopupLoader.getController();
 			controller.setOldAsset(item);
 			controller.checkWarrantyValidation();
+			if(controller.getOldAsset().getAsset_category().equals(Helper.SOFTWARE)) {
+				controller.getStatusChoiceBox().getItems().addAll(ReportPopupController.reportSoftwareStatuses);
+			}else {		
+				controller.getStatusChoiceBox().getItems().addAll(ReportPopupController.reportStatuses);
+			}
+			
 			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
@@ -455,7 +461,7 @@ public class AssetsTableController implements Initializable{
 			
 			createNewScene = new Scene(root);
 			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-	
+			
 			fillFormula.setScene(createNewScene);
 			fillFormula.getIcons().add(Main.itAssetLogo);
 			

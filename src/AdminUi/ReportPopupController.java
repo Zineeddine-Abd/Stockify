@@ -40,8 +40,8 @@ public class ReportPopupController implements Initializable{
 	@FXML
 	private Label warrantyStatusLabel;
 	
-	private String[] reportStatuses = {"Broken","Under Maintenance","Ready To Use"};
-	private String[] reportSoftwareStatuses = {"Active" , "Inactive" ,"Under Maintenance", "Ready To Use" };
+	public static final String[] reportStatuses = {"Broken","Under Maintenance","Ready To Use"};
+	public static final String[] reportSoftwareStatuses = {"Active" , "Inactive" ,"Under Maintenance", "Ready To Use" };
 	
 	private Asset oldAsset;
 	
@@ -49,12 +49,15 @@ public class ReportPopupController implements Initializable{
 		this.oldAsset = asset;
 	}
 	
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		if(oldAsset.getAsset_category().equals(Helper.SOFTWARE)) {
-			statusChoiceBox.getItems().addAll(reportSoftwareStatuses);
-		}else if(oldAsset.getAsset_category().equals(Helper.SOFTWARE)) {			
-			statusChoiceBox.getItems().addAll(reportStatuses);
-		}
+	public Asset getOldAsset() {
+		return oldAsset;
+	}
+	
+	public ChoiceBox<String> getStatusChoiceBox(){
+		return statusChoiceBox;
+	}
+	
+	public void initialize(URL arg0, ResourceBundle arg1) {	
 	}
 	
 	public void validateReportInfo(ActionEvent event) {

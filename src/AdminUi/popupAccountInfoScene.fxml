@@ -90,6 +90,22 @@
             <Font size="15.0" />
          </font>
       </TextField>
+      <Label layoutX="25.0" layoutY="228.0" text="Role:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="role" editable="false" focusTraversable="false" layoutX="25.0" layoutY="249.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" />
+         </VBox.margin>
+      </TextField>
       <HBox prefHeight="48.0" prefWidth="346.0">
          <children>
             <Button fx:id="cancelButton" layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#disposeWindow" prefHeight="43.0" prefWidth="482.0" styleClass="cancelButton" stylesheets="@admin.css" text="Close">

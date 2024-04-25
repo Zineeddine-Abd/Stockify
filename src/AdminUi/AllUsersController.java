@@ -79,7 +79,7 @@ public class AllUsersController implements Initializable{
     private TextField searchTextField;
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
-    private final String[] criteria = {"Name", "Password", "Email", "First name", "Last name", "Role"};
+    private final String[] criteria = {"Id","Name", "Password", "Email", "First name", "Last name", "Role"};
   	
   	//observable lists***************
   	ObservableList<User> allUsersObs;
@@ -327,6 +327,11 @@ public class AllUsersController implements Initializable{
 						return true;
 					}
 		            break;
+		        case "Id":
+		        	if(String.valueOf(user.getUser_id()).contains(txt.toLowerCase())) {
+						return true;
+					}
+		        	break;
 		        default:
 		        	return false;
 				}

@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -125,7 +126,7 @@ public class AdminController implements Initializable{
 	}
 	
 	@FXML
-	private BorderPane settingsView;
+	private HBox settingsView;
 	@FXML
 	private HelpController settingsViewController;
 	

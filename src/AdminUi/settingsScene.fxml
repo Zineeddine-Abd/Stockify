@@ -1,38 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <VBox prefHeight="400.0" prefWidth="253.0" BorderPane.alignment="CENTER">
+<HBox fx:id="hbox" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.HelpController">
+   <children>
+      <VBox fx:id="userManualVbox" prefHeight="650.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 10px; -fx-background-color: #435366; -fx-border-radius: 10px;">
-               <children>
-                  <ImageView fitHeight="200.0" fitWidth="302.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
+            <ImageView fx:id="userManualQrCode" fitHeight="400.0" fitWidth="673.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                </VBox.margin>
-            </VBox>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="335.0" text="Scan me">
+            </ImageView>
+            <Label fx:id="userManualLabel" alignment="CENTER" prefHeight="53.0" text="User Manual">
                <font>
-                  <Font size="24.0" />
+                  <Font size="36.0" />
                </font>
             </Label>
+            <Button fx:id="viewUserManualButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="659.0" text="View Manual">
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
-   </left>
-   <right>
-      <VBox prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="maintenanceManualVbox" layoutX="10.0" layoutY="10.0" prefHeight="650.0">
          <children>
-            <ImageView fitHeight="200.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="maintenanceManualQrCode" fitHeight="400.0" fitWidth="761.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </ImageView>
+            <Label fx:id="maintenanceManualLabel" alignment="CENTER" prefHeight="53.0" text="Maintenance">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Button fx:id="viewMaintenanceManualButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="748.0" text="View Manual">
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
-   </right>
-</BorderPane>
+   </children>
+</HBox>

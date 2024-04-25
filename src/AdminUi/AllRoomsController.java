@@ -64,7 +64,7 @@ public class AllRoomsController implements Initializable{
     private TextField searchTextField;
     @FXML
     private ChoiceBox<String> searchCriteriaComboBox;
-    private String[] criteria = {"Name", "Type"};
+    private String[] criteria = {"Id","Name", "Type"};
    // private Room lastSelectedRoom = new Room(-1,null,null); // dummy values just to set the first selected item.
     
 	
@@ -265,6 +265,11 @@ public class AllRoomsController implements Initializable{
 						return true;
 					}
 		            break;
+		        case "Id":
+		        	if(String.valueOf(room.getRoom_id()).contains(txt.toLowerCase())) {
+						return true;
+					}
+		        	break;
 		        default:
 		        	return false;
 				}

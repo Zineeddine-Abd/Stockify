@@ -208,11 +208,11 @@ public class AssetsTableController implements Initializable{
                         setStyle("-fx-background-color: #0096c9;"); // Change background color when selected
                     } else {
                         setTextFill(Color.BLACK); // Default text color
-                        if (item.getAsset_status().equals("Broken")) {
+                        if (item.getAsset_status().equals("Broken") || item.getAsset_status().equals("Inactive")) {
                             setStyle("-fx-background-color: #FB9494;");
                         } else if (item.getAsset_status().equals("Under Maintenance")) {
                             setStyle("-fx-background-color: #FFB266;");
-                        } else if (item.getAsset_status().equals("Ready To Use")) {
+                        } else if (item.getAsset_status().equals("Ready To Use") || item.getAsset_status().equals("Active")) {
                             setStyle("-fx-background-color: #B2FF66;");
                         } else {
                             setStyle("");
@@ -229,12 +229,12 @@ public class AssetsTableController implements Initializable{
                 if (!selected) {
                     // Reset background color to its original state
                     if (getItem() != null) {
-                        Asset item = getItem(); // Access the item
-                        if (item.getAsset_status().equals(NewAssetController.BROKEN)) {
+                        Asset item = getItem();
+                        if (item.getAsset_status().equals(NewAssetController.BROKEN) || item.getAsset_status().equals("Inactive")) {
                             setStyle("-fx-background-color: #FB9494;");
                         } else if (item.getAsset_status().equals(NewAssetController.UNDER_MAINTENANCE)) {
                             setStyle("-fx-background-color: #FFB266;");
-                        } else if (item.getAsset_status().equals(NewAssetController.READY_TO_USE)) {
+                        } else if (item.getAsset_status().equals(NewAssetController.READY_TO_USE)|| item.getAsset_status().equals("Active")) {
                             setStyle("-fx-background-color: #B2FF66;");
                         } else {
                             setStyle("");

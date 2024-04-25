@@ -147,6 +147,7 @@ public class LoginController{
 	
 	public void rememberMe(ActionEvent event) {
 		//to be designed later :)
+		
 	}
 	
 	public void loginClicked(ActionEvent event) {
@@ -155,14 +156,13 @@ public class LoginController{
 		{
 			incorrectInfo.setText("Invalid username or password!");
 			animatedIncorrectInfolabel();
-		}else {			
+		}else {
 			try {  
 				assignUser(event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	
-		}
-		
+		}	
 	}
 	
 	

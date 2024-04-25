@@ -133,7 +133,7 @@
                   <FontAwesomeIconView fill="#67809c" glyphName="BUILDING" size="25" />
                </graphic>
             </Button>
-            <Button layoutX="20.0" layoutY="260.0" mnemonicParsing="false" onAction="#triggerSettingsPane" prefHeight="43.0" prefWidth="200.0" text="Settings">
+            <Button layoutX="20.0" layoutY="260.0" mnemonicParsing="false" onAction="#triggerSettingsPane" prefHeight="43.0" prefWidth="200.0" text="Help">
                <font>
                   <Font size="24.0" />
                </font>
@@ -144,7 +144,7 @@
                   <Insets />
                </VBox.margin>
                <graphic>
-                  <FontAwesomeIconView fill="#67809c" glyphName="GEAR" size="25" />
+                  <FontAwesomeIconView fill="#67809c" glyphName="INFO_CIRCLE" size="25" />
                </graphic>
             </Button>
          </children>

@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import Components.User;
 import LoginUi.LoginController;
+import application.Helper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,13 +25,20 @@ public class PopupAccountInfoController implements Initializable{
 	private TextField usernameField;
 	@FXML
 	private Button cancelButton;
+	@FXML
+	private TextField role;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		User loggedUser = LoginController.getLoggedUser();
-		lastNameField.setText(loggedUser.getLast_name());
-		firstNameField.setText(loggedUser.getFirst_name());
-		emailField.setText(loggedUser.getEmail());
-		usernameField.setText(loggedUser.getUsername());
+		try {
+			User loggedUser = LoginController.getLoggedUser();
+			lastNameField.setText(loggedUser.getLast_name());
+			firstNameField.setText(loggedUser.getFirst_name());
+			emailField.setText(loggedUser.getEmail());
+			usernameField.setText(loggedUser.getUsername());
+			role.setText(loggedUser.getUser_role());
+		}catch(NullPointerException e) {
+			Helper.displayErrorMessage("Error", "Logged user Info not found!");
+		}
 	}
 	
 	public void disposeWindow(ActionEvent event) {

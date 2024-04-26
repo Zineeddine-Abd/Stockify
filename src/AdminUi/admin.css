@@ -14,7 +14,7 @@
     -fx-padding: 5px 10px;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 5,0,0,0 );
+    /*-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 5,0,0,0 );*/
     -fx-cursor: hand;
     -fx-alignment: center;
     -fx-font-size: 20px;
@@ -27,7 +27,7 @@
 
 .button:hover {
  	-fx-background-color: #184179;
-  	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+  	/*-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);*/
 }
 #collapser{
 	-fx-font-size: 20px;

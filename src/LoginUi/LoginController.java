@@ -86,6 +86,7 @@ public class LoginController{
 	
 	
 	//Database linking for each user.
+	@FXML
 	private void assignUser(ActionEvent event) throws IOException {
 		
 		try (Connection con = DB_Utilities.getDataSource().getConnection()){
@@ -98,11 +99,6 @@ public class LoginController{
 	        	if(resultSet.next()) {
 	        		String hashdpassword = resultSet.getString("pass_word");
 	        		String user_salt = resultSet.getString("user_salt");
-	        		
-	        		System.out.println("hashed retrieved pass: " + hashdpassword);
-	        		System.out.println("corresponding salt: " + user_salt);
-	        		
-	        		System.out.println("newly hashed password : " + hashPassword(password, user_salt));
 	        		
 	        		if(!hashPassword(password, user_salt).equals(hashdpassword)) {
 	        			incorrectInfo.setText("Invalid Password!");

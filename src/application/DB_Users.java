@@ -9,9 +9,7 @@ import java.time.LocalDate;
 
 import AdminUi.AdminController;
 import Components.Action;
-import Components.Room;
 import Components.User;
-import LoginUi.LoginController;
 import javafx.collections.ObservableList;
 
 public class DB_Users extends DB_Utilities{
@@ -93,6 +91,9 @@ public class DB_Users extends DB_Utilities{
 					
 					obsList.remove(user);
 					
+					if(isTableEmpty("users")) {					
+						resetSequenceTo1(con, "public.users_user_id_seq");
+					}
 				}
 				//log out all deleted users .//to be implemented later.
 			}

@@ -48,7 +48,14 @@ public class DB_Utilities {
 		return dataSource;
 	}
 	
-	
+	protected static void resetSequenceTo1(Connection con, String sequenceName) {
+        try (Statement stmt = con.createStatement()){	
+        	String alterSequenceQuery = "ALTER SEQUENCE " + sequenceName + " RESTART WITH 1";
+			stmt.executeUpdate(alterSequenceQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	protected static boolean isTableEmpty(String table) {
 		try (Connection con = dataSource.getConnection();

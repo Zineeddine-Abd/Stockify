@@ -86,6 +86,9 @@ public class DB_Rooms extends DB_Utilities{
 					
 					obsList.remove(room);
 					
+					if(isTableEmpty("rooms")) {					
+						resetSequenceTo1(con, "public.rooms_room_id_seq");
+					}
 				}
 			}
 		}catch(SQLException e) {

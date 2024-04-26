@@ -116,7 +116,7 @@ public class DB_Assets extends DB_Utilities{
 						obsList.remove(asset);
 						//reset the sequence if data:
 						if(isTableEmpty("assets")) {					
-							resetSequenceTo1(con);
+							resetSequenceTo1(con, "public.assets_asset_id_seq");
 						}
 					}
 				}
@@ -174,15 +174,7 @@ public class DB_Assets extends DB_Utilities{
 		}
 	}
 	
-	private static void resetSequenceTo1(Connection con) {
-        try (Statement stmt = con.createStatement()){	
-        	String sequenceName = "public.assets_asset_id_seq";
-        	String alterSequenceQuery = "ALTER SEQUENCE " + sequenceName + " RESTART WITH 1";
-			stmt.executeUpdate(alterSequenceQuery);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	
 	
 	 public static Asset getAsset(int id) {
 			try (Connection con = DB_Utilities.getDataSource().getConnection())

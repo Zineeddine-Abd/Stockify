@@ -34,8 +34,9 @@ public class DB_Users extends DB_Utilities{
 						String first_name = userResultSet.getString("first_name");
 						String last_name = userResultSet.getString("last_name");
 						String user_role = userResultSet.getString("user_role");
+						String user_salt = userResultSet.getString("user_salt");
 						
-						User newuser = new User(user_id,username,pass_word,email,first_name,last_name,user_role);
+						User newuser = new User(user_id,username,pass_word,email,first_name,last_name,user_role,user_salt);
 						obsList.add(newuser);
 					}
 				}    
@@ -48,7 +49,7 @@ public class DB_Users extends DB_Utilities{
 	
 	public static void addUser(ObservableList<User> obsList, User user) {
 		try(Connection con = dataSource.getConnection()){
-			String insertUser = "INSERT INTO users (username,pass_word,email,first_name,last_name,user_role) VALUES(?,?,?,?,?,?);";
+			String insertUser = "INSERT INTO users (username,pass_word,email,first_name,last_name,user_role,user_salt) VALUES(?,?,?,?,?,?,?);";
 			try(PreparedStatement ps = con.prepareStatement(insertUser,Statement.RETURN_GENERATED_KEYS);){
 				
 				ps.setString(1, user.getUsername());
@@ -57,6 +58,7 @@ public class DB_Users extends DB_Utilities{
 				ps.setString(4, user.getFirst_name());
 				ps.setString(5, user.getLast_name());
 				ps.setString(6, user.getUser_role());
+				ps.setString(7, user.getUser_salt());
 				ps.executeUpdate();
 				
 				try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -109,18 +111,19 @@ public class DB_Users extends DB_Utilities{
 					+ "email = ?,"
 					+ "first_name = ?,"
 					+ "last_name = ?,"
-					+ "user_role = ? "
+					+ "user_role = ? ,"
+					+ "user_salt = ? "
 					+ "WHERE user_id = ?";
 			try(PreparedStatement ps = con.prepareStatement(updateUser)){
 				
-//				ps.setInt(1, 0);
 				ps.setString(1,newUser.getUsername());
 				ps.setString(2,newUser.getPass_word());
 				ps.setString(3,newUser.getEmail());
 				ps.setString(4,newUser.getFirst_name());
 				ps.setString(5, newUser.getLast_name());
 				ps.setString(6,newUser.getUser_role());
-				ps.setInt(7,oldUser.getUser_id());
+				ps.setString(7, newUser.getUser_salt());
+				ps.setInt(8,oldUser.getUser_id());
 				ps.executeUpdate();
 				
 				
@@ -159,8 +162,9 @@ public class DB_Users extends DB_Utilities{
 						String first_name = userResultSet.getString("first_name");
 						String last_name = userResultSet.getString("last_name");
 						String user_role = userResultSet.getString("user_role");
+						String user_salt = userResultSet.getString("user_salt");
 						
-						User newuser = new User(user_id,username,pass_word,email,first_name,last_name,user_role);
+						User newuser = new User(user_id,username,pass_word,email,first_name,last_name,user_role,user_salt);
 						
 						return newuser;
 					}

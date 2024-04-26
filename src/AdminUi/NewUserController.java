@@ -1,6 +1,8 @@
 package AdminUi;
 
 import java.net.URL;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.ResourceBundle;
 
 import Components.Action;
@@ -40,9 +42,14 @@ public class NewUserController implements Initializable{
 	@FXML
 	private Button cancelButton;
 	@FXML
-	private Label invalidInfo;	
+	private Label invalidInfo;
 	
-	//old asset
+	@FXML
+	private Label oldPassword;
+	@FXML
+	private Label newPassword;
+	
+	//old user
 	private User oldUser;
 	
 	public void setOldUser(User user) {
@@ -89,19 +96,36 @@ public class NewUserController implements Initializable{
 			animatedInvalidInfolabel();
 			return;
 		}
-		if(!confirmPasswordField.getText().equals(passwordField.getText())) {
-			invalidInfo.setText("Passwords Do Not match!");
-			animatedInvalidInfolabel();
-			return;
+		//check only when creating a new user.
+		if(oldUser == null) {	
+			if(!confirmPasswordField.getText().equals(passwordField.getText())) {
+				invalidInfo.setText("Passwords Do Not match!");
+				animatedInvalidInfolabel();
+				return;
+			}
+		}else {
+			//compare the old entered password with the actual password:
+			String oldUserHashedPass = oldUser.getPass_word();
+			String oldEnteredHashedPass = LoginController.hashPassword(passwordField.getText(), oldUser.getUser_salt());
+			
+			if(!oldUserHashedPass.equals(oldEnteredHashedPass)) {
+				invalidInfo.setText("Invalid Old Password!");
+				animatedInvalidInfolabel();
+				return;
+			}
 		}
+		
 		String username = usernameField.getText();
-		String pass_word = passwordField.getText();
+		String pass_word = confirmPasswordField.getText();
 		String email = emailField.getText();
 		String first_name = firstNameField.getText();
 		String last_name = lastNameField.getText();
 		String user_role = permissions.getValue();
 		
-		User newuser = new User(0,username,pass_word,email,first_name,last_name,user_role);
+		String newHashedPassword = LoginController.hashPassword(pass_word);
+		String newHashedPasswordSalt = LoginController.getHashedPasswordSalt();
+		
+		User newuser = new User(0,username,newHashedPassword,email,first_name,last_name,user_role,newHashedPasswordSalt);
 		
 		if(oldUser == null) {
 			newUser(newuser);
@@ -120,13 +144,15 @@ public class NewUserController implements Initializable{
 		((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().updateUser(oldUser, newUser);
 	}
 	
+	//only used for updating a user.
 	void setInfos() {
+		oldPassword.setText("Old Password:");
+		newPassword.setText("New Password:");
+		
 		usernameField.setText(oldUser.getUsername());
-		passwordField.setText(oldUser.getPass_word());
 		emailField.setText(oldUser.getEmail());
 		firstNameField.setText(oldUser.getFirst_name());
 		lastNameField.setText(oldUser.getLast_name());
-		confirmPasswordField.setText(oldUser.getPass_word());
 		permissions.setValue(oldUser.getUser_role());
 	}
 	
@@ -140,6 +166,16 @@ public class NewUserController implements Initializable{
 	public void disposeWindow(ActionEvent event) {
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
+	}
+	
+	private String generateRandomSalt() {
+		SecureRandom sr = new SecureRandom();
+		
+		byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        String encodedSalt = Base64.getEncoder().encodeToString(salt);
+        
+        return encodedSalt;
 	}
 
 }

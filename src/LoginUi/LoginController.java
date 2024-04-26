@@ -1,11 +1,21 @@
 package LoginUi;
+
 import application.*;
 
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import AdminUi.AdminController;
 import Components.Session;
@@ -67,42 +77,55 @@ public class LoginController{
 	private CheckBox showPassBox;
 	@FXML
 	private CheckBox rememberMe;
-
+	
+	private static String currentSalt;
+	
+	public static String getHashedPasswordSalt() {
+		return currentSalt;
+	}
 	
 	
 	//Database linking for each user.
 	private void assignUser(ActionEvent event) throws IOException {
 		
 		try (Connection con = DB_Utilities.getDataSource().getConnection()){
-			//Changes based on the driver and type of sqlDatabase used:
-			
-			String password = (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText())  ;
-			String username =  usernameField.getText() ;
-			
-	        String sql = "SELECT * FROM users WHERE username=" +"'" + username +"'" + " AND pass_word="+ "'" +password + "';";
+			String password = (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText());
+			String username =  usernameField.getText();
+	        String sql = "SELECT * FROM users WHERE username=" +"'" + username +"';";
 	        
 	        try(PreparedStatement statement = con.prepareStatement(sql);
 	        	ResultSet resultSet = statement.executeQuery();){
 	        	if(resultSet.next()) {
+	        		String hashdpassword = resultSet.getString("pass_word");
+	        		String user_salt = resultSet.getString("user_salt");
+	        		
+	        		System.out.println("hashed retrieved pass: " + hashdpassword);
+	        		System.out.println("corresponding salt: " + user_salt);
+	        		
+	        		System.out.println("newly hashed password : " + hashPassword(password, user_salt));
+	        		
+	        		if(!hashPassword(password, user_salt).equals(hashdpassword)) {
+	        			incorrectInfo.setText("Invalid Password!");
+	        			animatedIncorrectInfolabel();
+	        			return;
+	        		}
+	        		
 	        		int user_id = resultSet.getInt("user_id");
 	        		//username exists.~~
-	        		//password exists.~~
 					String email = resultSet.getString("email");
 					String first_name = resultSet.getString("first_name");
 					String last_name = resultSet.getString("last_name");
 					String user_role = resultSet.getString("user_role");
-					
-					
 	        		
 	        		if(DB_Sessions.sessionExists(user_id)) {
 	        			incorrectInfo.setText("Same account launched from another device!");
 			        	animatedIncorrectInfolabel();
 			        	return;
 	        		}
+	        		
 	        		DB_Sessions.createSession(user_id);
 	        		
-	        		
-	        		currentLoggedInUser = new User(user_id,username,password,email,first_name,last_name,user_role);;
+	        		currentLoggedInUser = new User(user_id,username,hashdpassword,email,first_name,last_name,user_role,user_salt);
 	        		
 		        	switch(resultSet.getString("user_role")) {
 		        		case ADMIN:
@@ -127,6 +150,7 @@ public class LoginController{
 			displayErrorMessage("Error",e.getMessage());
 		}
 	}
+	
 	
 	public void showPassword(ActionEvent event) {
 		String pass;
@@ -254,6 +278,53 @@ public class LoginController{
 		 alert.setHeaderText(null);
 		 alert.setContentText(message);
 	     alert.showAndWait();
+	 }
+	 
+	 //hash an existing password for comparing purposes.
+	 
+	 public static String hashPassword(String password,String salt) {
+		 int iterations = 65536;
+	     int keyLength = 256;
+	     
+	     byte[] dec = Base64.getDecoder().decode(salt);
+	     
+	     KeySpec spec = new PBEKeySpec(password.toCharArray(), dec, iterations, keyLength);
+	     byte[] hash = null;
+	     try {
+	    	 SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+	    	 hash = factory.generateSecret(spec).getEncoded();
+	     } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+	    	 Helper.displayErrorMessage("Error","Invalid Key Spec Or Algorithm Not Found!");
+	     }
+	     String hashedPass = Base64.getEncoder().encodeToString(hash);
+	     
+	     return hashedPass;
+	 }
+	 
+	 //hash a newly created password with a new salt.
+	 public static String hashPassword(String password) {
+		 SecureRandom sr = new SecureRandom();
+		 byte[] salt = new byte[16];
+		 sr.nextBytes(salt);
+		 String encodedSalt = Base64.getEncoder().encodeToString(salt);
+		 
+		 currentSalt = encodedSalt;
+		 
+		 int iterations = 65536;
+		 int keyLength = 256;
+		 
+		 KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keyLength);
+		 byte[] hash = null;
+		 
+		 try {
+			 SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+			 hash = factory.generateSecret(spec).getEncoded();
+		 } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+			 Helper.displayErrorMessage("Error","Invalid Key Spec Or Algorithm Not Found!");
+		 }
+		 String encoded = Base64.getEncoder().encodeToString(hash);
+		 
+		 return encoded;
 	 }
 	   
 }

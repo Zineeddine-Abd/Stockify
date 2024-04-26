@@ -32,16 +32,11 @@ public class ConfirmPasswordController {
 		this.currentMode = mode;
 	}
 	
-	private User oldUser,newUser;
-	
-	public void setOldAndNewUser(User old,User newUser) {
-		this.oldUser = old;
-		this.newUser = newUser;
-	}
-	
 	
 	public void confirmGivenPassword(ActionEvent event) {
-		if(passField.getText().equals(LoginController.getLoggedUser().getPass_word())) {
+		String hashedPass = LoginController.hashPassword(passField.getText(), LoginController.getLoggedUser().getUser_salt());
+		
+		if(hashedPass.equals(LoginController.getLoggedUser().getPass_word())) {
 			((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().confirmedPassword = true;
 			disposeWindow(event);
 		}else {

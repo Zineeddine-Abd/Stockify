@@ -256,7 +256,7 @@ public class AllUsersController implements Initializable{
 	}
 	
     public void deleteSelectedUsers(MouseEvent event) {
-    	popupConfirmPassword(event, ConfirmPasswordController.UPDATE_MODE);
+    	popupConfirmPassword(event, ConfirmPasswordController.DELETION_MODE);
 		
 		if(!confirmedPassword) {
 			return;

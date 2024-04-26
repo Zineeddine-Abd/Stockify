@@ -4,15 +4,17 @@ public class User {
 	private int user_id;
 	private String username;
 	private String pass_word;
+	private String user_salt;
 	private String email;
 	private String first_name;
 	private String last_name;
 	private String user_role;
 	
-	public User(int id,String username,String pass_word,String email,String first_name,String last_name,String user_role) {
+	public User(int id,String username,String pass_word,String email,String first_name,String last_name,String user_role,String user_salt) {
 		this.user_id = id;
 		this.username = username;
 		this.pass_word = pass_word;
+		this.user_salt = user_salt;
 		this.email = email;
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -74,6 +76,14 @@ public class User {
 
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
+	}
+	
+	public String getUser_salt() {
+		return user_salt;
+	}
+	
+	public void setUser_salt(String salt) {
+		this.user_salt = salt;
 	}
 	
 	public String getFullName() {

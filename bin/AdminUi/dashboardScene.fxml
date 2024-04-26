@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.DashboardController">
+<BorderPane prefHeight="700.0" stylesheets="@dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.DashboardController">
    <top>
       <HBox alignment="CENTER" prefHeight="156.0" style="-fx-background-color: #E0E0E0; -fx-border-color: Black; -fx-border-width: 1px;" BorderPane.alignment="CENTER">
          <children>
             <VBox layoutX="140.0" layoutY="26.0" prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <children>
-                  <Button fx:id="assetsButton" mnemonicParsing="false" onAction="#triggerAssetsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Assets" textFill="WHITE">
+                  <Button fx:id="assetsButton" mnemonicParsing="false" onAction="#triggerAssetsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Assets" textFill="WHITE">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -39,9 +39,9 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
                <children>
-                  <Button fx:id="RoomsButton" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Rooms" textFill="WHITE">
+                  <Button fx:id="RoomsButton" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Rooms" textFill="WHITE">
                      <font>
-                        <Font size="28.0" />
+                        <Font name="Arial Black" size="28.0" />
                      </font>
                   </Button>
                   <Label fx:id="numRooms" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
@@ -53,9 +53,9 @@
             </VBox>
             <VBox prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <children>
-                  <Button fx:id="HardwareButton" mnemonicParsing="false" onAction="#triggerHardwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Hardware" textFill="WHITE">
+                  <Button fx:id="HardwareButton" mnemonicParsing="false" onAction="#triggerHardwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Hardware" textFill="WHITE">
                      <font>
-                        <Font size="28.0" />
+                        <Font name="Arial Black" size="28.0" />
                      </font>
                   </Button>
                   <Label fx:id="numHardware" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="198.0" style="-fx-background-color: #e3e7ed;" text="label" textAlignment="CENTER">
@@ -70,7 +70,7 @@
             </VBox>
             <VBox prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <children>
-                  <Button fx:id="SoftwareButton" mnemonicParsing="false" onAction="#triggerSoftwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b;" text="Software" textFill="WHITE">
+                  <Button fx:id="SoftwareButton" mnemonicParsing="false" onAction="#triggerSoftwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Software" textFill="WHITE">
                      <font>
                         <Font size="28.0" />
                      </font>

@@ -1,4 +1,4 @@
-package AdminUi;
+package ProfessorUi;
 
 import java.io.IOException;
 import java.net.URL;
@@ -10,15 +10,12 @@ import Components.Asset;
 import Components.Hardware;
 import Components.Software;
 import application.DB_Assets;
-import application.DB_Hardwares;
-import application.DB_Softwares;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -43,8 +40,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -70,8 +65,6 @@ public class AssetsTableController implements Initializable{
   	private String DEFAULT_STYLE;
   	
   	Button[] buttonsAbove;
-  	
-  	private Button currentView;//used to determine which button is now clicked.
   	
 	//assets Table Columns starts here:********************
 	@FXML
@@ -117,8 +110,6 @@ public class AssetsTableController implements Initializable{
 	private TableColumn<Asset , String> softwareLicenseKey;
 	@FXML
 	private TableColumn<Asset , String> softwareVersion;
-	@FXML
-	private Button newAssetButton;
 	
   	@FXML
     public TextField searchTextField;
@@ -152,7 +143,6 @@ public class AssetsTableController implements Initializable{
 		allAssetsObs = FXCollections.observableArrayList();
 		
 		DB_Assets.refresh(allAssetsObs);
-		
 		
 		HideAllNonHardCols();
 		HideAllNonSoftCols();
@@ -232,11 +222,11 @@ public class AssetsTableController implements Initializable{
                     // Reset background color to its original state
                     if (getItem() != null) {
                         Asset item = getItem();
-                        if (item.getAsset_status().equals(NewAssetController.BROKEN) || item.getAsset_status().equals("Inactive")) {
+                        if (item.getAsset_status().equals("Broken") || item.getAsset_status().equals("Inactive")) {
                             setStyle("-fx-background-color: #FB9494;");
-                        } else if (item.getAsset_status().equals(NewAssetController.UNDER_MAINTENANCE)) {
+                        } else if (item.getAsset_status().equals("Under Maintenance")) {
                             setStyle("-fx-background-color: #FFB266;");
-                        } else if (item.getAsset_status().equals(NewAssetController.READY_TO_USE)|| item.getAsset_status().equals("Active")) {
+                        } else if (item.getAsset_status().equals("Ready To Use")|| item.getAsset_status().equals("Active")) {
                             setStyle("-fx-background-color: #B2FF66;");
                         } else {
                             setStyle("");
@@ -259,29 +249,16 @@ public class AssetsTableController implements Initializable{
 					if(empty) {
 						setGraphic(null);
 					}else {
-						FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
 						
 						FontAwesomeIconView report = new FontAwesomeIconView(FontAwesomeIcon.NEWSPAPER_ALT);
 						
 						FontAwesomeIconView reportMessage = new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE);
-						
-						edit.setGlyphSize(18);
-						edit.setCursor(Cursor.HAND);
 						
 						report.setGlyphSize(18);
 						report.setCursor(Cursor.HAND);
 						
 						reportMessage.setGlyphSize(18);
 						reportMessage.setCursor(Cursor.HAND);
-						
-						
-						edit.hoverProperty().addListener((obs, oldVal, newVal) -> {
-								if(newVal) {
-									edit.setFill(Color.GREEN);
-								}else {
-									edit.setFill(Color.BLACK);
-								}
-						});
 						
 						report.hoverProperty().addListener((obs, oldVal, newVal) -> {
 							if(newVal) {
@@ -299,16 +276,11 @@ public class AssetsTableController implements Initializable{
 							}
 						});
 						
-						//((AdminController)Helper.currentAdminLoader.getController()).updateNumberOfItems();
-						
-						edit.setOnMouseClicked(event -> popupUpdateAsset(event, this.getTableRow().getItem()));
-						
 						report.setOnMouseClicked(event-> reportAsset(event , this.getTableRow().getItem()));
 						
 						reportMessage.setOnMouseClicked(event-> showMessagesList(event,this.getTableRow().getItem()));
 						
-						HBox box = new HBox(edit, report , reportMessage);
-						HBox.setMargin(edit, new Insets(2, 2, 0, 3));
+						HBox box = new HBox(report , reportMessage);
 						HBox.setMargin(report, new Insets(2, 2, 0, 3));
 						HBox.setMargin(reportMessage, new Insets(2, 2, 0, 3));
 						
@@ -319,18 +291,11 @@ public class AssetsTableController implements Initializable{
 			};
 			return cell;
 		});
-		
 		filteredListTempo = new FilteredList<Asset>(allAssetsObs);
-		
-		
-		
 		filteredAssets = new FilteredList<Asset>(filteredListTempo);
-		
         filterTableView();
-        
         sortedAssets = new SortedList<Asset>(filteredAssets);
         sortedAssets.comparatorProperty().bind(assetsTable.comparatorProperty());
-        
         assetsTable.setItems(sortedAssets);
         
         // Initialize search criteria ComboBox for asset
@@ -345,108 +310,19 @@ public class AssetsTableController implements Initializable{
 	}
 	
 	public void initAssets() {
-//		FilteredList<Asset> filteredHards = new FilteredList<Asset>(allAssetsObs, asset -> asset.getAsset_category().equals("Hardware"));
-//		FilteredList<Asset> filteredSofts = new FilteredList<Asset>(allAssetsObs, asset -> asset.getAsset_category().equals("Software"));
 		InvalidationListener listener = observable -> {
-//			((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().numHardware.setText(String.valueOf(filteredHards.size()));
-//			((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().numSoftware.setText(String.valueOf(filteredSofts.size()));
-        	((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().setItems(); 
-        };
-        
+		((ProfessorController)Helper.currentProfessorLoader.getController()).getDashboardViewController().setItems(); 
+    };
         allAssetsObs.addListener(listener);
-	}
-	
-	
-	
-	public void popupNewAsset(ActionEvent event){
-		VBox root;
-			
-		try {
-			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
-			
-			root = AdminController.currentNewAssetLoader.load();
-			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
-			controller.setOldAsset(null);
-			controller.setTitleLabelText("New Asset");
-			if(currentView == hardwaresButton) {
-				controller.setHardwareFields();
-			}else if(currentView == softwaresButton) {
-				controller.setSoftwareFields();
-			}
-			
-			fillFormula = new Stage();
-			fillFormula.setResizable(false);
-			
-			fillFormula.setTitle("Create New Asset:");
-			
-			//AssetController.setStage(fillFormula);
-			createNewScene = new Scene(root);
-			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-	
-			fillFormula.setScene(createNewScene);
-			fillFormula.getIcons().add(Main.itAssetLogo);
-			
-			//make it as a dialog box
-			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-			fillFormula.initModality(Modality.WINDOW_MODAL);
-			fillFormula.initOwner(parentStage);
-			
-			fillFormula.show();	
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void popupUpdateAsset(MouseEvent event, Asset asset){
-		Parent root;
-		try {
-			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
-			
-			root = AdminController.currentNewAssetLoader.load();
-			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
-			if(asset instanceof Hardware) {
-				Hardware hard = (Hardware) asset;
-				controller.setOldAsset(hard);
-			}else if(asset instanceof Software) {
-				Software soft = (Software) asset;
-				controller.setOldAsset(soft);
-			}else {
-				controller.setOldAsset(asset);
-			}
-			
-			controller.setTitleLabelText("Update Asset");
-			controller.setInfos();
-			
-			fillFormula = new Stage();
-			fillFormula.setResizable(false);
-			fillFormula.setTitle("Update Asset:");
-			
-			//AssetController.setStage(fillFormula);
-			createNewScene = new Scene(root);
-			createNewScene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
-	
-			fillFormula.setScene(createNewScene);
-			fillFormula.getIcons().add(Main.itAssetLogo);
-			
-			//make it as a dialog box
-			Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-			fillFormula.initModality(Modality.WINDOW_MODAL);
-			fillFormula.initOwner(parentStage);
-			
-			fillFormula.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void reportAsset(MouseEvent event , Asset item) {
 		Parent root;
 		
 		try {
-			AdminController.currentReportPopupLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlReport));
-			root = AdminController.currentReportPopupLoader.load();
-			ReportPopupController controller = (ReportPopupController)AdminController.currentReportPopupLoader.getController();
+			ProfessorController.currentReportPopupLoader = new FXMLLoader(getClass().getResource(ProfessorController.fxmlReport));
+			root = ProfessorController.currentReportPopupLoader.load();
+			ReportPopupController controller = (ReportPopupController)ProfessorController.currentReportPopupLoader.getController();
 			controller.setOldAsset(item);
 			controller.checkWarrantyValidation();
 			if(controller.getOldAsset().getAsset_category().equals(Helper.SOFTWARE)) {
@@ -483,9 +359,9 @@ public class AssetsTableController implements Initializable{
 		Parent root;
 		
 		try {
-			AdminController.currentMessagesLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlMessages));
-			root = AdminController.currentMessagesLoader.load();
-			MessageController controller = (MessageController)AdminController.currentMessagesLoader.getController();
+			ProfessorController.currentMessagesLoader = new FXMLLoader(getClass().getResource(ProfessorController.fxmlMessages));
+			root = ProfessorController.currentMessagesLoader.load();
+			MessageController controller = (MessageController)ProfessorController.currentMessagesLoader.getController();
 			controller.setAsset(asset);
 			controller.setItems();
 			
@@ -511,50 +387,11 @@ public class AssetsTableController implements Initializable{
 		}
 	}
 	
-	
-	public void addAsset(Asset newAsset) {
-		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
-		DB_Assets.addAsset(allAssetsObs, newAsset , recentActions);
-    }
-	
-    public void deleteSelectedAssets() {
-    	ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
-    	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
-    	
-    	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
-    		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 	
-    		DB_Assets.removeAsset(allAssetsObs, selectedAssets , recentActions);
-    	}
-    }
-    
     public void updateAsset(Asset oldAsset, Asset newAsset) {
-    	ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
+    	ObservableList<Action> recentActions = ((ProfessorController)Helper.currentProfessorLoader.getController()).getDashboardViewController().getrecentActionsObsList();
 		DB_Assets.updateAsset(oldAsset, newAsset , recentActions);
 		assetsTable.refresh();
 	}
-    
-    public void addHardware(Hardware hardware) {
-    	DB_Hardwares.addHardware(hardware);
-    }
-    
-    public void updateHardware(Asset oldAsset,Hardware newHardware){
-    	if(oldAsset instanceof Hardware) {
-    		Hardware oldHard = (Hardware) oldAsset;
-    		DB_Hardwares.updateHardware(oldHard,newHardware);
-    	}
-    }
-    
-    public void addSoftware(Software software) {
-    	DB_Softwares.addSoftware(software);
-    }
-    
-    public void updateSoftware(Asset oldAsset,Software newSoftware) {
-    	if(oldAsset instanceof Software) {
-    		Software oldSoft = (Software) oldAsset;
-    		
-    		DB_Softwares.updateSoftware(oldSoft,newSoftware);
-    	}
-    }
     
     //Filtering methods*********************************************
     public void setFilterPredicateTempo(String txt) {
@@ -697,7 +534,6 @@ public class AssetsTableController implements Initializable{
 			if(i != button) {
 				buttonsAbove[i].setStyle(DEFAULT_STYLE);
 			}else {
-				currentView = buttonsAbove[i];
 				buttonsAbove[i].setStyle(DEFAULT_STYLE + "-fx-background-color:#8DA0B5;");
 			}
 		}

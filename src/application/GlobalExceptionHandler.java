@@ -1,4 +1,4 @@
-package AdminUi;
+package application;
 
 
 
@@ -15,9 +15,9 @@ public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
 	
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-    	
+    	e.printStackTrace();
     	logger.log(Level.SEVERE,"An Error Occured and the Application needs to quit!");
-    	Helper.displayErrorMessage("An Error Occured and the Application needs to quit!\nDetails: ", e.getMessage() + "\nIn Thread: " + t.getName());
+    	Helper.displayErrorMessage("An Error Occured and the Application needs to quit!\n Details: ", e.getStackTrace().toString() + "\nIn Thread: " + t.getName());
         DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
         System.exit(1);
     }

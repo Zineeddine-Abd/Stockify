@@ -1,5 +1,4 @@
 package application;
-import AdminUi.GlobalExceptionHandler;
 import LoginUi.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

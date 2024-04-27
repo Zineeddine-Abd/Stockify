@@ -20,6 +20,7 @@ import javax.crypto.spec.PBEKeySpec;
 import AdminUi.AdminController;
 import Components.Session;
 import Components.User;
+import ProfessorUi.ProfessorController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -209,11 +210,17 @@ public class LoginController{
 		Helper.currentTechnicianLoader = new FXMLLoader(getClass().getResource(Helper.fxmlTechnician));
 		root = Helper.currentTechnicianLoader.load();
 		newStage(event, root);
+		
+//		AdminController controller = (AdminController)(Helper.currentAdminLoader.getController());
+//		AnchorPane.setRightAnchor(controller.getLogOutButton(), controller.getAccountButton().getWidth()+100);
 	}
 	public void directProfessor(ActionEvent event) throws IOException {
 		Helper.currentProfessorLoader = new FXMLLoader(getClass().getResource(Helper.fxmlProfessor));
 		root = Helper.currentProfessorLoader.load();
 		newStage(event, root);
+		
+		ProfessorController controller = (ProfessorController)(Helper.currentProfessorLoader.getController());
+		AnchorPane.setRightAnchor(controller.getLogOutButton(), controller.getAccountButton().getWidth()+100);
 	}
 	
 	private void newStage(ActionEvent event, Parent root) {

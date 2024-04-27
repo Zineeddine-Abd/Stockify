@@ -71,7 +71,7 @@ public class DB_Messages extends DB_Utilities{
 	
 	
 	
-	public static ObservableList<Asset> getReportedAssets() {
+	public static ObservableList<Asset> getReportedAssets(ObservableList<Asset> allAssetsObs) {
 		try(Connection con = DB_Utilities.getDataSource().getConnection()){
 			ArrayList<Integer> reportedAssetIDS = new ArrayList<Integer>();
 			ObservableList<Asset> allReportedAssets = FXCollections.observableArrayList();
@@ -85,8 +85,8 @@ public class DB_Messages extends DB_Utilities{
 							reportedAssetIDS.add(cor_asset_id);
 						}
 					}
-					AssetsTableController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
-				for(Asset element : controller.getAllAssetsObs()) {
+					
+				for(Asset element : allAssetsObs) {
 					if(reportedAssetIDS.contains(element.getAsset_id())) {
 						allReportedAssets.add(element);
 					}

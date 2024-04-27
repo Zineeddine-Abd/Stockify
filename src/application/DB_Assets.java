@@ -57,7 +57,7 @@ public class DB_Assets extends DB_Utilities{
 		}
     }
 	
-	public static void addAsset(ObservableList<Asset> obsList, Asset asset) {
+	public static void addAsset(ObservableList<Asset> obsList, Asset asset , ObservableList<Action> recentActions) {
 		try(Connection con = dataSource.getConnection()){
 			String insertAsset = "INSERT INTO assets (asset_category,asset_type,asset_model,asset_status,asset_room,asset_purchase_date,asset_warranty) VALUES (?,?,?,?,?,?,?)";
 			try(PreparedStatement ps = con.prepareStatement(insertAsset,Statement.RETURN_GENERATED_KEYS)){
@@ -91,7 +91,7 @@ public class DB_Assets extends DB_Utilities{
 			         }
 			    }
 				
-				createActionForAsset(Helper.INSERTION_MODE, asset);
+				createActionForAsset(Helper.INSERTION_MODE, asset , recentActions);
 				
 			}
 		}catch(SQLException e) {
@@ -100,9 +100,9 @@ public class DB_Assets extends DB_Utilities{
 		}
 	}
 	
-	public static void removeAsset(ObservableList<Asset> obsList, ObservableList<Asset> selectedAssets) {
+	public static void removeAsset(ObservableList<Asset> obsList, ObservableList<Asset> selectedAssets , ObservableList<Action> recentActions) {
 		for(Asset asset : selectedAssets) {
-			createActionForAsset(Helper.DELETION_MODE, asset);
+			createActionForAsset(Helper.DELETION_MODE, asset ,recentActions);
 		}
 		
 		try (Connection con = dataSource.getConnection()) {
@@ -127,7 +127,7 @@ public class DB_Assets extends DB_Utilities{
 		
 	}
 	
-	public static void updateAsset(Asset oldAsset, Asset newAsset) {
+	public static void updateAsset(Asset oldAsset, Asset newAsset , ObservableList<Action> recentActions) {
 		try(Connection con = dataSource.getConnection()){
 			String updateAsset = "UPDATE assets SET "
 					+ "asset_category = ?,"
@@ -166,7 +166,7 @@ public class DB_Assets extends DB_Utilities{
 	            	DB_Softwares.updateSoftware((Software)oldAsset, (Software)newAsset);
 	            }
 				
-				createActionForAsset(Helper.UPDATE_MODE, oldAsset);
+				createActionForAsset(Helper.UPDATE_MODE, oldAsset , recentActions);
 				
 			}
 		}catch(SQLException e) {
@@ -207,9 +207,8 @@ public class DB_Assets extends DB_Utilities{
 			return null;
 		}
 	 
-	 public static void createActionForAsset(String action_type,Asset asset) {
+	 public static void createActionForAsset(String action_type,Asset asset , ObservableList<Action> recentActions) {
 		Action action = new Action(0, action_type, asset.toString() , Helper.ASSET, java.sql.Date.valueOf(LocalDate.now()));
-		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
 		DB_Actions.createAction(action,recentActions);
 	 }
 	

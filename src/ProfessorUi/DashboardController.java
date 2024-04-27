@@ -1,4 +1,4 @@
-package AdminUi;
+package ProfessorUi;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,19 +56,18 @@ public class DashboardController implements Initializable{
 		public ObservableList<Asset> getReportedAssetsList(){
 			return reportedAssetsObs;
 		}
-		@FXML
-		private ListView<Action> recentActions;
+		
 		private ObservableList<Action> actionsObs;
 		
 		public ObservableList<Action> getrecentActionsObsList() {
 			return this.actionsObs;
-		}
+		}		
+		
 		//*****************************************/
 		
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
-			warningsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
-			recentActionsPane.prefWidthProperty().bind(pans.widthProperty().divide(2).add(-35));
+			warningsPane.prefWidthProperty().bind(pans.widthProperty().add(-35));
 			
 			HardwareButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			numHardware.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
@@ -85,14 +84,12 @@ public class DashboardController implements Initializable{
 		
 		public void setItems() {
 			//Reported Assets List:
-			reportedAssetsObs = DB_Messages.getReportedAssets(((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().getAllAssetsObs());
+			reportedAssetsObs = DB_Messages.getReportedAssets(((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().getAllAssetsObs());
 			reportedAssetsList.setItems(reportedAssetsObs);
 			actionsObs = FXCollections.observableArrayList();
 			DB_Actions.refresh(actionsObs);
-			recentActions.setItems(actionsObs);
 			
 			setCellFactories();
-			
 		}
 		
 		public void setCellFactories() {
@@ -122,41 +119,8 @@ public class DashboardController implements Initializable{
 	                        	
 	                        	setTextFill(Color.BLACK);
 	                        	setText(item.toString());
-	                        	AssetsTableController controller = ((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController();
+	                        	AssetsTableController controller = ((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController();
 	                            setOnMouseClicked(event->controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem()));
-	                            
-	                        }
-	                    }
-	                };
-	            }
-	        });
-			
-			recentActions.setCellFactory(new Callback<ListView<Action>, ListCell<Action>>() {
-	            @Override
-	            public ListCell<Action> call(ListView<Action> param) {
-	                return new ListCell<Action>() {
-	                    @Override
-	                    protected void updateItem(Action item, boolean empty) {
-	                        super.updateItem(item, empty);
-	                        if (empty || item == null) {
-	                            setText(null);
-	                            setStyle("-fx-background-color: #FFFFFF;");
-	                        } else if (isSelected()) {
-	                            setTextFill(Color.WHITE);
-	                            setStyle("-fx-background-color: #0096c9;"); 
-	                        }else{
-	                        	if (item.getAction_type().equals("Update")) {
-	                                setStyle("-fx-background-color: #f5ed7d;");
-	                            }else if(item.getAction_type().equals("Insertion")) {
-	                            	setStyle("-fx-background-color: #B2FF66");
-	                            }else if(item.getAction_type().equals("Deletion")) {
-	                            	setStyle("-fx-background-color: #FB9494");
-	                            } else {
-	                                setStyle("");
-	                            }
-	                        	
-	                        	setTextFill(Color.BLACK);
-	                        	setText(item.toString());
 	                            
 	                        }
 	                    }
@@ -168,33 +132,30 @@ public class DashboardController implements Initializable{
 		public void refreshList() {
 			setCellFactories();
 			
-			reportedAssetsObs = DB_Messages.getReportedAssets(((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().getAllAssetsObs());
+			reportedAssetsObs = DB_Messages.getReportedAssets(((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().getAllAssetsObs());
 			reportedAssetsList.setItems(reportedAssetsObs);
-			
-			getrecentActionsObsList().clear();
-			DB_Actions.refresh(getrecentActionsObsList());
 		}
 		
 		public void triggerHardwarePane() {
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().setHardwareColumns(null);
-			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
+			((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().filterTableView();
+			((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().setHardwareColumns(null);
+			((ProfessorController)Helper.currentProfessorLoader.getController()).triggerAssetPane();
 		}
 		
 		public void triggerSoftwarePane() {
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().setSoftwareColumns(null);
-			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
+			((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().filterTableView();
+			((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().setSoftwareColumns(null);
+			((ProfessorController)Helper.currentProfessorLoader.getController()).triggerAssetPane();
 		}
 		
 		public void triggerAssetsPane() {
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().filterTableView();
-			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().setAssetColumns(null);
-			((AdminController)Helper.currentAdminLoader.getController()).triggerAssetPane();
+			((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().filterTableView();
+			((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().setAssetColumns(null);
+			((ProfessorController)Helper.currentProfessorLoader.getController()).triggerAssetPane();
 		}
 		
 		public void triggerRoomsPane() {
-			((AdminController)Helper.currentAdminLoader.getController()).triggerRoomsPane();
+			((ProfessorController)Helper.currentProfessorLoader.getController()).triggerRoomsPane();
 		}
 
 

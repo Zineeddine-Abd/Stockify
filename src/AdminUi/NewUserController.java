@@ -1,11 +1,8 @@
 package AdminUi;
 
 import java.net.URL;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.ResourceBundle;
 
-import Components.Action;
 import Components.User;
 import LoginUi.LoginController;
 import application.Helper;
@@ -168,14 +165,14 @@ public class NewUserController implements Initializable{
 		stage.close();
 	}
 	
-	private String generateRandomSalt() {
-		SecureRandom sr = new SecureRandom();
-		
-		byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        String encodedSalt = Base64.getEncoder().encodeToString(salt);
-        
-        return encodedSalt;
-	}
+//	private String generateRandomSalt() {
+//		SecureRandom sr = new SecureRandom();
+//		
+//		byte[] salt = new byte[16];
+//        sr.nextBytes(salt);
+//        String encodedSalt = Base64.getEncoder().encodeToString(salt);
+//        
+//        return encodedSalt;
+//	}
 
 }

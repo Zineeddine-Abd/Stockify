@@ -1,7 +1,6 @@
 package application;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,6 @@ import java.sql.Statement;
 
 import Components.Asset;
 import Components.Hardware;
-import Components.Software;
 import javafx.collections.ObservableList;
 
 public class DB_Hardwares extends DB_Utilities{

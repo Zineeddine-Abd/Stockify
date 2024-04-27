@@ -24,7 +24,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -32,8 +31,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import application.DB_Actions;
-import application.DB_Assets;
 import application.DB_Messages;
 import application.DB_Sessions;
 import application.DB_Utilities;
@@ -249,13 +246,13 @@ public class AdminController implements Initializable{
 	
 	public void closeSideBar() {
 		
-		double closedCollapWidth = 40;
+		double closedCollapWidth = 41;
 		double shiftedMenuIconX = collapser.getWidth()-menuIcon.getLayoutX()-closedCollapWidth+9;
 		
 		//close
 		isOpenedSideBar = false;
 		KeyValue collapCloseKeyVal = new KeyValue(collapser.translateXProperty(), closedCollapWidth);
-		KeyValue sideBarCloseKeyVal = new KeyValue(sideBar.translateXProperty(), -sideBar.getWidth());
+		KeyValue sideBarCloseKeyVal = new KeyValue(sideBar.translateXProperty(), -sideBar.getWidth()-1);
 		KeyValue barCloseVal = new KeyValue(bar.opacityProperty(), 0);
 		
 		KeyFrame closeSideBarFrame = new KeyFrame(Duration.millis(300), collapCloseKeyVal, sideBarCloseKeyVal, barCloseVal); //add dashboardSpace

@@ -1,6 +1,5 @@
 package AdminUi;
 
-import Components.User;
 import LoginUi.LoginController;
 import application.Helper;
 import javafx.animation.FadeTransition;

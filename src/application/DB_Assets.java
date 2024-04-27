@@ -12,9 +12,7 @@ import AdminUi.AdminController;
 import Components.Action;
 import Components.Asset;
 import Components.Hardware;
-import Components.Room;
 import Components.Software;
-import LoginUi.LoginController;
 import javafx.collections.ObservableList;
 
 public class DB_Assets extends DB_Utilities{

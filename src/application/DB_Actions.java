@@ -6,13 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 
 import Components.Action;
-import Components.Asset;
-import Components.Message;
-import Components.Room;
-import Components.User;
 import javafx.collections.ObservableList;
 
 

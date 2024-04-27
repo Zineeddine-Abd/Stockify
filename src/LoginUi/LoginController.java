@@ -422,7 +422,7 @@ public class LoginController implements Initializable{
 		 return null;
 	 }
 	 
-	 private void createFileForUser(String username, String hashedPassword) {
+	 public static void createFileForUser(String username, String hashedPassword) {
 		 AES aes = new AES();
 		 try {
 			aes.generateRandomKey();
@@ -444,7 +444,7 @@ public class LoginController implements Initializable{
 		 
 	 }
 	 
-	 public void saveObjectTo(String filename,Credentials obj) {//Serialization
+	 public static void saveObjectTo(String filename,Credentials obj) {//Serialization
 			File filein = new File(filename);
 			try {
 				FileOutputStream fileOut = new FileOutputStream(filein);

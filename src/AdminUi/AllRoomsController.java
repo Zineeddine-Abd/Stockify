@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 
 import Components.Room;
 import application.DB_Rooms;
-import application.DB_Users;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Components.Asset;
-import Components.Hardware;
 import Components.Software;
 import javafx.collections.ObservableList;
 

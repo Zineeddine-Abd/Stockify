@@ -133,8 +133,6 @@ public class ProfessorController implements Initializable{
 	public static int ASSETS_VIEW = 1;
 	public static int ROOMS_VIEW = 2;
 	public static int HELP_VIEW = 3;
-	
-	
     
 	//logging out mats:***********
 	private Stage stage;
@@ -217,13 +215,12 @@ public class ProfessorController implements Initializable{
 	
 	public void closeSideBar() {
 		
-		double closedCollapWidth = 40;
+		double closedCollapWidth = 41;
 		double shiftedMenuIconX = collapser.getWidth()-menuIcon.getLayoutX()-closedCollapWidth+9;
 		
-		//close
 		isOpenedSideBar = false;
 		KeyValue collapCloseKeyVal = new KeyValue(collapser.translateXProperty(), closedCollapWidth);
-		KeyValue sideBarCloseKeyVal = new KeyValue(sideBar.translateXProperty(), -sideBar.getWidth());
+		KeyValue sideBarCloseKeyVal = new KeyValue(sideBar.translateXProperty(), -sideBar.getWidth()-1);
 		KeyValue barCloseVal = new KeyValue(bar.opacityProperty(), 0);
 		
 		KeyFrame closeSideBarFrame = new KeyFrame(Duration.millis(300), collapCloseKeyVal, sideBarCloseKeyVal, barCloseVal); //add dashboardSpace

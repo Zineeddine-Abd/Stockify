@@ -1,5 +1,6 @@
 package ProfessorUi;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -27,10 +29,13 @@ public class PopupAccountInfoController implements Initializable{
 	private Button cancelButton;
 	@FXML
 	private TextField role;
+	@FXML
+	private CheckBox enableRememMe;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			User loggedUser = LoginController.getLoggedUser();
+			enableRememMe.setSelected(LoginController.fileExists(LoginController.savedCredentialsFilePath));
 			lastNameField.setText(loggedUser.getLast_name());
 			firstNameField.setText(loggedUser.getFirst_name());
 			emailField.setText(loggedUser.getEmail());
@@ -42,6 +47,13 @@ public class PopupAccountInfoController implements Initializable{
 	}
 	
 	public void disposeWindow(ActionEvent event) {
+		if(!enableRememMe.isSelected()) {
+			if(LoginController.deleteCredsFile()) {
+				Helper.displayInfoMessage("Success", "Changes Applied Successfully");
+			}else {
+				Helper.displayErrorMessage("Error", "Failed to apply changes!");
+			}
+		}
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
 	}

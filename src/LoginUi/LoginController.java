@@ -4,8 +4,14 @@ import application.*;
 
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -13,17 +19,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.ResourceBundle;
 
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import AdminUi.AdminController;
+import Components.Credentials;
 import Components.Session;
 import Components.User;
 import ProfessorUi.ProfessorController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -40,7 +51,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.*;
 
-public class LoginController{
+public class LoginController implements Initializable{
 	private static Session currentSession;
 	
 	public static void setSession(Session ses) {
@@ -56,6 +67,8 @@ public class LoginController{
 	private Stage stage;
 	private Scene scene;
 	private Parent root;
+	
+	public static final String savedCredentialsFilePath = "creds.ser";
 	
 	private static final String ADMIN = "Administrator";
 	private static final String TECHNICIAN = "Technician";
@@ -85,14 +98,27 @@ public class LoginController{
 		return currentSalt;
 	}
 	
+	private boolean fileExists = false;
+	//************************************Methods:****************************************************************
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		fileExists = fileExists(savedCredentialsFilePath) ? true : false;
+		
+		if(fileExists) {
+			rememberMe.setSelected(true);
+			try {
+				assignUser(null);
+			} catch (IOException e) {
+				Helper.displayErrorMessage("Error", e.getMessage());
+			}
+		}
+	}
 	
-	//Database linking for each user.
-	@FXML
 	private void assignUser(ActionEvent event) throws IOException {
 		
-		try (Connection con = DB_Utilities.getDataSource().getConnection()){
+		try (Connection con = DB_Utilities.getDataSource().getConnection()) {
 			String password = (showPassBox.isSelected() ? showPasswordField.getText() : passwordField.getText());
-			String username =  usernameField.getText();
+			String username =  (fileExists ? getDecryptedUsername(retrieveSecretKey()):usernameField.getText());
 	        String sql = "SELECT * FROM users WHERE username=" +"'" + username +"';";
 	        
 	        try(PreparedStatement statement = con.prepareStatement(sql);
@@ -100,8 +126,9 @@ public class LoginController{
 	        	if(resultSet.next()) {
 	        		String hashdpassword = resultSet.getString("pass_word");
 	        		String user_salt = resultSet.getString("user_salt");
+	        		String currentEnteredHashedPassword = (fileExists ? getStoredHashedPass() : hashPassword(password, user_salt));
 	        		
-	        		if(!hashPassword(password, user_salt).equals(hashdpassword)) {
+	        		if(!currentEnteredHashedPassword.equals(hashdpassword)) {
 	        			incorrectInfo.setText("Invalid Password!");
 	        			animatedIncorrectInfolabel();
 	        			return;
@@ -121,8 +148,12 @@ public class LoginController{
 	        		}
 	        		
 	        		DB_Sessions.createSession(user_id);
-	        		
 	        		currentLoggedInUser = new User(user_id,username,hashdpassword,email,first_name,last_name,user_role,user_salt);
+	        		//initial file creation to save creds.
+	        		if(rememberMe.isSelected()) {
+	        			createFileForUser(username,hashdpassword);
+	        			fileExists = true;
+	        		}
 	        		
 		        	switch(resultSet.getString("user_role")) {
 		        		case ADMIN:
@@ -142,7 +173,6 @@ public class LoginController{
 		        	animatedIncorrectInfolabel();
 		        }
 	        }
-	        
 		} catch (SQLException e) {
 			displayErrorMessage("Error",e.getMessage());
 		}
@@ -167,8 +197,7 @@ public class LoginController{
 	}
 	
 	public void rememberMe(ActionEvent event) {
-		//to be designed later :)
-		
+		//in co memoration of this method, this code will stay here as it was the one of the first to be written in Stockify - lokman
 	}
 	
 	public void loginClicked(ActionEvent event) {
@@ -178,11 +207,11 @@ public class LoginController{
 			incorrectInfo.setText("Invalid username or password!");
 			animatedIncorrectInfolabel();
 		}else {
-			try {  
+			try {
 				assignUser(event);
 			} catch (Exception e) {
-				e.printStackTrace();
-			}	
+				Helper.displayErrorMessage("Error!", e.getMessage());
+			}
 		}	
 	}
 	
@@ -224,29 +253,36 @@ public class LoginController{
 	}
 	
 	private void newStage(ActionEvent event, Parent root) {
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		stage.close();
-		scene = new Scene(root);
-		
-		stage = new Stage();
-		
-		stage.setScene(scene);
-		stage.getIcons().add(Main.itAssetLogo);
-		stage.setTitle("Stockify");
-		stage.setMaximized(true);
-		
-		stage.setOnCloseRequest(e ->{
-			DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
-			e.consume();
-			stage.close();
-			if(DB_Utilities.getDataSource() != null) {
-				DB_Utilities.getDataSource().close();
+		try {			
+			if(event != null) {			
+				stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+				stage.close();
 			}
-		});
-		stage.centerOnScreen();
-		
-		stage.show();
-		
+			scene = new Scene(root);
+			
+			stage = new Stage();
+			
+			stage.setScene(scene);
+			stage.getIcons().add(Main.itAssetLogo);
+			stage.setTitle("Stockify");
+			stage.setMaximized(true);
+			
+			stage.setOnCloseRequest(e ->{
+				DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
+				e.consume();
+				stage.close();
+				if(DB_Utilities.getDataSource() != null) {
+					DB_Utilities.getDataSource().close();
+				}
+			});
+			stage.centerOnScreen();
+			
+			stage.show();
+		}catch(Exception e) {
+			Helper.displayErrorMessage("Error", e.getMessage());
+			DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
+			System.exit(1);
+		}
 	}
 	
 	 
@@ -282,6 +318,8 @@ public class LoginController{
 		 alert.setContentText(message);
 	     alert.showAndWait();
 	 }
+	 
+	 //********************************HASHING METHODS:***************************************************
 	 
 	 //hash an existing password for comparing purposes.
 	 
@@ -329,5 +367,136 @@ public class LoginController{
 		 
 		 return encoded;
 	 }
+	 
+	 //********************************END HASHING METHODS:***************************************************
+	 
+	 //remember me functionalities
+	 
+	 private String getStoredHashedPass() {
+		 
+		 Object obj = retrieveObjectfrom(savedCredentialsFilePath);
+		 if(obj instanceof Credentials) {
+			 Credentials creds = (Credentials)obj;
+			 return creds.getHashedPassword();
+		 }else {
+			 Helper.displayErrorMessage("Error","Unexpected Error has occured! "
+			 		+ "cannot retrieve saved credentials due to invalid file format or data corruption");
+		 }
+		 return null;
+	 }
+	 
+	 private String getDecryptedUsername(SecretKey key) {
+		 Object obj = retrieveObjectfrom(savedCredentialsFilePath);
+		 if(obj instanceof Credentials) {
+			 try {
+				 Credentials creds = (Credentials)obj;
+				 String encrypted_username = creds.getUsername();
+				 byte[] iv = creds.getIv();
+				 
+				 //init the AES algorithm.
+				 AES aes = new AES();
+				 aes.setSecretKey(key);
+				 String decrypted_username = aes.decrypt(encrypted_username , iv);
+				 //return the original username.
+				 return decrypted_username;
+			} catch (Exception e) {
+				e.printStackTrace();
+				Helper.displayErrorMessage("Error", e.getMessage());
+			}
+		 }else {
+			 Helper.displayErrorMessage("Error","Unexpected Error has occured! "
+			 		+ "cannot retrieve saved credentials due to invalid file format or data corruption");
+		 }
+		 return null;
+	 }
+	 
+	 private SecretKey retrieveSecretKey() {
+		 Object obj = retrieveObjectfrom(savedCredentialsFilePath);
+		 if(obj instanceof Credentials) {
+			 Credentials creds = (Credentials)obj;
+			 return convertStringToKey(creds.getSk());
+		 }else {
+			 Helper.displayErrorMessage("Error","Unexpected Error has occured! "
+			 		+ "cannot retrieve saved credentials due to invalid file format or data corruption");
+		 }
+		 return null;
+	 }
+	 
+	 private void createFileForUser(String username, String hashedPassword) {
+		 AES aes = new AES();
+		 try {
+			aes.generateRandomKey();
+			
+			String encryptedUsername = aes.encrypt(username);
+			byte[] iv = aes.getEncryptionCipherIV();
+			SecretKey sk = aes.getSecretKey();
+			//hashed password exists
+			
+			//enc_username + hashedPass + keyToDecryptUsername + initialization vector;
+			
+			Credentials creds = new Credentials(encryptedUsername, hashedPassword, convertKeyToString(sk) ,iv);
+			
+			saveObjectTo(savedCredentialsFilePath, creds);
+		 } catch (Exception e) {
+			 e.printStackTrace();
+			 Helper.displayErrorMessage("Error", e.getMessage());
+		 }
+		 
+	 }
+	 
+	 public void saveObjectTo(String filename,Credentials obj) {//Serialization
+			File filein = new File(filename);
+			try {
+				FileOutputStream fileOut = new FileOutputStream(filein);
+				ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+				objOut.writeObject(obj);
+				objOut.close();
+				fileOut.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				Helper.displayErrorMessage("Error", e.getMessage());
+			}
+		}
+		
+		public Object retrieveObjectfrom(String filename) {//deSerialization
+			Object obj = new Object();
+			File file = new File(filename);
+			try {
+				FileInputStream fileIn = new FileInputStream(file);
+				ObjectInputStream objIn = new ObjectInputStream(fileIn);
+				obj = objIn.readObject();
+				objIn.close();
+				fileIn.close();
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+				Helper.displayErrorMessage("Error", e.getMessage());
+			}
+			return obj;
+		}
+		
+		public static String convertKeyToString(SecretKey secretKey) {
+	        byte[] keyBytes = secretKey.getEncoded();
+	        return Base64.getEncoder().encodeToString(keyBytes);
+	    }
+
+	    // Convert String to SecretKey
+	    public static SecretKey convertStringToKey(String keyString) {
+	        byte[] decodedKey = Base64.getDecoder().decode(keyString);
+	        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+	    }
+	    
+	    public static boolean fileExists(String filename) {
+	        File file = new File(filename);
+	        return file.exists();
+	    }
+	    
+	    public static boolean deleteCredsFile() {
+	    	File file = new File(LoginController.savedCredentialsFilePath);
+			
+			if(file.exists()) {
+				return(file.delete());
+			}
+			return false;
+	    }
 	   
 }

@@ -1,4 +1,6 @@
 package application;
+import java.io.File;
+
 import LoginUi.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +38,9 @@ public class Main extends Application {
 			
 			Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
 			
-			primaryStage.show();
+			if(!fileExists(LoginController.savedCredentialsFilePath)) {				
+				primaryStage.show();
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -45,4 +49,9 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	public static boolean fileExists(String filename) {
+        File file = new File(filename);
+        return file.exists();
+    }
 }

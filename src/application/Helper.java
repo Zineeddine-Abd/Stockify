@@ -58,4 +58,16 @@ public class Helper {
 			return;
 		}
     }
+	
+	public static void displayInfoMessage(String title , String message) {
+		try {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle(title);
+			alert.setHeaderText(null);
+			alert.setContentText(message);
+			alert.showAndWait();
+		}catch(IllegalStateException e) {
+			return;
+		}
+	}
 }

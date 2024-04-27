@@ -63,12 +63,12 @@
       </BorderPane>
       
                   <Pane id="pan" fx:id="bar" onMouseClicked="#closeWithBar" opacity="0.0" style="-fx-background-color: lightGray;" visible="false" />
-      <VBox fx:id="sideBar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="vbox" translateX="-200.0">
+      <VBox fx:id="sideBar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="vbox" translateX="-201.0">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
          <children>
-            <Button fx:id="collapser" mnemonicParsing="false" onAction="#toggleSidebar" prefWidth="200.0" styleClass="collapser" text="Menu" translateX="40.0">
+            <Button fx:id="collapser" mnemonicParsing="false" onAction="#toggleSidebar" prefWidth="200.0" styleClass="collapser" text="Menu" translateX="41.0">
                <graphic>
                   <FontAwesomeIconView fx:id="menuIcon" fill="#67809c" glyphName="BARS" size="25" translateX="108.0" />
                </graphic>

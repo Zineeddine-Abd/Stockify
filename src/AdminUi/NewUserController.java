@@ -164,15 +164,4 @@ public class NewUserController implements Initializable{
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
 	}
-	
-//	private String generateRandomSalt() {
-//		SecureRandom sr = new SecureRandom();
-//		
-//		byte[] salt = new byte[16];
-//        sr.nextBytes(salt);
-//        String encodedSalt = Base64.getEncoder().encodeToString(salt);
-//        
-//        return encodedSalt;
-//	}
-
 }

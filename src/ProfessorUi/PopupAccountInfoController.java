@@ -53,6 +53,10 @@ public class PopupAccountInfoController implements Initializable{
 			}else {
 				Helper.displayErrorMessage("Error", "Failed to apply changes!");
 			}
+		}else {
+			if(!LoginController.fileExists(LoginController.savedCredentialsFilePath)) {
+				LoginController.createFileForUser(LoginController.getLoggedUser().getUsername(), LoginController.getLoggedUser().getPass_word());
+			}
 		}
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();

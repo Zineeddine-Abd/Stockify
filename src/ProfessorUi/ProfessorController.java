@@ -245,16 +245,16 @@ public class ProfessorController implements Initializable{
 	
 	//not now !
 	public void LogOut(ActionEvent event) throws IOException {
+		if(LoginController.getLoggedUser() != null) {
+			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+			LoginController.deleteCredsFile();
+		}
+		
 		Helper.currentLoginLoader = new FXMLLoader(getClass().getResource(Helper.fxmlLogin));
 		root = Helper.currentLoginLoader.load();
-		DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
-		
-		if(LoginController.getLoggedUser() != null) {
-			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
-		}
 		
 		loginScene = new Scene(root);
 		stage = new Stage();

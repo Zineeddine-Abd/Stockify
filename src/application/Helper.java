@@ -2,6 +2,7 @@ package application;
 
 import java.util.Optional;
 
+import LoginUi.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -68,6 +69,15 @@ public class Helper {
 			alert.showAndWait();
 		}catch(IllegalStateException e) {
 			return;
+		}
+	}
+	
+	public static void closeResources() {
+		if(LoginController.getLoggedUser() != null) {
+			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+		}
+		if(DB_Utilities.getDataSource() != null) {
+			DB_Utilities.getDataSource().close();
 		}
 	}
 }

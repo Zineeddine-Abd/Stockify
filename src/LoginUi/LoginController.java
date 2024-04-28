@@ -210,7 +210,14 @@ public class LoginController implements Initializable{
 			try {
 				assignUser(event);
 			} catch (Exception e) {
-				Helper.displayErrorMessage("Error!", e.getMessage());
+				try {				
+					if(DB_Sessions.sessionExists(getLoggedUser().getUser_id())) {
+						DB_Sessions.terminateCurrentSession(getLoggedUser().getUser_id());
+					}
+					Helper.displayErrorMessage("Error!", e.getMessage());
+				}catch(NullPointerException e2) {
+					Helper.displayErrorMessage("Error",e.getMessage());
+				}
 			}
 		}	
 	}
@@ -303,12 +310,8 @@ public class LoginController implements Initializable{
 	 public void closeLoginScreen(MouseEvent event) {
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		stage.close();
-		if(currentLoggedInUser != null) {
-			DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());
-		}
-		if(DB_Utilities.getDataSource() != null) {
-			DB_Utilities.getDataSource().close();
-		}
+		
+		Helper.closeResources();
 	 }
 	 
 	 private void displayErrorMessage(String title, String message) {

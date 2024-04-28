@@ -17,8 +17,8 @@ public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread t, Throwable e) {
     	e.printStackTrace();
     	logger.log(Level.SEVERE,"An Error Occured and the Application needs to quit!");
-    	Helper.displayErrorMessage("An Error Occured and the Application needs to quit!\n Details: ", e.getStackTrace().toString() + "\nIn Thread: " + t.getName());
-        DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
+    	Helper.displayErrorMessage("An Error Occured and the Application needs to quit!","Details: " + e.getStackTrace().toString() + "\nIn Thread: " + t.getName());
+        Helper.closeResources();
         System.exit(1);
     }
 }

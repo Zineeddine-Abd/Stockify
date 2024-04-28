@@ -277,6 +277,11 @@ public class AdminController implements Initializable{
 	
 	//not now ! yes now
 	public void LogOut(ActionEvent event) throws IOException {
+		
+		if(!Helper.displayConfirmMessge("Log out of session.","Log out?")) {
+			return;
+		}
+		
 		if(LoginController.getLoggedUser() != null) {
 			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 			LoginController.deleteCredsFile();
@@ -299,12 +304,7 @@ public class AdminController implements Initializable{
 			e.consume();
 			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 			stage.close();
-			if(LoginController.getLoggedUser() != null) {
-				DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
-			}
-			if(DB_Utilities.getDataSource() != null) {
-				DB_Utilities.getDataSource().close();
-			}
+			Helper.closeResources();
 		});
 		stage.show();
 	}

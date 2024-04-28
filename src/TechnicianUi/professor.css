@@ -1,0 +1,92 @@
+
+.text-field{
+	-fx-background-color: white;
+	-fx-border-color: #1C232B;
+	-fx-border-width: 0px 0px 2px 0px;
+}
+
+.button {
+    -fx-border-color: #29333E;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #1C232B;
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    /*-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 5,0,0,0 );*/
+    -fx-cursor: hand;
+    -fx-alignment: center;
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-padding: 5px;
+    -fx-text-alignment: center;
+    -fx-font-family: 'Montserrat';
+    -fx-underline: false;
+}
+
+.button:hover {
+ 	-fx-background-color: #184179;
+  	/*-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);*/
+}
+#collapser{
+	-fx-font-size: 20px;
+}
+
+.button:pressed {
+    -fx-background-color: #8DA0B5; /* Change color when button is pressed */
+}
+
+
+
+/*cancel button :  */
+.cancelButton:hover{
+	-fx-background-color: #184179;
+	-fx-text-fill: white;
+}
+.cancelButton{
+	-fx-background-color: white;
+	-fx-text-fill: #000000;
+}
+.cancelButton:pressed{
+	-fx-background-color: #8DA0B5;
+}
+/*cancel button end.... */
+
+
+
+/*create new / profile  */
+.dropdown-box{
+	-fx-background-color: #29333E;
+	-fx-text-fill: white;
+	-fx-background-insets:0;
+	-fx-padding: 0px 0px;
+}
+.dropdown-box .arrow{
+	-fx-background-color: white;
+}
+
+.dropdown-box .context-menu{
+	-fx-background-color: #29333E; /*bleu clair */
+}
+.dropdown-box .context-menu .menu-item .label{
+	-fx-text-fill: white;
+}
+.dropdown-box .label{
+	-fx-text-fill: white;
+}
+
+.dropdown-box .context-menu .menu-item:hover {
+	-fx-cursor: hand;
+	-fx-text-fill: #FFFFFF;
+	-fx-background-color: #184179;
+}
+.dropdown-box:hover{
+	-fx-background-color: #184179;
+	-fx-cursor: hand;
+}
+/*MenuButton FOR "Create New" */
+.menu-item{
+	-fx-font-size: 20px;	
+}
+

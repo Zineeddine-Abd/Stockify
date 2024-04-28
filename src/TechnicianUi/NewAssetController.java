@@ -1,4 +1,4 @@
-package AdminUi;
+package TechnicianUi;
 
 import java.io.IOException;
 import java.net.URL;
@@ -276,7 +276,7 @@ public class NewAssetController implements Initializable{
 					Hardware new_hard = new Hardware(new_asset,serial_num);
 					
 					if(oldAsset == null) {
-						newAsset(new_hard);
+						//do nothing for 
 					}else {
 						updateAsset(new_hard);
 					}
@@ -301,7 +301,7 @@ public class NewAssetController implements Initializable{
 					Software new_soft = new Software(new_asset,licenseKey,version);
 					
 					if(oldAsset == null) {
-						newAsset(new_soft);
+						//do nothing cuz no new for you technician !!!!.
 					}else {
 						updateAsset(new_soft);
 					}
@@ -309,7 +309,7 @@ public class NewAssetController implements Initializable{
 			}
 			
 			if(oldAsset == null) {
-				newAsset(new_asset);
+				//do nothing cuz no new for technician
 			}else {
 				updateAsset(new_asset);
 			}
@@ -320,32 +320,19 @@ public class NewAssetController implements Initializable{
 		disposeWindow(event);
 	}
 	
-	
-	private void newAsset(Asset newAsset) {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addAsset(newAsset);
-	}
-	
 	private void updateAsset(Asset newAsset) {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, newAsset);
+		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, newAsset);
 	}
 	
-//	private void newHardware(Hardware hard) {
-//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addHardware(hard);
-//	}
-//	
-//	private void updateHardware(Hardware hardware) {
-//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateHardware(oldAsset,hardware);
-//	}
-//	
-//	private void newSoftware(Software soft) {
-//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().addSoftware(soft);
-//	}
-//	
-//	private void updateSoftware(Software software) {
-//		((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().updateSoftware(oldAsset, software);
-//	}
+	private void updateHardware(Hardware hardware) {
+		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateHardware(oldAsset,hardware);
+	}
 	
-	public void setInfos() {
+	private void updateSoftware(Software software) {
+		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateSoftware(oldAsset, software);
+	}
+	
+	void setInfos() {
 		categoryChoiceBox.setValue(oldAsset.getAsset_category());
 		typeChoiceBox.setValue(oldAsset.getAsset_type());
 		modelChoiceBox.setValue(oldAsset.getAsset_model());

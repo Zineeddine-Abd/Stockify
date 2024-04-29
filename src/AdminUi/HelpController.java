@@ -20,6 +20,8 @@ public class HelpController implements Initializable{
 	
 	//user manual mats:
 	@FXML
+	private Label StockifyHelpLabel;
+	@FXML
 	private Label ScanMeLabel;
 	@FXML
 	private Button GoToSiteButton;
@@ -31,10 +33,10 @@ public class HelpController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ManualVbox.prefWidthProperty().bind(hbox.widthProperty());
-//		ScanMeLabel.prefWidthProperty().bind(hbox.widthProperty());
-//		GoToSiteButton.prefWidthProperty().bind(hbox.widthProperty());
-		//GoToSiteButton.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
-		//userManualLabel.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
+		ManualVbox.prefHeightProperty().bind(hbox.heightProperty());
+		StockifyHelpLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
+		//ScanMeLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
+		GoToSiteButton.prefWidthProperty().bind(ManualVbox.widthProperty());
 		
 		HostServices hostServices = Main.services;
 		

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="270.0" prefWidth="1385.0" stylesheets="@professor.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.AssetsTableController">
+<BorderPane prefHeight="270.0" prefWidth="1385.0" stylesheets="@technician.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.AssetsTableController">
    <top>
      <HBox BorderPane.alignment="CENTER">
         <children>

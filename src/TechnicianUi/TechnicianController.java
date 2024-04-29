@@ -33,7 +33,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import application.DB_Messages;
 import application.DB_Sessions;
-import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -63,6 +62,7 @@ public class TechnicianController implements Initializable{
 	
 	//User and Asset Loaders
 	
+	public static final String fxmlNewAsset = "/TechnicianUi/newAssetScene.fxml";
 	public static final String fxmlReport = "/TechnicianUi/reportPopupScene.fxml";
 	public static final String fxmlReportDetails = "/TechnicianUi/reportDetailsPopupScene.fxml";
 	public static final String fxmlMessages = "/TechnicianUi/messages.fxml";
@@ -70,6 +70,7 @@ public class TechnicianController implements Initializable{
 	public static final String fxmlpopupAccountInfo = "/TechnicianUi/popupAccountInfoScene.fxml";
 	
 	
+	public static FXMLLoader currentNewAssetLoader;
 	public static FXMLLoader currentPopupAccountInfo;
 	
 	public static FXMLLoader currentReportPopupLoader;

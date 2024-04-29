@@ -20,40 +20,30 @@ public class HelpController implements Initializable{
 	
 	//user manual mats:
 	@FXML
-	private Label userManualLabel;
+	private Label StockifyHelpLabel;
 	@FXML
-	private Button viewUserManualButton;
+	private Label ScanMeLabel;
 	@FXML
-	private ImageView userManualQrCode;
+	private Button GoToSiteButton;
 	@FXML
-	private VBox userManualVbox;
-	//maintenance manual mats:
+	private ImageView UserManualQrCode;
 	@FXML
-	private Label maintenanceManualLabel;
-	@FXML
-	private Button viewMaintenanceManualButton;
-	@FXML
-	private ImageView maintenanceManualQrCode;
-	@FXML
-	private VBox maintenanceManualVbox;
+	private VBox ManualVbox;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		viewUserManualButton.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
-		userManualLabel.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
-		
-		viewMaintenanceManualButton.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
-		maintenanceManualLabel.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
+		ManualVbox.prefWidthProperty().bind(hbox.widthProperty());
+		ManualVbox.prefHeightProperty().bind(hbox.heightProperty());
+		StockifyHelpLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
+		//ScanMeLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
+		GoToSiteButton.prefWidthProperty().bind(ManualVbox.widthProperty());
 		
 		HostServices hostServices = Main.services;
 		
-		viewUserManualButton.setOnAction(event->{
-			hostServices.showDocument("https://sites.google.com/view/stockify-help/user-manual?authuser=0");
+		GoToSiteButton.setOnAction(event->{
+			hostServices.showDocument("https://sites.google.com/view/stockify-help/home");
 		});
 		
-		viewMaintenanceManualButton.setOnAction(event->{
-			hostServices.showDocument("https://sites.google.com/view/stockify-help/maintanance-manual?authuser=0");
-		});
 	}
 	
 }

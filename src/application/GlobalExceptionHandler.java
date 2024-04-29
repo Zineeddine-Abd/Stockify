@@ -6,10 +6,6 @@ package application;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import LoginUi.LoginController;
-import application.DB_Sessions;
-import application.Helper;
-
 public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
 	private static final Logger logger = Logger.getLogger(GlobalExceptionHandler.class.getName());
 	

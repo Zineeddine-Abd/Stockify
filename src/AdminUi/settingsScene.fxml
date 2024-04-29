@@ -11,7 +11,7 @@
 
 <HBox fx:id="hbox" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.HelpController">
    <children>
-      <VBox fx:id="ManualVbox" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #E1E1E1;">
+      <VBox fx:id="ManualVbox" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #E1E1E1;">
          <children>
             <Label fx:id="StockifyHelpLabel" alignment="CENTER" prefHeight="54.0" prefWidth="778.0" style="-fx-background-color: #1c232b;" text="Stockify Help" textFill="#fff7f7">
                <font>
@@ -20,18 +20,18 @@
             </Label>
             <ImageView fx:id="UserManualQrCode" fitHeight="332.0" fitWidth="335.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
-                  <Insets bottom="5.0" left="230.0" right="5.0" top="25.0" />
+                  <Insets bottom="5.0" top="25.0" />
                </VBox.margin>
                <image>
                   <Image url="@../qr-code.png" />
                </image>
             </ImageView>
-            <Label fx:id="ScanMeLablel" alignment="CENTER" prefHeight="54.0" prefWidth="335.0" style="-fx-background-color: #FF9400; -fx-border-color: black;" text="Scan Me">
+            <Label fx:id="ScanMeLabel" alignment="CENTER" prefHeight="54.0" prefWidth="335.0" style="-fx-background-color: #FF9400; -fx-border-color: black;" text="Scan Me">
                <font>
                   <Font name="Arial Bold" size="36.0" />
                </font>
                <VBox.margin>
-                  <Insets left="230.0" />
+                  <Insets />
                </VBox.margin>
             </Label>
             <Button fx:id="GoToSiteButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="748.0" text="Go To Stockify Help">

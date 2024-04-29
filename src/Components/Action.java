@@ -3,10 +3,6 @@ package Components;
 import java.sql.Date;
 
 import LoginUi.LoginController;
-import application.DB_Assets;
-import application.DB_Rooms;
-import application.DB_Users;
-import application.Helper;
 
 public class Action {
 	private int action_id;

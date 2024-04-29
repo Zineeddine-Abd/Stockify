@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@professor.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.NewAssetController">
+<VBox prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@technician.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.NewAssetController">
    <children>
       <Label fx:id="titleLabel" alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Asset">
          <font>
@@ -22,7 +22,7 @@
             <Insets left="15.0" />
          </VBox.margin>
       </Label>
-      <ChoiceBox fx:id="categoryChoiceBox" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
+      <ChoiceBox fx:id="categoryChoiceBox" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -32,7 +32,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <ChoiceBox fx:id="typeChoiceBox" layoutX="25.0" layoutY="81.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
+      <ChoiceBox fx:id="typeChoiceBox" layoutX="25.0" layoutY="81.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -42,7 +42,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <ChoiceBox fx:id="modelChoiceBox" layoutX="25.0" layoutY="140.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
+      <ChoiceBox fx:id="modelChoiceBox" layoutX="25.0" layoutY="140.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
          <VBox.margin>
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
@@ -72,7 +72,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <ChoiceBox fx:id="statusChoiceBox" layoutX="25.0" layoutY="82.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box" stylesheets="@admin.css">
+      <ChoiceBox fx:id="statusChoiceBox" layoutX="25.0" layoutY="82.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
          <VBox.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" />
          </VBox.margin>
@@ -82,7 +82,7 @@
             <Insets left="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <ChoiceBox fx:id="locationDropDownBox" prefHeight="25.0" prefWidth="346.0" styleClass="dropdown-box" stylesheets="@admin.css">
+      <ChoiceBox fx:id="locationDropDownBox" prefHeight="25.0" prefWidth="346.0" styleClass="dropdown-box">
          <VBox.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" />
          </VBox.margin>
@@ -134,7 +134,7 @@
       </VBox>
       <HBox prefWidth="346.0">
          <children>
-            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#validateInformation" prefHeight="51.0" prefWidth="166.0" stylesheets="@admin.css" text="Submit">
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#validateInformation" prefHeight="51.0" prefWidth="166.0" text="Submit">
                <font>
                   <Font size="24.0" />
                </font>

@@ -1,6 +1,6 @@
 package application;
 
-import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ public class DB_Utilities {
 		
 		properties = new Properties();
 		try {
-			properties.load(new FileInputStream("src/database.properties"));
+			properties.load(DB_Utilities.class.getResourceAsStream("/database.properties"));
 			dataSource = new HikariDataSource();
 			dataSource.setDriverClassName(properties.getProperty("driver.class.name"));
 			dataSource.setJdbcUrl(properties.getProperty("db.url"));

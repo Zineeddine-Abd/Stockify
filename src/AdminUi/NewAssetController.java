@@ -73,11 +73,6 @@ public class NewAssetController implements Initializable{
 	public static final int HARDWARE_MODE = 1;
 	public static final int SOFTWARE_MODE = 2;
 	
-	private int currentMode;
-	
-	public void setCurrentMode(int mode) {
-		currentMode = mode;
-	}
 	
 	@FXML
 	private ChoiceBox<String> categoryChoiceBox;
@@ -322,8 +317,6 @@ public class NewAssetController implements Initializable{
 			
 		}catch(NullPointerException e) {
 			Helper.displayErrorMessage("Error", e.getMessage());
-		}finally {
-			disposeWindow(event);
 		}
 		
 		

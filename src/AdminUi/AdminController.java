@@ -33,7 +33,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import application.DB_Messages;
 import application.DB_Sessions;
-import application.DB_Utilities;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;

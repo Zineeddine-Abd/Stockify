@@ -73,12 +73,7 @@ public class NewAssetController implements Initializable{
 	public static final int HARDWARE_MODE = 1;
 	public static final int SOFTWARE_MODE = 2;
 	
-	private int currentMode;
-	
-	public void setCurrentMode(int mode) {
-		currentMode = mode;
-	}
-	
+
 	@FXML
 	private ChoiceBox<String> categoryChoiceBox;
 	@FXML
@@ -280,6 +275,7 @@ public class NewAssetController implements Initializable{
 					}else {
 						updateAsset(new_hard);
 					}
+					disposeWindow(event);
 					return;
 				case "Software":
 					
@@ -305,6 +301,7 @@ public class NewAssetController implements Initializable{
 					}else {
 						updateAsset(new_soft);
 					}
+					disposeWindow(event);
 					return;
 			}
 			
@@ -324,13 +321,13 @@ public class NewAssetController implements Initializable{
 		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, newAsset);
 	}
 	
-	private void updateHardware(Hardware hardware) {
-		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateHardware(oldAsset,hardware);
-	}
-	
-	private void updateSoftware(Software software) {
-		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateSoftware(oldAsset, software);
-	}
+//	private void updateHardware(Hardware hardware) {
+//		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateHardware(oldAsset,hardware);
+//	}
+//	
+//	private void updateSoftware(Software software) {
+//		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateSoftware(oldAsset, software);
+//	}
 	
 	void setInfos() {
 		categoryChoiceBox.setValue(oldAsset.getAsset_category());

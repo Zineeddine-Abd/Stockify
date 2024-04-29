@@ -11,31 +11,30 @@
 
 <HBox fx:id="hbox" stylesheets="@professor.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProfessorUi.HelpController">
    <children>
-      <VBox fx:id="userManualVbox" prefHeight="650.0" />
-      <VBox fx:id="maintenanceManualVbox" layoutX="10.0" layoutY="10.0" prefHeight="500.0" prefWidth="778.0" style="-fx-background-color: #E1E1E1;">
+      <VBox fx:id="ManualVbox" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #E1E1E1;">
          <children>
-            <Label fx:id="maintenanceManualLabel1" alignment="CENTER" prefHeight="54.0" prefWidth="778.0" style="-fx-background-color: #1c232b;" text="Stockify Help" textFill="#fff7f7">
+            <Label fx:id="StockifyHelpLabel" alignment="CENTER" prefHeight="54.0" prefWidth="778.0" style="-fx-background-color: #1c232b;" text="Stockify Help" textFill="#fff7f7">
                <font>
                   <Font name="Arial Bold" size="36.0" />
                </font>
             </Label>
-            <ImageView fx:id="maintenanceManualQrCode" fitHeight="332.0" fitWidth="335.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="UserManualQrCode" fitHeight="332.0" fitWidth="335.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
-                  <Insets bottom="5.0" left="230.0" right="5.0" top="25.0" />
+                  <Insets bottom="5.0" top="25.0" />
                </VBox.margin>
                <image>
                   <Image url="@../qr-code.png" />
                </image>
             </ImageView>
-            <Label fx:id="maintenanceManualLabel" alignment="CENTER" prefHeight="54.0" prefWidth="335.0" style="-fx-background-color: #FF9400; -fx-border-color: black;" text="Scan Me">
+            <Label fx:id="ScanMeLabel" alignment="CENTER" prefHeight="54.0" prefWidth="335.0" style="-fx-background-color: #FF9400; -fx-border-color: black;" text="Scan Me">
                <font>
                   <Font name="Arial Bold" size="36.0" />
                </font>
                <VBox.margin>
-                  <Insets left="230.0" />
+                  <Insets />
                </VBox.margin>
             </Label>
-            <Button fx:id="viewMaintenanceManualButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="748.0" text="Go To Stockify Help">
+            <Button fx:id="GoToSiteButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="748.0" text="Go To Stockify Help">
                <VBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
                </VBox.margin>

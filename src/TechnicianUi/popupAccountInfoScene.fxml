@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="381.0" prefWidth="540.0" style="-fx-background-color: white;" stylesheets="@professor.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.PopupAccountInfoController">
+<VBox prefHeight="381.0" prefWidth="540.0" style="-fx-background-color: white;" stylesheets="@technician.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.PopupAccountInfoController">
    <children>
       <HBox>
          <children>
@@ -117,7 +117,7 @@
       </CheckBox>
       <HBox prefHeight="48.0" prefWidth="346.0">
          <children>
-            <Button fx:id="cancelButton" layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#disposeWindow" prefHeight="43.0" prefWidth="482.0" styleClass="cancelButton" stylesheets="@professor.css" text="Apply And Close">
+            <Button fx:id="cancelButton" layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#disposeWindow" prefHeight="43.0" prefWidth="482.0" styleClass="cancelButton" stylesheets="@technician.css" text="Apply And Close">
                <font>
                   <Font size="24.0" />
                </font>

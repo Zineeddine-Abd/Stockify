@@ -5,8 +5,6 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-import AdminUi.AdminController;
-import AdminUi.NewAssetController;
 import Components.Action;
 import Components.Asset;
 import Components.Hardware;
@@ -343,10 +341,10 @@ FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE
 	public void popupUpdateAsset(MouseEvent event, Asset asset){
 		Parent root;
 		try {
-			AdminController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewAsset));
+			TechnicianController.currentNewAssetLoader = new FXMLLoader(getClass().getResource(TechnicianController.fxmlNewAsset));
 			
-			root = AdminController.currentNewAssetLoader.load();
-			NewAssetController controller = (NewAssetController)AdminController.currentNewAssetLoader.getController();
+			root = TechnicianController.currentNewAssetLoader.load();
+			NewAssetController controller = (NewAssetController)TechnicianController.currentNewAssetLoader.getController();
 			if(asset instanceof Hardware) {
 				Hardware hard = (Hardware) asset;
 				controller.setOldAsset(hard);

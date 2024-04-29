@@ -88,9 +88,7 @@ public class DB_Assets extends DB_Utilities{
 			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
 			    }
-				
 				createActionForAsset(Helper.INSERTION_MODE, asset , recentActions);
-				
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -107,12 +105,23 @@ public class DB_Assets extends DB_Utilities{
 				String deleteAsset = "DELETE FROM assets WHERE asset_id=?";
 				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){
 					
-					for(Asset asset : selectedAssets) {
+					if(selectedAssets.size() != 1) {						
+						for(Asset asset : selectedAssets) {
+							ps.setInt(1, asset.getAsset_id());
+							ps.executeUpdate();
+							
+							obsList.remove(asset);
+							
+							if(isTableEmpty("assets")) {					
+								resetSequenceTo1(con, "public.assets_asset_id_seq");
+							}
+						}
+					}else {
+						Asset asset = selectedAssets.get(0);
 						ps.setInt(1, asset.getAsset_id());
 						ps.executeUpdate();
 						
 						obsList.remove(asset);
-						//reset the sequence if data:
 						if(isTableEmpty("assets")) {					
 							resetSequenceTo1(con, "public.assets_asset_id_seq");
 						}

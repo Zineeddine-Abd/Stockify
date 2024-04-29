@@ -1,2 +1,7 @@
-
+.dashboardButton{
+	-fx-background-color:  #1c232b;
+	-fx-font-family: ' Arial Black';
+	-fx-font-size: 28px;
+	-fx-font-weight: bold;
+}
 

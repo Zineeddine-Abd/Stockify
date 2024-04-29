@@ -12,14 +12,12 @@
     -fx-background-insets: 0, 0, 1, 2;
     -fx-background-radius: 0;
     -fx-padding: 5px 10px;
-    -fx-font-size: 14px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     /*-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 5,0,0,0 );*/
     -fx-cursor: hand;
     -fx-alignment: center;
-    -fx-font-size: 20px;
     -fx-font-weight: 400;
-    -fx-padding: 5px;
     -fx-text-alignment: center;
     -fx-font-family: 'Montserrat';
     -fx-underline: false;

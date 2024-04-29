@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" stylesheets="@professor.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.DashboardController">
+<BorderPane prefHeight="700.0" stylesheets="@technician.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.DashboardController">
    <top>
       <HBox alignment="CENTER" prefHeight="156.0" style="-fx-background-color: #E0E0E0; -fx-border-color: Black; -fx-border-width: 1px;" BorderPane.alignment="CENTER">
          <children>
             <VBox layoutX="140.0" layoutY="26.0" prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <children>
-                  <Button fx:id="assetsButton" mnemonicParsing="false" onAction="#triggerAssetsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Assets" textFill="WHITE">
+                  <Button fx:id="assetsButton" mnemonicParsing="false" onAction="#triggerAssetsPane" prefHeight="100.0" prefWidth="200.0" styleClass="dashboardButton" text="Assets" textFill="WHITE">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -39,7 +39,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
                <children>
-                  <Button fx:id="RoomsButton" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Rooms" textFill="WHITE">
+                  <Button fx:id="RoomsButton" mnemonicParsing="false" onAction="#triggerRoomsPane" prefHeight="100.0" prefWidth="200.0" styleClass="dashboardButton" text="Rooms" textFill="WHITE">
                      <font>
                         <Font name="Arial Black" size="28.0" />
                      </font>
@@ -53,7 +53,7 @@
             </VBox>
             <VBox prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <children>
-                  <Button fx:id="HardwareButton" mnemonicParsing="false" onAction="#triggerHardwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Hardware" textFill="WHITE">
+                  <Button fx:id="HardwareButton" mnemonicParsing="false" onAction="#triggerHardwarePane" prefHeight="100.0" prefWidth="200.0" styleClass="dashboardButton" text="Hardware" textFill="WHITE">
                      <font>
                         <Font name="Arial Black" size="28.0" />
                      </font>
@@ -70,7 +70,7 @@
             </VBox>
             <VBox prefHeight="200.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                <children>
-                  <Button fx:id="SoftwareButton" mnemonicParsing="false" onAction="#triggerSoftwarePane" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1c232b; -fx-font-family: Arial Black;" text="Software" textFill="WHITE">
+                  <Button fx:id="SoftwareButton" mnemonicParsing="false" onAction="#triggerSoftwarePane" prefHeight="100.0" prefWidth="200.0" styleClass="dashboardButton" text="Software" textFill="WHITE">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -98,7 +98,7 @@
                <top>
                   <AnchorPane BorderPane.alignment="CENTER">
                      <children>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@professor.css" text="Recent Actions" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" text="Recent Actions" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -114,7 +114,7 @@
                <top>
                   <AnchorPane BorderPane.alignment="CENTER">
                      <children>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@professor.css" text="Warnings" textFill="#f2f2f2" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" text="Warnings" textFill="#f2f2f2" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
                               <Font size="30.0" />
                            </font>

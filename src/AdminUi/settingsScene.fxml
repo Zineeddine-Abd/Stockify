@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <HBox fx:id="hbox" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.HelpController">
    <children>
       <VBox fx:id="userManualVbox" prefHeight="650.0">
@@ -37,7 +36,7 @@
                   <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                </VBox.margin>
             </ImageView>
-            <Label fx:id="maintenanceManualLabel" alignment="CENTER" prefHeight="53.0" text="Maintenance">
+            <Label fx:id="maintenanceManualLabel" alignment="CENTER" prefHeight="53.0" text="Maintenance Manual">
                <font>
                   <Font size="36.0" />
                </font>

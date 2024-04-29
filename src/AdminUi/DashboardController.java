@@ -89,6 +89,8 @@ public class DashboardController implements Initializable{
 			reportedAssetsList.setItems(reportedAssetsObs);
 			actionsObs = FXCollections.observableArrayList();
 			DB_Actions.refresh(actionsObs);
+			FXCollections.reverse(actionsObs);
+			
 			recentActions.setItems(actionsObs);
 			
 			setCellFactories();
@@ -108,14 +110,14 @@ public class DashboardController implements Initializable{
 	                            setText(null);
 	                        } else if (isSelected()) {
 	                            setTextFill(Color.WHITE);
-	                            setStyle("-fx-background-color: #0096c9;"); 
+	                            setStyle("-fx-background-color: #0096c9;" + "-fx-font-size: 16px;"); 
 	                        }else{
 	                        	if (item.getAsset_status().equals("Broken") || item.getAsset_status().equals("Inactive")) {
-	                                setStyle("-fx-background-color: #FB9494;");
+	                                setStyle("-fx-background-color: #FB9494;" + "-fx-font-size: 16px;");
 	                            } else if (item.getAsset_status().equals("Under Maintenance")) {
-	                                setStyle("-fx-background-color: #FFB266;");
+	                                setStyle("-fx-background-color: #FFB266;" + "-fx-font-size: 16px;");
 	                            } else if (item.getAsset_status().equals("Ready To Use") || item.getAsset_status().equals("Active")) {
-	                                setStyle("-fx-background-color: #B2FF66;");
+	                                setStyle("-fx-background-color: #B2FF66;" + "-fx-font-size: 16px;");
 	                            } else {
 	                                setStyle("");
 	                            }
@@ -140,17 +142,17 @@ public class DashboardController implements Initializable{
 	                        super.updateItem(item, empty);
 	                        if (empty || item == null) {
 	                            setText(null);
-	                            setStyle("-fx-background-color: #FFFFFF;");
+	                            setStyle("-fx-background-color: #FFFFFF;" + "-fx-font-size: 16px;");
 	                        } else if (isSelected()) {
 	                            setTextFill(Color.WHITE);
-	                            setStyle("-fx-background-color: #0096c9;"); 
+	                            setStyle("-fx-background-color: #0096c9;" + "-fx-font-size: 16px;"); 
 	                        }else{
 	                        	if (item.getAction_type().equals("Update")) {
-	                                setStyle("-fx-background-color: #f5ed7d;");
+	                                setStyle("-fx-background-color: #f5ed7d;" + "-fx-font-size: 16px;");
 	                            }else if(item.getAction_type().equals("Insertion")) {
-	                            	setStyle("-fx-background-color: #B2FF66");
+	                            	setStyle("-fx-background-color: #B2FF66;" + "-fx-font-size: 16px;");
 	                            }else if(item.getAction_type().equals("Deletion")) {
-	                            	setStyle("-fx-background-color: #FB9494");
+	                            	setStyle("-fx-background-color: #FB9494;" + "-fx-font-size: 16px;");
 	                            } else {
 	                                setStyle("");
 	                            }

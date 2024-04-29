@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 public class DB_Actions {
 	
 	public static int last_id=0;
+	public static final int MAX_ACTIONS = 30;
 	
 	public static void refresh(ObservableList<Action> obsList) {
 		 Action action;
@@ -63,15 +64,33 @@ public class DB_Actions {
 					try(ResultSet generatedKeys = ps.getGeneratedKeys()){
 				         if(generatedKeys.next()) {
 				            last_id = generatedKeys.getInt(1);
-				            action.setAction_id(last_id);
-							obsList.add(action);
+				            action.setAction_id(last_id);				            
+				            obsList.add(action);
+				            if(obsList.size() > MAX_ACTIONS) {
+				            	deleteAction(obsList);
+				            	obsList.remove(action);
+				            }
 				         } else {
 				        	 Helper.displayErrorMessage("Error","Failed to retrieve last inserted ID.");
 				         }
 				    }
+					
+					
 				}
 			}catch(SQLException e) {
 				Helper.displayErrorMessage("Error",e.getMessage());
 			}
+	 }
+	 
+	 public static void deleteAction(ObservableList<Action> obsList) {
+		 try (Connection con = DB_Utilities.getDataSource().getConnection()){
+			 String sql = "DELETE FROM actions WHERE action_id NOT IN (SELECT action_id FROM (SELECT action_id FROM actions ORDER BY action_date DESC LIMIT ?) AS tmp)";
+				 try(PreparedStatement stmt = con.prepareStatement(sql)) {
+			            stmt.setInt(1, MAX_ACTIONS);
+			            stmt.executeUpdate();
+			 }
+		 } catch (SQLException e) {
+			 
+		}
 	 }
 }

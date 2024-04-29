@@ -3,6 +3,7 @@ import java.io.File;
 
 import LoginUi.LoginController;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -12,10 +13,13 @@ import javafx.scene.image.Image;
 
 public class Main extends Application {
 	public final static Image itAssetLogo = new Image(Main.class.getResourceAsStream("/Logo.jpg"));
+	public static HostServices services;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			services = getHostServices();
+			
 			Parent loginroot = FXMLLoader.load(getClass().getResource("/LoginUi/loginScene.fxml"));
 			Scene loginScene = new Scene(loginroot);
 			String css = this.getClass().getResource("/LoginUi/loginUI.css").toExternalForm();
@@ -46,12 +50,16 @@ public class Main extends Application {
 		}
 	}
 	
+	public static boolean fileExists(String filename) {
+		File file = new File(filename);
+		return file.exists();
+	}
+	
+	
+	
+	//main function:
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
-	public static boolean fileExists(String filename) {
-        File file = new File(filename);
-        return file.exists();
-    }
 }

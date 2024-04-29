@@ -1,8 +1,10 @@
 package ProfessorUi;
 
 import java.net.URL;
+import javafx.application.HostServices;
 import java.util.ResourceBundle;
 
+import application.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -42,6 +44,16 @@ public class HelpController implements Initializable{
 		
 		viewMaintenanceManualButton.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
 		maintenanceManualLabel.prefWidthProperty().bind(hbox.widthProperty().divide(2).add(-35));
+		
+		HostServices hostServices = Main.services;
+		
+		viewUserManualButton.setOnAction(event->{
+			hostServices.showDocument("https://sites.google.com/view/stockify-help/user-manual?authuser=0");
+		});
+		
+		viewMaintenanceManualButton.setOnAction(event->{
+			hostServices.showDocument("https://sites.google.com/view/stockify-help/maintanance-manual?authuser=0");
+		});
 	}
 	
 }

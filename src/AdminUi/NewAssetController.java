@@ -145,6 +145,7 @@ public class NewAssetController implements Initializable{
 		
 		categoryChoiceBox.setOnAction(event->{
 			typeChoiceBox.getItems().clear();
+			typeChoiceBox.setValue("");
 			
 			if(categoryChoiceBox.getValue() == HARDWARE) {
 				typeChoiceBox.getItems().addAll(hardware_type);
@@ -176,6 +177,7 @@ public class NewAssetController implements Initializable{
 		
 		typeChoiceBox.setOnAction(event->{
 			modelChoiceBox.getItems().clear();
+			modelChoiceBox.setValue("");
 			
 			if(typeChoiceBox.getValue() == "Desktop" || typeChoiceBox.getValue() == "Laptop" || typeChoiceBox.getValue() == "Monitor") {
 				modelChoiceBox.getItems().addAll(monitor_models);

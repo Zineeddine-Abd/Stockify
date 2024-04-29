@@ -245,6 +245,10 @@ public class ProfessorController implements Initializable{
 	
 	//not now !
 	public void LogOut(ActionEvent event) throws IOException {
+		if(!Helper.displayConfirmMessge("Log out of session.","Log out?")) {
+			return;
+		}
+		
 		if(LoginController.getLoggedUser() != null) {
 			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());
 			LoginController.deleteCredsFile();

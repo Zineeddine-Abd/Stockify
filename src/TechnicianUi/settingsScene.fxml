@@ -39,6 +39,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
                </VBox.margin>
             </Button>
+            <Label fx:id="copyrightsLabel" alignment="CENTER" prefHeight="55.0" style="-fx-background-color: #1e6c93;" text="Copyright © StockifyTeams    Contact : stockifyteams@gmail.com" textFill="WHITE" />
          </children>
       </VBox>
    </children>

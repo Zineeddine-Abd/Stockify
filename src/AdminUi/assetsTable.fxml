@@ -42,7 +42,7 @@
                   <FontAwesomeIconView fill="#67809c" glyphName="INBOX" />
                </graphic>
             </Button>
-            <Button fx:id="hardwaresButton" layoutX="807.0" layoutY="10.0" mnemonicParsing="false" onAction="#setHardwareColumns" prefHeight="40.0" prefWidth="125.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Hardware">
+            <Button fx:id="hardwaresButton" layoutX="807.0" layoutY="10.0" mnemonicParsing="false" onAction="#setHardwareColumns" prefHeight="40.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Hardware">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" top="15.0" />
                </HBox.margin>

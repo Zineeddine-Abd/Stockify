@@ -20,6 +20,8 @@ public class HelpController implements Initializable{
 	
 	//user manual mats:
 	@FXML
+	private Label copyrightsLabel;
+	@FXML
 	private Label StockifyHelpLabel;
 	@FXML
 	private Label ScanMeLabel;
@@ -35,6 +37,7 @@ public class HelpController implements Initializable{
 		ManualVbox.prefWidthProperty().bind(hbox.widthProperty());
 		ManualVbox.prefHeightProperty().bind(hbox.heightProperty());
 		StockifyHelpLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
+		copyrightsLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
 		//ScanMeLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
 		GoToSiteButton.prefWidthProperty().bind(ManualVbox.widthProperty());
 		

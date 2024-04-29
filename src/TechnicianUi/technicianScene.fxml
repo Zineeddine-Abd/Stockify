@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane alignment="TOP_LEFT" stylesheets="@../AdminUi/admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.TechnicianController">
+<StackPane alignment="TOP_LEFT" stylesheets="@technician.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.TechnicianController">
    <children>
       <BorderPane>
          <center>

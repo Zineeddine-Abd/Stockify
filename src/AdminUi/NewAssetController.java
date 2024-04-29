@@ -282,6 +282,8 @@ public class NewAssetController implements Initializable{
 					}else {
 						updateAsset(new_hard);
 					}
+					
+					disposeWindow(event);
 					return;
 				case "Software":
 					
@@ -307,6 +309,8 @@ public class NewAssetController implements Initializable{
 					}else {
 						updateAsset(new_soft);
 					}
+					
+					disposeWindow(event);
 					return;
 			}
 			
@@ -315,11 +319,14 @@ public class NewAssetController implements Initializable{
 			}else {
 				updateAsset(new_asset);
 			}
+			
 		}catch(NullPointerException e) {
 			Helper.displayErrorMessage("Error", e.getMessage());
+		}finally {
+			disposeWindow(event);
 		}
 		
-		disposeWindow(event);
+		
 	}
 	
 	
@@ -390,7 +397,6 @@ public class NewAssetController implements Initializable{
 	}
 	public void disposeWindow(ActionEvent event) {
 		Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		parentVBox.getChildren().removeAll(hardwareVbox,softwareVbox);
 		stage.close();
 	}
 

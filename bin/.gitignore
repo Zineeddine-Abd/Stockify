@@ -1,7 +1,7 @@
-/Components/
-/application/
-/database.properties
-/LoginUi/
 /AdminUi/
+/Components/
+/LoginUi/
 /ProfessorUi/
 /TechnicianUi/
+/application/
+/qr-code.png

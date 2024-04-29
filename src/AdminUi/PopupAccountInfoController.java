@@ -50,8 +50,6 @@ public class PopupAccountInfoController implements Initializable{
 		if(!enableRememMe.isSelected()) {
 			if(LoginController.deleteCredsFile()) {
 				Helper.displayInfoMessage("Success", "Changes Applied Successfully");
-			}else {
-				Helper.displayErrorMessage("Error", "Failed to apply changes!");
 			}
 		}else {
 			if(!LoginController.fileExists(LoginController.savedCredentialsFilePath)) {

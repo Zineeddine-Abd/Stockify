@@ -3,6 +3,7 @@ package AdminUi;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import Components.Action;
@@ -517,7 +518,7 @@ public class AssetsTableController implements Initializable{
 	
     public void deleteSelectedAssets() {
     	ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
-    	ObservableList<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems();
+    	List<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems().stream().toList();
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
     		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 	
@@ -531,28 +532,28 @@ public class AssetsTableController implements Initializable{
 		assetsTable.refresh();
 	}
     
-    public void addHardware(Hardware hardware) {
-    	DB_Hardwares.addHardware(hardware);
-    }
-    
-    public void updateHardware(Asset oldAsset,Hardware newHardware){
-    	if(oldAsset instanceof Hardware) {
-    		Hardware oldHard = (Hardware) oldAsset;
-    		DB_Hardwares.updateHardware(oldHard,newHardware);
-    	}
-    }
-    
-    public void addSoftware(Software software) {
-    	DB_Softwares.addSoftware(software);
-    }
-    
-    public void updateSoftware(Asset oldAsset,Software newSoftware) {
-    	if(oldAsset instanceof Software) {
-    		Software oldSoft = (Software) oldAsset;
-    		
-    		DB_Softwares.updateSoftware(oldSoft,newSoftware);
-    	}
-    }
+//    public void addHardware(Hardware hardware) {
+//    	DB_Hardwares.addHardware(hardware);
+//    }
+//    
+//    public void updateHardware(Asset oldAsset,Hardware newHardware){
+//    	if(oldAsset instanceof Hardware) {
+//    		Hardware oldHard = (Hardware) oldAsset;
+//    		DB_Hardwares.updateHardware(oldHard,newHardware);
+//    	}
+//    }
+//    
+//    public void addSoftware(Software software) {
+//    	DB_Softwares.addSoftware(software);
+//    }
+//    
+//    public void updateSoftware(Asset oldAsset,Software newSoftware) {
+//    	if(oldAsset instanceof Software) {
+//    		Software oldSoft = (Software) oldAsset;
+//    		
+//    		DB_Softwares.updateSoftware(oldSoft,newSoftware);
+//    	}
+//    }
     
     //Filtering methods*********************************************
     public void setFilterPredicateTempo(String txt) {

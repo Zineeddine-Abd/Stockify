@@ -58,14 +58,10 @@ public class DB_Hardwares extends DB_Utilities{
 			try(PreparedStatement ps = con.prepareStatement(updateAsset)){
 				
 				ps.setString(1,newHard.getHardware_serial_number());
-				ps.setInt(2,newHard.getAsset_id());
+				ps.setInt(2,oldHard.getAsset_id());
 				
-				int i = ps.executeUpdate();
-				if(i == 1) {
-					Helper.displayErrorMessage("success", "successfully inserted!");
-				}else {
-					Helper.displayErrorMessage("Error", "was NOT  inserted!");					
-				}
+				ps.executeUpdate();
+				
 				oldHard.setHardware_serial_number(newHard.getHardware_serial_number());
 				
 			}

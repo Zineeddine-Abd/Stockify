@@ -2,6 +2,7 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import Components.User;
 import application.DB_Sessions;
@@ -263,7 +264,7 @@ public class AllUsersController implements Initializable{
 		}
 		confirmedPassword = false;
 		
-    	ObservableList<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems();
+    	List<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems().stream().toList();
     	
     	if(SelectedUsersAreLoggedIn(selectedUsers)) {
     		Helper.displayErrorMessage("Error", "One or more of the selected users is currently logged in! deletion cancelled.");
@@ -347,7 +348,7 @@ public class AllUsersController implements Initializable{
 		}
     }
     
-    public boolean SelectedUsersAreLoggedIn(ObservableList<User> selectedUsers) {
+    public boolean SelectedUsersAreLoggedIn(List<User> selectedUsers) {
     	for(User user: selectedUsers) {
     		if(DB_Sessions.sessionExists(user.getUser_id())) {
     			return true;

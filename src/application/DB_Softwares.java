@@ -56,7 +56,7 @@ public class DB_Softwares extends DB_Utilities{
 			try(PreparedStatement ps = con.prepareStatement(testUpdate)){
 				
 				ps.setString(1,newSoft.getSoftware_license_key());
-				ps.setString(2, newSoft.getSoftware_version());
+				ps.setString(2,newSoft.getSoftware_version());
 				ps.setInt(3,oldSoft.getAsset_id());
 				ps.executeUpdate();
 				

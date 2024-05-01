@@ -2,6 +2,7 @@ package AdminUi;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import Components.Room;
@@ -222,7 +223,7 @@ public class AllRoomsController implements Initializable{
 	
     public void deleteSelectedRooms() {
     	
-    	ObservableList<Room> selectedRooms = roomsTable.getSelectionModel().getSelectedItems();
+    	List<Room> selectedRooms = roomsTable.getSelectionModel().getSelectedItems().stream().toList();
     	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
     		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 

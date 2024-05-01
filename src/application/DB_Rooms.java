@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import AdminUi.AdminController;
 import Components.Action;
@@ -69,7 +70,7 @@ public class DB_Rooms extends DB_Utilities{
 		createActionForRoom(Helper.INSERTION_MODE, room);
 	}
 	
-	public static void removeRoom(ObservableList<Room> obsList, ObservableList<Room> selectedRooms) {
+	public static void removeRoom(ObservableList<Room> obsList, List<Room> selectedRooms) {
 		for(Room room : selectedRooms) {
 			createActionForRoom(Helper.DELETION_MODE, room);
 		}

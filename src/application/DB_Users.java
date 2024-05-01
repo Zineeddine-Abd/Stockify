@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
 
 import AdminUi.AdminController;
 import Components.Action;
@@ -77,7 +78,7 @@ public class DB_Users extends DB_Utilities{
 		createActionForUser(Helper.INSERTION_MODE, user);
 	}
 	
-	public static void removeUser(ObservableList<User> obsList, ObservableList<User> selectedUsers) {
+	public static void removeUser(ObservableList<User> obsList, List<User> selectedUsers) {
 		for(User user : selectedUsers) {
 			createActionForUser(Helper.DELETION_MODE, user);
 		}

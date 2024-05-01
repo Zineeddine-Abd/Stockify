@@ -29,6 +29,9 @@
                      <font>
                         <Font name="Arial Rounded MT Bold" size="28.0" />
                      </font>
+                     <padding>
+                        <Insets bottom="4.0" />
+                     </padding>
                   </Label>
                </children>
                <HBox.margin>
@@ -49,6 +52,9 @@
                      <font>
                         <Font name="Arial Rounded MT Bold" size="28.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="4.0" />
+                     </VBox.margin>
                   </Label>
                </children>
             </VBox>
@@ -63,6 +69,9 @@
                      <font>
                         <Font name="Arial Rounded MT Bold" size="28.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="4.0" />
+                     </VBox.margin>
                   </Label>
                </children>
                <HBox.margin>
@@ -80,6 +89,9 @@
                      <font>
                         <Font name="Arial Rounded MT Bold" size="28.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="4.0" />
+                     </VBox.margin>
                   </Label>
                </children>
                <HBox.margin>
@@ -101,7 +113,7 @@
                      <children>
                         <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Recent Actions" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
-                              <Font size="30.0" />
+                              <Font name="Arial Black" size="30.0" />
                            </font>
                         </Label>
                      </children>
@@ -117,7 +129,7 @@
                      <children>
                         <Label alignment="CENTER" prefHeight="30.0" prefWidth="430.0" style="-fx-border-color: black; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-background-color: #435366;" stylesheets="@admin.css" text="Warnings" textFill="#f2f2f2" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <font>
-                              <Font size="30.0" />
+                              <Font name="Arial Black" size="30.0" />
                            </font>
                         </Label>
                      </children>
@@ -134,7 +146,7 @@
       </HBox>
    </center>
    <stylesheets>
-      <URL value="@dashboard.css" />
+      <URL value="@admin.css" />
       <URL value="@dashboard.css" />
    </stylesheets>
 </BorderPane>

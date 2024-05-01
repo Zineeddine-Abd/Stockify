@@ -310,11 +310,12 @@ public class NewAssetController implements Initializable{
 			}else {
 				updateAsset(new_asset);
 			}
+			disposeWindow(event);
 		}catch(NullPointerException e) {
 			Helper.displayErrorMessage("Error", e.getMessage());
 		}
 		
-		disposeWindow(event);
+		
 	}
 	
 	private void updateAsset(Asset newAsset) {

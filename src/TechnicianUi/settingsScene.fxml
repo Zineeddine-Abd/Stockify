@@ -34,12 +34,19 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <Button fx:id="GoToSiteButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="748.0" text="Go To Stockify Help">
+            <Button fx:id="GoToSiteButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="748.0" styleClass="goToStockifyHelp" text="Go To Stockify Help">
                <VBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
                </VBox.margin>
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
             </Button>
-            <Label fx:id="copyrightsLabel" alignment="CENTER" prefHeight="55.0" style="-fx-background-color: #1e6c93;" text="Copyright © StockifyTeams    Contact : stockifyteams@gmail.com" textFill="WHITE" />
+            <Label fx:id="copyrightsLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" style="-fx-background-color: #1e6c93;" text="Copyright © StockifyTeams    Contact : stockifyteams@gmail.com" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </VBox>
    </children>

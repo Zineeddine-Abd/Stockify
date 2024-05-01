@@ -141,8 +141,16 @@ public class LoginController implements Initializable{
 					String user_role = resultSet.getString("user_role");
 	        		
 	        		if(DB_Sessions.sessionExists(user_id)) {
-	        			incorrectInfo.setText("Same account launched from another device!");
-			        	animatedIncorrectInfolabel();
+	        			if(fileExists) {
+	        				Helper.displayInfoMessage("Login attempt failed!", "Same account launched from another device!");
+	        				if(DB_Utilities.getDataSource() != null) {
+	        					DB_Utilities.getDataSource().close();
+	        				}
+	        			}else {
+	        				incorrectInfo.setText("Same account launched from another device!");
+	        				animatedIncorrectInfolabel();
+	        			}
+	        			
 			        	return;
 	        		}
 	        		
@@ -272,6 +280,8 @@ public class LoginController implements Initializable{
 			stage.getIcons().add(Main.itAssetLogo);
 			stage.setTitle("Stockify");
 			stage.setMaximized(true);
+			stage.setMinHeight(700);
+			stage.setMinWidth(900);
 			
 			stage.setOnCloseRequest(e ->{
 				DB_Sessions.terminateCurrentSession(currentLoggedInUser.getUser_id());

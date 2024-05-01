@@ -38,6 +38,7 @@ public class HelpController implements Initializable{
 		ManualVbox.prefHeightProperty().bind(hbox.heightProperty());
 		StockifyHelpLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
 		copyrightsLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
+		copyrightsLabel.translateYProperty().bind(ManualVbox.heightProperty().add(-670));
 		//ScanMeLabel.prefWidthProperty().bind(ManualVbox.widthProperty());
 		GoToSiteButton.prefWidthProperty().bind(ManualVbox.widthProperty());
 		

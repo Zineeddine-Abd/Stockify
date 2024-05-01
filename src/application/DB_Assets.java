@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
+
 import Components.Action;
 import Components.Asset;
 import Components.Hardware;
@@ -94,32 +96,20 @@ public class DB_Assets extends DB_Utilities{
 		}
 	}
 	
-	public static void removeAsset(ObservableList<Asset> obsList, ObservableList<Asset> selectedAssets , ObservableList<Action> recentActions) {
+	public static void removeAsset(ObservableList<Asset> obsList, List<Asset> selectedAssets , ObservableList<Action> recentActions) {
 		for(Asset asset : selectedAssets) {
 			createActionForAsset(Helper.DELETION_MODE, asset ,recentActions);
 		}
 		
 		try (Connection con = dataSource.getConnection()) {
 				String deleteAsset = "DELETE FROM assets WHERE asset_id=?";
-				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){
-					
-					if(selectedAssets.size() != 1) {						
-						for(Asset asset : selectedAssets) {
-							ps.setInt(1, asset.getAsset_id());
-							ps.executeUpdate();
-							
-							obsList.remove(asset);
-							
-							if(isTableEmpty("assets")) {					
-								resetSequenceTo1(con, "public.assets_asset_id_seq");
-							}
-						}
-					}else {
-						Asset asset = selectedAssets.get(0);
+				try(PreparedStatement ps = con.prepareStatement(deleteAsset)){				
+					for(Asset asset : selectedAssets) {
 						ps.setInt(1, asset.getAsset_id());
 						ps.executeUpdate();
-						
+							
 						obsList.remove(asset);
+						System.out.println(asset.toString());
 						if(isTableEmpty("assets")) {					
 							resetSequenceTo1(con, "public.assets_asset_id_seq");
 						}

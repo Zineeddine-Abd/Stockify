@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import Components.Room;
+import Components.User;
 import application.DB_Rooms;
 import application.Helper;
 import application.Main;
@@ -225,10 +226,16 @@ public class AllRoomsController implements Initializable{
     	
     	List<Room> selectedRooms = roomsTable.getSelectionModel().getSelectedItems().stream().toList();
     	
+    	if(selectedRooms.isEmpty()) {
+    		Helper.displayErrorMessage("Error", "You need to select a room first.");
+    		return;
+    	}
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
     		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 
     		DB_Rooms.removeRoom(allRooms, selectedRooms);
     	}
+    	
+    	roomsTable.getSelectionModel().clearSelection();
     }
     
     public void updateRoom(Room oldRoom, Room newRoom) {

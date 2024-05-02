@@ -32,6 +32,9 @@
                      <padding>
                         <Insets bottom="4.0" />
                      </padding>
+                     <VBox.margin>
+                        <Insets bottom="4.0" />
+                     </VBox.margin>
                   </Label>
                </children>
                <HBox.margin>
@@ -146,7 +149,7 @@
       </HBox>
    </center>
    <stylesheets>
-      <URL value="@dashboard.css" />
+      <URL value="@admin.css" />
       <URL value="@dashboard.css" />
    </stylesheets>
 </BorderPane>

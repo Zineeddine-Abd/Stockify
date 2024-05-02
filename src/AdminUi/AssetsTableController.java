@@ -520,10 +520,17 @@ public class AssetsTableController implements Initializable{
     	ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
     	List<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems().stream().toList();
     	
+    	if(selectedAssets.isEmpty()) {
+    		Helper.displayErrorMessage("Error", "You need to select a room first.");
+    		return;
+    	}
+    	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete item(s)?","This action cannot be undone.")) {    		
     		//you would wonder how this worked? well i just switched order between loop and removeAll method - lokman 	
     		DB_Assets.removeAsset(allAssetsObs, selectedAssets , recentActions);
     	}
+    	
+    	assetsTable.getSelectionModel().clearSelection();
     }
     
     public void updateAsset(Asset oldAsset, Asset newAsset) {

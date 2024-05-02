@@ -257,6 +257,14 @@ public class AllUsersController implements Initializable{
 	}
 	
     public void deleteSelectedUsers(MouseEvent event) {
+    	
+    	List<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems().stream().toList();
+    	
+    	if(selectedUsers.isEmpty()) {
+    		Helper.displayErrorMessage("Error", "You need to select a user first.");
+    		return;
+    	}
+    	
     	popupConfirmPassword(event, ConfirmPasswordController.DELETION_MODE);
 		
 		if(!confirmedPassword) {
@@ -264,16 +272,18 @@ public class AllUsersController implements Initializable{
 		}
 		confirmedPassword = false;
 		
-    	List<User> selectedUsers = usersTable.getSelectionModel().getSelectedItems().stream().toList();
     	
     	if(SelectedUsersAreLoggedIn(selectedUsers)) {
     		Helper.displayErrorMessage("Error", "One or more of the selected users is currently logged in! deletion cancelled.");
     		return;
     	}
     	
+    	
     	if(Helper.displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
     		DB_Users.removeUser(allUsersObs, selectedUsers);
     	}
+    	
+    	usersTable.getSelectionModel().clearSelection();
     }
     
     public void updateUser(User oldUser, User newUser) {

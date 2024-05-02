@@ -6,18 +6,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.MessageController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #435366;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUi.MessageController">
    <children>
-      <Label text="All Reports for this Asset:">
+      <Label prefHeight="102.0" prefWidth="567.0" text="All Reports for this Asset" textFill="WHITE">
          <font>
-            <Font size="36.0" />
+            <Font name="Arial Black" size="41.0" />
          </font>
          <VBox.margin>
-            <Insets left="15.0" top="15.0" />
+            <Insets left="15.0" top="20.0" />
          </VBox.margin>
       </Label>
-      <ListView fx:id="allMessagesList" editable="true" prefHeight="307.0" prefWidth="600.0">
+      <ListView fx:id="allMessagesList" editable="true" prefHeight="325.0" prefWidth="600.0">
          <VBox.margin>
             <Insets top="30.0" />
          </VBox.margin>

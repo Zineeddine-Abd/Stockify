@@ -90,11 +90,11 @@ public class AllUsersController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		
 		allUsersObs = FXCollections.observableArrayList();
 		DB_Users.refresh(allUsersObs);
 		
-		  //Users table:
+		//Users table:
         usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         user_idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("user_id"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));

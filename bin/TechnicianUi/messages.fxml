@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #435366;" stylesheets="@admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.MessageController">
+   <children>
+      <Label prefHeight="102.0" prefWidth="567.0" text="All Reports for this Asset" textFill="WHITE">
+         <font>
+            <Font name="Arial Black" size="41.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="15.0" top="20.0" />
+         </VBox.margin>
+      </Label>
+      <ListView fx:id="allMessagesList" editable="true" prefHeight="325.0" prefWidth="600.0">
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </ListView>
+   </children>
+</VBox>

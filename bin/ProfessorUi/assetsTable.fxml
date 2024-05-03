@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane prefHeight="270.0" prefWidth="1385.0" stylesheets="@professor.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProfessorUi.AssetsTableController">
+   <top>
+     <HBox BorderPane.alignment="CENTER">
+        <children>
+           <TextField fx:id="searchTextField" prefHeight="11.0" prefWidth="250.0" promptText="Search" style="-fx-background-color: f4f4f4;">
+              <HBox.margin>
+                 <Insets left="60.0" top="25.0" />
+              </HBox.margin>
+           </TextField>
+           <ChoiceBox fx:id="searchCriteriaComboBox" prefHeight="32.0" prefWidth="150.0" styleClass="dropdown-box">
+              <HBox.margin>
+                 <Insets left="5.0" right="15.0" top="21.0" />
+              </HBox.margin>
+           </ChoiceBox>
+            <Button fx:id="assetsButton" layoutX="130.0" layoutY="25.0" mnemonicParsing="false" onAction="#setAssetColumns" prefHeight="40.0" prefWidth="125.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Assets">
+               <HBox.margin>
+                  <Insets left="15.0" right="5.0" top="15.0" />
+               </HBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="INBOX" />
+               </graphic>
+            </Button>
+            <Button fx:id="hardwaresButton" layoutX="807.0" layoutY="10.0" mnemonicParsing="false" onAction="#setHardwareColumns" prefHeight="40.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Hardware">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="15.0" />
+               </HBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="DESKTOP" />
+               </graphic>
+            </Button>
+            <Button fx:id="softwaresButton" layoutX="893.0" layoutY="10.0" mnemonicParsing="false" onAction="#setSoftwareColumns" prefHeight="40.0" prefWidth="125.0" style="-fx-background-radius: 10px; -fx-border-color: none;" text="Software">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="15.0" />
+               </HBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="CODEPEN" />
+               </graphic>
+            </Button>
+            
+            <Button mnemonicParsing="false" onAction="#refreshAssetsList" prefHeight="39.0" prefWidth="91.0" style="-fx-background-radius: 10px; -fx-border-color: none;" textFill="#941313">
+               <HBox.margin>
+                  <Insets left="5.0" top="15.0" />
+               </HBox.margin>
+               <graphic>
+                  <FontAwesomeIconView fill="#67809c" glyphName="REFRESH" selectionFill="#d4b8b8" />
+               </graphic>
+            </Button>
+        </children>
+     </HBox>
+   </top>
+   <center>
+      <TableView fx:id="assetsTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="assetIdColumn" prefWidth="75.0" text="Asset id" />
+          <TableColumn fx:id="assetCategoryColumn" prefWidth="111.0" text="Asset Category" />
+            <TableColumn fx:id="assetPurchaseDateColumn" prefWidth="98.0" text="Purchase date" />
+            <TableColumn fx:id="assetTypeColumn" prefWidth="75.0" text="Asset Type" />
+            <TableColumn fx:id="modelColumn" prefWidth="92.0" text="Asset Model" />
+            <TableColumn fx:id="roomColumn" prefWidth="90.0" text="Asset Room" />
+            <TableColumn fx:id="statusColumn" prefWidth="90.0" text="Asset status" />
+            <TableColumn fx:id="assetWarrantyColumn" prefWidth="102.0" text="Asset Warranty" />
+            <TableColumn fx:id="hardwareSerialNumberColumn" minWidth="2.0" prefWidth="108.0" text="Serial Number" />
+            <TableColumn fx:id="softwareLicenseKey" minWidth="2.0" prefWidth="133.0" text="License Key" />
+            <TableColumn fx:id="softwareVersion" minWidth="2.0" prefWidth="135.0" text="Version" />
+            <TableColumn fx:id="editColumn" minWidth="2.0" prefWidth="81.0" />
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>

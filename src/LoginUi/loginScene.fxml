@@ -4,6 +4,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -25,11 +26,11 @@
          </children></Pane>
       <Pane layoutX="210.0" prefHeight="500.0" prefWidth="540.0" stylesheets="@loginUI.css">
          <children>
-            <TextField fx:id="usernameField" layoutX="50.0" layoutY="167.0" prefHeight="37.0" prefWidth="460.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
+            <TextField fx:id="usernameField" layoutX="50.0" layoutY="139.0" prefHeight="37.0" prefWidth="460.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
                <font>
                   <Font size="16.0" />
                </font></TextField>
-            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="232.0" prefHeight="37.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
+            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="203.0" prefHeight="37.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;">
                <font>
                   <Font size="16.0" />
                </font></PasswordField>
@@ -41,33 +42,33 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <CheckBox fx:id="showPassBox" layoutX="50.0" layoutY="315.0" mnemonicParsing="false" onAction="#showPassword" prefHeight="25.0" prefWidth="167.0" text="Show Password">
+            <CheckBox fx:id="showPassBox" layoutX="50.0" layoutY="282.0" mnemonicParsing="false" onAction="#showPassword" prefHeight="25.0" prefWidth="167.0" text="Show Password">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="rememberMe" layoutX="50.0" layoutY="352.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Remember Me">
+            <CheckBox fx:id="rememberMe" layoutX="50.0" layoutY="318.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Remember Me">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </CheckBox>
-            <TextField fx:id="showPasswordField" layoutX="50.0" layoutY="232.0" prefHeight="35.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" visible="false">
+            <TextField fx:id="showPasswordField" layoutX="50.0" layoutY="203.0" prefHeight="35.0" prefWidth="460.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #5A708A; -fx-border-width: 0px 0px 2px 0px;" visible="false">
                <font>
                   <Font size="16.0" />
                </font></TextField>
-            <Label fx:id="incorrectInfo" layoutX="50.0" layoutY="284.0" prefHeight="25.0" prefWidth="323.0" textAlignment="CENTER">
+            <Label fx:id="incorrectInfo" layoutX="50.0" layoutY="250.0" prefHeight="25.0" prefWidth="323.0" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <FontAwesomeIconView fill="#7a90a8" glyphName="USER" layoutX="30.0" layoutY="191.0" size="18" text="" wrappingWidth="11.571428298950195">
+            <FontAwesomeIconView fill="#7a90a8" glyphName="USER" layoutX="30.0" layoutY="163.0" size="18" text="" wrappingWidth="11.571428298950195">
                <font>
                   <Font size="14.0" />
                </font></FontAwesomeIconView>
-            <FontAwesomeIconView fill="#7a90a8" glyphName="LOCK" layoutX="30.0" layoutY="256.0" size="18">
+            <FontAwesomeIconView fill="#7a90a8" glyphName="LOCK" layoutX="30.0" layoutY="228.0" size="18">
                <font>
                   <Font size="14.0" />
                </font></FontAwesomeIconView>
-            <Label layoutX="50.0" layoutY="59.0" text="Welcome Back!">
+            <Label layoutX="50.0" layoutY="28.0" text="Welcome Back!">
                <font>
                   <Font name="Calibri Bold" size="43.0" />
                </font>
@@ -79,10 +80,22 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></FontAwesomeIconView>
-            <Label layoutX="50.0" layoutY="108.0" text="Log in to your Account:">
+            <Label layoutX="50.0" layoutY="78.0" text="Log in to your Account:">
                <font>
                   <Font name="Calibri Light" size="24.0" />
                </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="50.0" layoutY="365.0" prefHeight="28.0" text="Forgot Your Password? ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <Hyperlink fx:id="forgotPasswordLink" graphicTextGap="0.0" onAction="#popupForgotPassword" prefHeight="26.0" prefWidth="72.0" text="click here.">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+               </graphic>
             </Label>
          </children>
       </Pane>

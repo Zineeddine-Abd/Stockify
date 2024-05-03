@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefWidth="345.0" style="-fx-background-color: white;" stylesheets="@technician.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TechnicianUi.NewAssetController">
+   <children>
+      <Label fx:id="titleLabel" alignment="BASELINE_CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="343.0" text="New Asset">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label text="Select Category:">
+         <VBox.margin>
+            <Insets left="15.0" />
+         </VBox.margin>
+      </Label>
+      <ChoiceBox fx:id="categoryChoiceBox" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </ChoiceBox>
+      <Label text="Select Type:">
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <ChoiceBox fx:id="typeChoiceBox" layoutX="25.0" layoutY="81.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </ChoiceBox>
+      <Label layoutX="25.0" layoutY="122.0" text="Select model:">
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <ChoiceBox fx:id="modelChoiceBox" layoutX="25.0" layoutY="140.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </ChoiceBox>
+      <Label text="Warranty:">
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="warrantyField" prefHeight="26.0" prefWidth="157.0">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </TextField>
+      <Label text="Select Asset purchase date:">
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <DatePicker fx:id="assetPurchaseDate" prefHeight="27.0" prefWidth="343.0">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </DatePicker>
+      <Label text="Status:">
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <ChoiceBox fx:id="statusChoiceBox" layoutX="25.0" layoutY="82.0" prefHeight="26.0" prefWidth="345.0" styleClass="dropdown-box">
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" />
+         </VBox.margin>
+      </ChoiceBox>
+      <Label text="Location:">
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <ChoiceBox fx:id="locationDropDownBox" prefHeight="25.0" prefWidth="346.0" styleClass="dropdown-box">
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" />
+         </VBox.margin>
+      </ChoiceBox>
+      <VBox fx:id="parentVBox" prefWidth="100.0">
+         <children>
+            <VBox fx:id="hardwareVbox" prefWidth="345.0">
+               <children>
+                  <Label text="Hardware Serial Number : (Optional)">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="serialNumField">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+            <VBox fx:id="softwareVbox" prefWidth="100.0">
+               <children>
+                  <Label text="Software License Key:">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="softLicenseKeyField">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label layoutX="25.0" layoutY="10.0" text="Software Version">
+                     <VBox.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="softVersionField" layoutX="25.0" layoutY="27.0">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+      <HBox prefWidth="346.0">
+         <children>
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#validateInformation" prefHeight="51.0" prefWidth="166.0" text="Submit">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="cancelButton" layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#disposeWindow" prefHeight="51.0" prefWidth="166.0" styleClass="cancelButton" text="Cancel">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="30.0" right="15.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </HBox>
+      <Label fx:id="invalidInfo" alignment="CENTER" prefHeight="45.0" prefWidth="315.0" style="-fx-text-fill: red;">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
+         </VBox.margin>
+      </Label>
+   </children>
+</VBox>

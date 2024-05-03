@@ -287,7 +287,7 @@ public class AllUsersController implements Initializable{
     }
     
     public void updateUser(User oldUser, User newUser) {
-		DB_Users.updateUser(allUsersObs, oldUser, newUser);
+		DB_Users.updateUser(allUsersObs,oldUser, newUser);
 		usersTable.refresh();
 	}
     

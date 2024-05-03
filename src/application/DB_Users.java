@@ -143,8 +143,9 @@ public class DB_Users extends DB_Utilities{
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		
-
-		createActionForUser(Helper.UPDATE_MODE, oldUser);
+		if(obsList != null) {			
+			createActionForUser(Helper.UPDATE_MODE, oldUser);
+		}
 	}
 	
 	

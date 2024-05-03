@@ -20,5 +20,7 @@
 	<classpathentry kind="lib" path="C:/lib/mysql-connector-j-8.2.0.jar"/>
 	<classpathentry kind="lib" path="C:/lib/postgresql-42.7.3.jar"/>
 	<classpathentry kind="lib" path="C:/lib/slf4j-api-2.0.12.jar"/>
+	<classpathentry kind="lib" path="C:/lib/javax.mail-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/lib/activation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -26,6 +26,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import AdminUi.AdminController;
+import AdminUi.NewAssetController;
 import Components.Credentials;
 import Components.Session;
 import Components.User;
@@ -40,12 +41,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.*;
@@ -67,6 +71,9 @@ public class LoginController implements Initializable{
 	private Scene scene;
 	private Parent root;
 	
+	private static FXMLLoader currentResetPasswordLoader;
+	public static final String fxmlResetPassword = "/LoginUi/resetPasswordScene.fxml";
+	
 	public static final String savedCredentialsFilePath = "creds.ser";
 	
 	private static final String ADMIN = "Administrator";
@@ -74,7 +81,8 @@ public class LoginController implements Initializable{
 	private static final String PROFESSOR = "Professor";
 	public static final String[] permissions = {ADMIN,TECHNICIAN,PROFESSOR};
 	
-	
+	@FXML
+	private Hyperlink forgotPasswordLink;
 	@FXML
 	private Button loginButton;
 	@FXML
@@ -470,45 +478,78 @@ public class LoginController implements Initializable{
 			}
 		}
 		
-		public Object retrieveObjectfrom(String filename) {//deSerialization
-			Object obj = new Object();
-			File file = new File(filename);
-			try {
-				FileInputStream fileIn = new FileInputStream(file);
-				ObjectInputStream objIn = new ObjectInputStream(fileIn);
-				obj = objIn.readObject();
-				objIn.close();
-				fileIn.close();
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-				Helper.displayErrorMessage("Error", e.getMessage());
-			}
-			return obj;
-		}
-		
-		public static String convertKeyToString(SecretKey secretKey) {
-	        byte[] keyBytes = secretKey.getEncoded();
-	        return Base64.getEncoder().encodeToString(keyBytes);
-	    }
-
-	    // Convert String to SecretKey
-	    public static SecretKey convertStringToKey(String keyString) {
-	        byte[] decodedKey = Base64.getDecoder().decode(keyString);
-	        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-	    }
-	    
-	    public static boolean fileExists(String filename) {
-	        File file = new File(filename);
-	        return file.exists();
-	    }
-	    
-	    public static boolean deleteCredsFile() {
-	    	File file = new File(LoginController.savedCredentialsFilePath);
+	 public Object retrieveObjectfrom(String filename) {//deSerialization
+		 Object obj = new Object();
+		 File file = new File(filename);
+		 try {
+			 FileInputStream fileIn = new FileInputStream(file);
+			 ObjectInputStream objIn = new ObjectInputStream(fileIn);
+			 obj = objIn.readObject();
+			 objIn.close();
+			 fileIn.close();
+		 } catch (ClassNotFoundException | IOException e) {
+			 e.printStackTrace();
+			 Helper.displayErrorMessage("Error", e.getMessage());
+		 }
+		 return obj;
+	 }
+	 
+	 public static String convertKeyToString(SecretKey secretKey) {
+		 byte[] keyBytes = secretKey.getEncoded();
+		 return Base64.getEncoder().encodeToString(keyBytes);
+	 }
+	 
+	 // Convert String to SecretKey
+	 public static SecretKey convertStringToKey(String keyString) {
+		 byte[] decodedKey = Base64.getDecoder().decode(keyString);
+		 return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+	 }
+	 
+	 public static boolean fileExists(String filename) {
+		 File file = new File(filename);
+		 return file.exists();
+	 }
+	 
+	 public static boolean deleteCredsFile() {
+		 File file = new File(LoginController.savedCredentialsFilePath);
+		 
+		 if(file.exists()) {
+			 return(file.delete());
+		 }
+		 return false;
+	 }
+	 
+	 public void popupForgotPassword(ActionEvent event) {
+		 VBox root;
 			
-			if(file.exists()) {
-				return(file.delete());
+			try {
+				currentResetPasswordLoader = new FXMLLoader(getClass().getResource(fxmlResetPassword));
+				root = currentResetPasswordLoader.load();
+				
+				stage = new Stage();
+				stage.setResizable(false);
+				
+				stage.setTitle("Reset Password");
+				
+				//AssetController.setStage(fillFormula);
+				scene = new Scene(root);
+				scene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+		
+				stage.setScene(scene);
+				stage.getIcons().add(Main.itAssetLogo);
+				
+				//make it as a dialog box
+				Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.initOwner(parentStage);
+				
+				stage.show();	
+				
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			return false;
-	    }
+	 }
+	    
+	    
 	   
 }

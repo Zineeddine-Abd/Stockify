@@ -264,7 +264,7 @@ public class NewAssetController implements Initializable{
 			
 			switch(categoryChoiceBox.getValue()) {
 				case "Hardware":
-					if(!serialNumField.getText().matches("^[a-zA-Z0-9]+$") && serialNumField.getText() != null) {
+					if(!serialNumField.getText().matches("^[a-zA-Z0-9]+$")) {
 						invalidInfo.setText("Invalid Serial Number!");
 						animatedInvalidInfolabel();
 						return;
@@ -282,13 +282,13 @@ public class NewAssetController implements Initializable{
 					return;
 				case "Software":
 					
-					if(!softLicenseKeyField.getText().matches("^[a-zA-Z0-9]+$") && softLicenseKeyField.getText() != null) {
+					if(!softLicenseKeyField.getText().matches("^[a-zA-Z0-9]+$")) {
 						invalidInfo.setText("Invalid License Key!");
 						animatedInvalidInfolabel();
 						return;
 					}
 					
-					if(!softVersionField.getText().matches("^[\\d.,]+$") && softVersionField.getText() != null) {
+					if(!softVersionField.getText().matches("^[\\d.,]+$")) {
 						invalidInfo.setText("Invalid Version!");
 						animatedInvalidInfolabel();
 						return;

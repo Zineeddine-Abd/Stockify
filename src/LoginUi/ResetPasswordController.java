@@ -74,10 +74,6 @@ public class ResetPasswordController implements Initializable{
 			Stage mainStage = (Stage) mainScene.getWindow();
 			mainStage.setHeight(mainStage.getHeight() + newVal.doubleValue() - oldVal.doubleValue());
 		});
-		
-//		emailVbox.prefHeightProperty().bind(rootVbox.heightProperty());
-//		codeVbox.prefHeightProperty().bind(rootVbox.heightProperty());
-//		newPassVbox.prefHeightProperty().bind(rootVbox.heightProperty());
 
 		confirmEmail.setOnAction(e -> {
 	            long currentTime = System.currentTimeMillis();
@@ -118,10 +114,7 @@ public class ResetPasswordController implements Initializable{
 			return;
 		}
 		rootVbox.getChildren().add(codeVbox);
-		
 		rootVbox.getChildren().remove(emailVbox);
-		rootVbox.getChildren().remove(incorrectInfoLabel);
-		rootVbox.getChildren().add(incorrectInfoLabel);
 		
 		sendEmailTo(email);
 	}
@@ -145,7 +138,7 @@ public class ResetPasswordController implements Initializable{
                 return new PasswordAuthentication(from, password);
             }
         });
-
+        
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
@@ -156,14 +149,13 @@ public class ResetPasswordController implements Initializable{
             Random random = new Random();
             randomNumber = random.nextInt(900000) + 100000;
             
-            String msg = "Dear, "+associatedUser.getFirst_name() + "\n\nHere's the code for Re-Activating your password: " 
+            String msg = "Dear, "+associatedUser.getFirst_name() + "\n\nHere's the code for Resetting your password: " 
             + randomNumber + 
-            "\nNote that this code will expire in 30 seconds , if you wish to get a new code , you can request a new"
-            + " one from Stockify.";
+            "\nif you wish to get a new code , you can request a new one from Stockify.\n\nif you did not request to reset your password, please ignore this email. + \n\nBest Regards,\nStockifyTeams.";
             
             message.setText(msg);
             Transport.send(message);
-        } catch (MessagingException mex) {
+        } catch(MessagingException mex){
             Helper.displayErrorMessage("Invalid Email", "The email associated with your account is either invalid or does not exist!\nContact your administrator to change your email to a valid one.");
         }
 	}

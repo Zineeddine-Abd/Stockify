@@ -262,7 +262,7 @@ public class NewAssetController implements Initializable{
 			
 			switch(categoryChoiceBox.getValue()) {
 				case "Hardware":
-					if(!serialNumField.getText().matches("^[a-zA-Z0-9]+$") && serialNumField.getText() != null) {
+					if(!serialNumField.getText().matches("^[a-zA-Z0-9]+$")) {
 						invalidInfo.setText("Invalid Serial Number!");
 						animatedInvalidInfolabel();
 						return;

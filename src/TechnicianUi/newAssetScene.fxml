@@ -91,7 +91,7 @@
          <children>
             <VBox fx:id="hardwareVbox" prefWidth="345.0">
                <children>
-                  <Label text="Hardware Serial Number : (Optional)">
+                  <Label text="Hardware Serial Number :">
                      <VBox.margin>
                         <Insets left="15.0" />
                      </VBox.margin>

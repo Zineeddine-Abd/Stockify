@@ -521,7 +521,7 @@ public class AssetsTableController implements Initializable{
     	List<Asset> selectedAssets = assetsTable.getSelectionModel().getSelectedItems().stream().toList();
     	
     	if(selectedAssets.isEmpty()) {
-    		Helper.displayErrorMessage("Error", "You need to select a room first.");
+    		Helper.displayErrorMessage("Error", "You need to select an asset first.");
     		return;
     	}
     	
@@ -538,29 +538,6 @@ public class AssetsTableController implements Initializable{
 		DB_Assets.updateAsset(oldAsset, newAsset , recentActions);
 		assetsTable.refresh();
 	}
-    
-//    public void addHardware(Hardware hardware) {
-//    	DB_Hardwares.addHardware(hardware);
-//    }
-//    
-//    public void updateHardware(Asset oldAsset,Hardware newHardware){
-//    	if(oldAsset instanceof Hardware) {
-//    		Hardware oldHard = (Hardware) oldAsset;
-//    		DB_Hardwares.updateHardware(oldHard,newHardware);
-//    	}
-//    }
-//    
-//    public void addSoftware(Software software) {
-//    	DB_Softwares.addSoftware(software);
-//    }
-//    
-//    public void updateSoftware(Asset oldAsset,Software newSoftware) {
-//    	if(oldAsset instanceof Software) {
-//    		Software oldSoft = (Software) oldAsset;
-//    		
-//    		DB_Softwares.updateSoftware(oldSoft,newSoftware);
-//    	}
-//    }
     
     //Filtering methods*********************************************
     public void setFilterPredicateTempo(String txt) {

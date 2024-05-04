@@ -24,7 +24,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-
+import javafx.event.EventHandler;
 import AdminUi.AdminController;
 import AdminUi.NewAssetController;
 import Components.Credentials;
@@ -46,6 +46,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -53,6 +55,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.*;
+import javafx.application.Application;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.animation.FadeTransition;
+
+
+
 
 public class LoginController implements Initializable{
 	private static Session currentSession;
@@ -119,6 +128,31 @@ public class LoginController implements Initializable{
 				Helper.displayErrorMessage("Error", e.getMessage());
 			}
 		}
+		
+		// Add event listener to username field for Enter key press
+        usernameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    // Trigger login action when Enter key is pressed
+                    loginButton.fire();
+                }
+            }
+
+        });
+        
+        // Add event listener to username field for Enter key press
+        passwordField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    // Trigger login action when Enter key is pressed
+                    loginButton.fire();
+                }
+            }
+
+        });
+
 	}
 	
 	private void assignUser(ActionEvent event) throws IOException {

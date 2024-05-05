@@ -12,10 +12,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -24,6 +26,7 @@ import javafx.util.Callback;
 
 
 public class DashboardController implements Initializable{
+	
 	@FXML
 	public Label numRooms;
 	@FXML
@@ -81,6 +84,7 @@ public class DashboardController implements Initializable{
 			
 			assetsButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			numAssets.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
+
 		}
 		
 		public void setItems() {
@@ -123,7 +127,15 @@ public class DashboardController implements Initializable{
 	                        	setTextFill(Color.BLACK);
 	                        	setText(item.toString());
 	                        	AssetsTableController controller = ((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController();
-	                            setOnMouseClicked(event->controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem()));
+	                        	setOnMouseClicked(event -> {
+	                                if (event.getClickCount() == 2) {                                    
+	                                	controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem());
+	                                }
+	                            });
+	                        	
+	                        	// Set mouse enter and exit event handlers for changing cursor to hand
+	                            setOnMouseEntered(event -> setCursor(javafx.scene.Cursor.HAND));
+	                            setOnMouseExited(event -> setCursor(javafx.scene.Cursor.DEFAULT));
 	                            
 	                        }
 	                    }

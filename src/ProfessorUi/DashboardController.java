@@ -120,7 +120,15 @@ public class DashboardController implements Initializable{
 	                        	setTextFill(Color.BLACK);
 	                        	setText(item.toString());
 	                        	ProfessorUi.AssetsTableController controller = ((ProfessorController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController();
-	                            setOnMouseClicked(event->controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem()));
+	                        	setOnMouseClicked(event -> {
+	                                if (event.getClickCount() == 2) {                                    
+	                                	controller.showMessagesList(event, this.getListView().getSelectionModel().getSelectedItem());
+	                                }
+	                            });
+	                        	
+	                        	// Set mouse enter and exit event handlers for changing cursor to hand
+	                            setOnMouseEntered(event -> setCursor(javafx.scene.Cursor.HAND));
+	                            setOnMouseExited(event -> setCursor(javafx.scene.Cursor.DEFAULT));
 	                            
 	                        }
 	                    }

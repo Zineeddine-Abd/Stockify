@@ -65,6 +65,7 @@ public class ResetPasswordController implements Initializable{
 	
 	private long lastClickTime = 0;
 	private int randomNumber;
+	private String codeMessage;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		rootVbox.getChildren().removeAll(emailVbox,codeVbox,newPassVbox);
@@ -116,10 +117,11 @@ public class ResetPasswordController implements Initializable{
 		rootVbox.getChildren().add(codeVbox);
 		rootVbox.getChildren().remove(emailVbox);
 		
-		sendEmailTo(email);
+		initCodeMessage();
+		sendEmailTo(email,codeMessage);
 	}
 	
-	private void sendEmailTo(String to) {
+	public static void sendEmailTo(String to,String msg) {
         String from = "stockifyteams@gmail.com";
         String password = "espj hpgj bgsg citg";
         
@@ -142,16 +144,9 @@ public class ResetPasswordController implements Initializable{
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
-
+            
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject("Reset Password Completion");
-            
-            Random random = new Random();
-            randomNumber = random.nextInt(900000) + 100000;
-            
-            String msg = "Dear, "+associatedUser.getFirst_name() + "\n\nHere's the code for Resetting your password: " 
-            + randomNumber + 
-            "\nif you wish to get a new code , you can request a new one from Stockify.\n\nif you did not request to reset your password, please ignore this email. + \n\nBest Regards,\nStockifyTeams.";
             
             message.setText(msg);
             Transport.send(message);
@@ -187,7 +182,8 @@ public class ResetPasswordController implements Initializable{
 	
 	public void resendEmail() {
 		String email = associatedUser.getEmail();
-		sendEmailTo(email);
+		initCodeMessage();
+		sendEmailTo(email,codeMessage);
 	}
 	
 	public void confirmPassword(ActionEvent event) {
@@ -207,6 +203,15 @@ public class ResetPasswordController implements Initializable{
 		disposeWindow(event);
 	}
 	
+	private void initCodeMessage() {
+		Random random = new Random();
+        randomNumber = random.nextInt(900000) + 100000;
+		
+        codeMessage = "Dear, "+associatedUser.getFirst_name() + "\n\nHere's the code for Resetting your password: " 
+	            + randomNumber + 
+	            "\nif you wish to get a new code , you can request a new one from Stockify.\n\nif you did not request to reset your password, please ignore this email.\n\nBest Regards,\n\nStockifyTeam.";
+	            ;
+	}
 	
 	public void animatedInvalidInfolabel() {
 		FadeTransition fadetransition = new FadeTransition(Duration.seconds(2),incorrectInfoLabel);

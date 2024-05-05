@@ -250,6 +250,7 @@ public class AssetsTableController implements Initializable{
         });
         
         editColumn.setReorderable(false);
+        editColumn.setResizable(false);
 		editColumn.setCellFactory((col)->{
 			TableCell<Asset, String> cell = new TableCell<Asset, String>(){
 				@Override

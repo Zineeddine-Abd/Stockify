@@ -241,7 +241,7 @@ public class AssetsTableController implements Initializable{
                 }
             }
         });
-        
+        editColumn.setResizable(false);
         editColumn.setReorderable(false);
 		editColumn.setCellFactory((col)->{
 			TableCell<Asset, String> cell = new TableCell<Asset, String>(){
@@ -252,7 +252,7 @@ public class AssetsTableController implements Initializable{
 						setGraphic(null);
 					}else {
 						
-FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
+						FontAwesomeIconView edit = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT);
 						
 						FontAwesomeIconView report = new FontAwesomeIconView(FontAwesomeIcon.NEWSPAPER_ALT);
 						

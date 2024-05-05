@@ -239,7 +239,7 @@ public class AssetsTableController implements Initializable{
                 }
             }
         });
-        
+        editColumn.setResizable(false);
         editColumn.setReorderable(false);
 		editColumn.setCellFactory((col)->{
 			TableCell<Asset, String> cell = new TableCell<Asset, String>(){

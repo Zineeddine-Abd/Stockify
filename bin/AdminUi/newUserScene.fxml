@@ -68,26 +68,30 @@
             <Insets left="15.0" right="15.0" />
          </VBox.margin>
       </TextField>
-      <Label fx:id="oldPassword" text="Password:">
-         <VBox.margin>
-            <Insets left="15.0" top="15.0" />
-         </VBox.margin>
-      </Label>
-      <TextField fx:id="passwordField">
-         <VBox.margin>
-            <Insets left="15.0" right="15.0" />
-         </VBox.margin>
-      </TextField>
-      <Label fx:id="newPassword" layoutX="25.0" layoutY="306.0" text="Confirm Password:">
-         <VBox.margin>
-            <Insets left="15.0" top="15.0" />
-         </VBox.margin>
-      </Label>
-      <TextField fx:id="confirmPasswordField">
-         <VBox.margin>
-            <Insets left="15.0" right="15.0" />
-         </VBox.margin>
-      </TextField>
+      <VBox fx:id="rootVboxPasswords">
+         <children>
+            <Label fx:id="oldPassword" text="Password:">
+               <VBox.margin>
+                  <Insets left="15.0" top="15.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="passwordField">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </TextField>
+            <Label fx:id="newPassword" text="Confirm Password:">
+               <VBox.margin>
+                  <Insets left="15.0" top="15.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="confirmPasswordField">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </TextField>
+         </children>
+      </VBox>
       <HBox prefHeight="48.0" prefWidth="346.0">
          <children>
             <Button fx:id="submitButton" mnemonicParsing="false" onAction="#validateInformation" prefHeight="51.0" prefWidth="166.0" stylesheets="@admin.css" text="Submit">

@@ -31,6 +31,7 @@ import Components.Credentials;
 import Components.Session;
 import Components.User;
 import ProfessorUi.ProfessorController;
+import TechnicianUi.TechnicianController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -223,7 +224,11 @@ public class LoginController implements Initializable{
 		        }
 	        }
 		} catch (SQLException e) {
-			displayErrorMessage("Error",e.getMessage());
+			Helper.displayErrorMessage("Error",e.getMessage());
+			
+			if(DB_Sessions.sessionExists(currentLoggedInUser.getUser_id())) {
+				Helper.closeResources();
+			}
 		}
 	}
 	
@@ -296,8 +301,8 @@ public class LoginController implements Initializable{
 		root = Helper.currentTechnicianLoader.load();
 		newStage(event, root);
 		
-//		AdminController controller = (AdminController)(Helper.currentAdminLoader.getController());
-//		AnchorPane.setRightAnchor(controller.getLogOutButton(), controller.getAccountButton().getWidth()+100);
+		TechnicianController controller = (TechnicianController)(Helper.currentTechnicianLoader.getController());
+		AnchorPane.setRightAnchor(controller.getLogOutButton(), controller.getAccountButton().getWidth()+100);
 	}
 	public void directProfessor(ActionEvent event) throws IOException {
 		Helper.currentProfessorLoader = new FXMLLoader(getClass().getResource(Helper.fxmlProfessor));
@@ -363,14 +368,6 @@ public class LoginController implements Initializable{
 		stage.close();
 		
 		Helper.closeResources();
-	 }
-	 
-	 private void displayErrorMessage(String title, String message) {
-		 Alert alert = new Alert(AlertType.ERROR);
-		 alert.setTitle(title);
-		 alert.setHeaderText(null);
-		 alert.setContentText(message);
-	     alert.showAndWait();
 	 }
 	 
 	 //********************************HASHING METHODS:***************************************************

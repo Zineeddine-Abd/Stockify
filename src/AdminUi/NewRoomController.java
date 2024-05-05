@@ -30,7 +30,7 @@ public class NewRoomController implements Initializable{
 	@FXML
 	private Label invalidInfo;
 	
-	private String[] room_type = {"TP","TD","Emphy"};
+	private String[] room_type = {"TP","TD","Amphi"};
 	
 	
 	//old asset

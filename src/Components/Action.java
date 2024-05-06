@@ -61,7 +61,7 @@ public class Action {
 	
 	@Override
 	public String toString() {
-		return  this.getAction_id() + ":"+ this.action_type + " : " + this.cor_obj_type + " : " +  this.action_info + " On: " + this.getAction_date() + "\nBy: " +LoginController.getLoggedUser().toString();
+		return  this.getAction_id() + ":"+ this.action_type + " : " + this.cor_obj_type + " : " +  this.action_info + " On: " + this.getAction_date();
 	}
 	
 }

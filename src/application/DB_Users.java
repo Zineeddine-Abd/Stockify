@@ -30,8 +30,10 @@ public class DB_Users extends DB_Utilities{
 						String username = userResultSet.getString("username");
 						String pass_word = userResultSet.getString("pass_word");
 						String email = userResultSet.getString("email");
-						String first_name = userResultSet.getString("first_name");
-						String last_name = userResultSet.getString("last_name");
+						String first_name = User.capitalize(userResultSet.getString("first_name"));
+//						String first_name = userResultSet.getString("first_name");
+						String last_name = User.capitalize(userResultSet.getString("last_name"));
+//						String last_name = userResultSet.getString("last_name");
 						String user_role = userResultSet.getString("user_role");
 						String user_salt = userResultSet.getString("user_salt");
 						

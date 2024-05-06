@@ -112,16 +112,6 @@ public class NewUserController implements Initializable{
 				animatedInvalidInfolabel();
 				return;
 			}
-		}else {
-			//compare the old entered password with the actual password:
-			String oldUserHashedPass = oldUser.getPass_word();
-			String oldEnteredHashedPass = LoginController.hashPassword(passwordField.getText(), oldUser.getUser_salt());
-			
-			if(!oldUserHashedPass.equals(oldEnteredHashedPass)) {
-				invalidInfo.setText("Invalid Old Password!");
-				animatedInvalidInfolabel();
-				return;
-			}
 		}
 		
 		String username = usernameField.getText();

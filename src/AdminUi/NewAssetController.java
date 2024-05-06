@@ -162,10 +162,13 @@ public class NewAssetController implements Initializable{
 				if(parentVBox.getChildren().contains(hardwareVbox)) {					
 					parentVBox.getChildren().remove(hardwareVbox);
 				}
-			}else if(categoryChoiceBox.getValue() == ACCESSORY) {
-				typeChoiceBox.getItems().addAll(accessory_type);
-			}else if(categoryChoiceBox.getValue() == NETWORKING) {
-				typeChoiceBox.getItems().addAll(networking_type);
+			}else {
+				if(categoryChoiceBox.getValue() == ACCESSORY) {					
+					typeChoiceBox.getItems().addAll(accessory_type);
+				}else if(categoryChoiceBox.getValue() == NETWORKING) {
+					typeChoiceBox.getItems().addAll(networking_type);
+				}
+				parentVBox.getChildren().clear();
 			}
 		});
 		

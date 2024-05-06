@@ -279,7 +279,7 @@ public class AllUsersController implements Initializable{
     	}
     	
     	
-    	if(Helper.displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone and any logged in users deleted will be automatically logged out")) {
+    	if(Helper.displayConfirmMessge("Are you sure you want to delete user(s)?","This action cannot be undone.")) {
     		DB_Users.removeUser(allUsersObs, selectedUsers);
     	}
     	

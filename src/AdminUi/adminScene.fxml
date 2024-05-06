@@ -34,7 +34,7 @@
                         <FontAwesomeIconView fill="#67809c" glyphName="ARROW_LEFT" size="25" />
                      </graphic>
                      <tooltip>
-                        <Tooltip text="go backwards" />
+                        <Tooltip text="go backwards" wrapText="true" />
                      </tooltip>
                   </Button>
                   <Button layoutX="90.0" mnemonicParsing="false" onAction="#goforwardView" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="0.0">
@@ -42,10 +42,7 @@
                         <FontAwesomeIconView fill="#67809c" glyphName="ARROW_RIGHT" size="25" />
                      </graphic>
                      <tooltip>
-                        <Tooltip text="go forward">
-                           <font>
-                              <Font size="8.0" />
-                           </font></Tooltip>
+                        <Tooltip text="go forward" />
                      </tooltip>
                   </Button>
                   <Button layoutX="880.0" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="42.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

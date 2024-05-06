@@ -180,7 +180,6 @@ public class AdminController implements Initializable{
 	private Timeline openTimeLine = new Timeline();
 	private Timeline closeTimeLine = new Timeline();
 	
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//init account button:

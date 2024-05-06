@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
@@ -31,28 +32,40 @@
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="ARROW_LEFT" size="25" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="go backwards" />
+                     </tooltip>
                   </Button>
                   <Button layoutX="90.0" mnemonicParsing="false" onAction="#goforwardView" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="ARROW_RIGHT" size="25" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="go forwards" />
+                     </tooltip>
                   </Button>
                   <Button layoutX="880.0" mnemonicParsing="false" onAction="#triggerDashBoardPane" prefHeight="42.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="HOME" size="25" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Home" />
+                     </tooltip>
                   </Button>
                   <Button layoutX="1285.0" mnemonicParsing="false" onAction="#refreshDashboardItems" prefHeight="43.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="REFRESH" size="25" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Refresh" />
+                     </tooltip>
                   </Button>
                   <Button fx:id="accountButton" layoutX="1149.0" mnemonicParsing="false" onAction="#popupAccountInfo" styleClass="cancelButton" text="My Account" AnchorPane.rightAnchor="100.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="USER" />
                      </graphic>
                   </Button>
-                  <Button fx:id="logOutButton" layoutX="1099.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="50.0" prefWidth="50.0" styleClass="cancelButton" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="236.0" AnchorPane.topAnchor="0.0">
+                  <Button fx:id="logOutButton" layoutX="1099.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="43.0" prefWidth="47.0" styleClass="cancelButton" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="236.0" AnchorPane.topAnchor="0.0">
                      <graphic>
                         <FontAwesomeIconView fill="#67809c" glyphName="SIGN_IN" rotate="180.0" size="25" wrappingWidth="25.428571701049805" />
                      </graphic>

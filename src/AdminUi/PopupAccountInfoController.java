@@ -36,8 +36,8 @@ public class PopupAccountInfoController implements Initializable{
 		try {
 			User loggedUser = LoginController.getLoggedUser();
 			enableRememMe.setSelected(LoginController.fileExists(LoginController.savedCredentialsFilePath));
-			lastNameField.setText(loggedUser.getLast_name());
-			firstNameField.setText(loggedUser.getFirst_name());
+			lastNameField.setText(User.capitalize(loggedUser.getLast_name()));
+			firstNameField.setText(User.capitalize(loggedUser.getFirst_name()));
 			emailField.setText(loggedUser.getEmail());
 			usernameField.setText(loggedUser.getUsername());
 			role.setText(loggedUser.getUser_role());

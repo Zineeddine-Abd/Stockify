@@ -87,7 +87,7 @@ public class User {
 	}
 	
 	public String getFullName() {
-		return first_name + " " + last_name;
+		return capitalize(first_name) + " " + capitalize(last_name);
 	}
 	
 	@Override
@@ -95,6 +95,11 @@ public class User {
 		return user_id + " : " + username + " : " + user_role + " ";
 	}
 	
-	
+	public static String capitalize(String str) {
+		if(str == null || str.isEmpty()) {
+			return str;
+		}
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
 	
 }

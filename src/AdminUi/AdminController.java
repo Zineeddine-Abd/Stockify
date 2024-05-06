@@ -194,7 +194,6 @@ public class AdminController implements Initializable{
 			allRoomsViewController.initRooms();
 			dashboardViewController.setItems();
 			
-			
 			//initialize views array
 			views = new Pane[]{dashboardView ,allUsersView, allAssetsView,allRoomsView,settingsView};
 			recentViews.add(DASHBOARD_VIEW);
@@ -320,6 +319,7 @@ public class AdminController implements Initializable{
 			getDashboardViewController().numHardware.setText(String.valueOf(hardwaresCount));
 			getDashboardViewController().numSoftware.setText(String.valueOf(softwaresCount));
 			getDashboardViewController().numAssets.setText(String.valueOf(AssetsCount));
+			getDashboardViewController().refreshList();
 		}catch(NullPointerException e) {
 			
 			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());

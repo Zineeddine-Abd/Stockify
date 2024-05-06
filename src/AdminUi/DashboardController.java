@@ -1,6 +1,7 @@
 package AdminUi;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import Components.Action;
@@ -84,7 +85,6 @@ public class DashboardController implements Initializable{
 			assetsButton.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			numAssets.prefWidthProperty().bind(pans.widthProperty().divide(4).add(-35));
 			
-			
 		}
 		
 		public void setItems() {
@@ -93,6 +93,8 @@ public class DashboardController implements Initializable{
 			reportedAssetsList.setItems(reportedAssetsObs);
 			actionsObs = FXCollections.observableArrayList();
 			DB_Actions.refresh(actionsObs);
+			
+			FXCollections.sort(actionsObs, Comparator.comparing(Action::getAction_date));
 			FXCollections.reverse(actionsObs);
 			
 			recentActions.setItems(actionsObs);
@@ -188,6 +190,9 @@ public class DashboardController implements Initializable{
 			
 			getrecentActionsObsList().clear();
 			DB_Actions.refresh(getrecentActionsObsList());
+			
+			FXCollections.sort(actionsObs, Comparator.comparing(Action::getAction_date));
+			FXCollections.reverse(actionsObs);
 		}
 		
 		public void triggerHardwarePane() {

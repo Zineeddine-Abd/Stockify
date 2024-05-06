@@ -16,17 +16,23 @@
     -fx-font-weight: bold;
     /*-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 5,0,0,0 );*/
     -fx-cursor: hand;
-    -fx-alignment: center;
     -fx-font-weight: 400;
     -fx-text-alignment: center;
     -fx-font-family: 'Montserrat';
     -fx-underline: false;
 }
-
+.dashboardButton{
+	-fx-background-color:  #1c232b;
+	-fx-font-family: 'Arial Black';
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+}
 .button:hover {
  	-fx-background-color: #184179;
   	/*-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);*/
 }
+
+
 #collapser{
 	-fx-font-size: 20px;
 }
@@ -93,15 +99,5 @@
 	-fx-font-family: ' Arial Black';
 	-fx-font-size: 28px;
 	-fx-font-weight: bold;
-}
-
-.dashboardButton{
-	-fx-background-color:  #1c232b;
-	-fx-font-family: ' Arial Black';
-	-fx-font-size: 28px;
-	-fx-font-weight: bold;
-}
-.dashboardButton:hover{
-	-fx-background-color: #184179;
 }
 

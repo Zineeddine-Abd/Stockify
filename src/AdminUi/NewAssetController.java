@@ -31,11 +31,14 @@ import javafx.util.Duration;
 public class NewAssetController implements Initializable{
 	
 	public static final String IN_INVENTORY = "In Inventory";
+	public static final String INACTIVE = "Inactive";
 	public static final String IN_USE = "In Use";
 	public static final String LOST_STOLEN = "Lost/Stolen";
 	public static final String UNDER_MAINTENANCE = "Under Maintenance";
 	public static final String BROKEN = "Broken";
 	public static final String READY_TO_USE = "Ready To Use";
+	
+	public static final String[] softwareStatuses = {IN_USE,INACTIVE};
 //CATEGORIES:
 	private final String HARDWARE = "Hardware";
 	private final String SOFTWARE = "Software";
@@ -47,7 +50,7 @@ public class NewAssetController implements Initializable{
 	private String[] software_type = {"Anti-Virus", "IDE" , "Operating System"};
 	private String[] accessory_type = {"Keyboard","Mouse","Cable","HDD","SSD","RAM","Motherboard","CPU"};
 	private String[] networking_type = {"Switch" ,"Hub","Router","Modem" ,"Network Attached Storage","Firewall","Load Balancer"};
-	public static String[] statuses = {IN_INVENTORY,IN_USE,LOST_STOLEN};//all status for now , feel free to add any more statuses.
+	public static final String[] statuses = {IN_INVENTORY,IN_USE,LOST_STOLEN};//all status for now , feel free to add any more statuses.
 //MODELS:
 	//hardware models:
 	private String[] monitor_models = {"HP","MSI","LG","Condor","Dell","Asus","Lenovo","Acer","Apple"};
@@ -125,7 +128,7 @@ public class NewAssetController implements Initializable{
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		
+		statusChoiceBox.getItems().clear();
 		parentVBox.getChildren().removeAll(hardwareVbox, softwareVbox);
 		
 		parentVBox.heightProperty().addListener((obs, oldVal, newVal) -> {
@@ -140,9 +143,11 @@ public class NewAssetController implements Initializable{
 		
 		categoryChoiceBox.setOnAction(event->{
 			typeChoiceBox.getItems().clear();
+			statusChoiceBox.getItems().clear();
 			typeChoiceBox.setValue("");
 			
 			if(categoryChoiceBox.getValue() == HARDWARE) {
+				
 				typeChoiceBox.getItems().addAll(hardware_type);
 				
 				if(!parentVBox.getChildren().contains(hardwareVbox)) {
@@ -152,7 +157,7 @@ public class NewAssetController implements Initializable{
 				if(parentVBox.getChildren().contains(softwareVbox)) {					
 					parentVBox.getChildren().remove(softwareVbox);
 				}
-				
+				statusChoiceBox.getItems().addAll(statuses);
 			}else if(categoryChoiceBox.getValue() == SOFTWARE) {
 				typeChoiceBox.getItems().addAll(software_type);
 				
@@ -162,12 +167,16 @@ public class NewAssetController implements Initializable{
 				if(parentVBox.getChildren().contains(hardwareVbox)) {					
 					parentVBox.getChildren().remove(hardwareVbox);
 				}
+				
+				statusChoiceBox.getItems().addAll(softwareStatuses);
 			}else {
-				if(categoryChoiceBox.getValue() == ACCESSORY) {					
+				
+				if(categoryChoiceBox.getValue() == ACCESSORY) {			
 					typeChoiceBox.getItems().addAll(accessory_type);
 				}else if(categoryChoiceBox.getValue() == NETWORKING) {
 					typeChoiceBox.getItems().addAll(networking_type);
 				}
+				statusChoiceBox.getItems().addAll(statuses);
 				parentVBox.getChildren().clear();
 			}
 		});
@@ -203,7 +212,6 @@ public class NewAssetController implements Initializable{
 				modelChoiceBox.getItems().addAll(nas_models);
 			}
 		});
-		statusChoiceBox.getItems().addAll(statuses);
 	}
 	
 	public void validateInformation(ActionEvent event) throws IOException {

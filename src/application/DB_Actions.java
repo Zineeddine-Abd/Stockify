@@ -14,7 +14,7 @@ import javafx.collections.ObservableList;
 public class DB_Actions {
 	
 	public static int last_id=0;
-	public static final int MAX_ACTIONS = 30;
+	public static final int MAX_ACTIONS = 50;
 	
 	public static void refresh(ObservableList<Action> obsList) {
 		 Action action;

@@ -38,9 +38,10 @@ public class ReportPopupController implements Initializable{
 	private Label invalidInfo;
 	@FXML
 	private Label warrantyStatusLabel;
+	//this is what the professor can do
 	
 	public static final String[] reportStatuses = {"Broken"};
-	public static final String[] reportSoftwareStatuses = {"Active","Inactive"};
+	public static final String[] reportSoftwareStatuses = {"Inactive"};
 	
 	private Asset oldAsset;
 	

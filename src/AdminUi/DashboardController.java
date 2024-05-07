@@ -125,7 +125,7 @@ public class DashboardController implements Initializable{
 	                            } else if (item.getAsset_status().equals("Ready To Use") || item.getAsset_status().equals("Active")) {
 	                                setStyle("-fx-background-color: #B2FF66;" + "-fx-font-size: 16px;");
 	                            } else {
-	                                setStyle("");
+	                                setStyle("-fx-font-size: 16px;");
 	                            }
 	                        	
 	                        	setTextFill(Color.BLACK);
@@ -169,7 +169,7 @@ public class DashboardController implements Initializable{
 	                            }else if(item.getAction_type().equals("Deletion")) {
 	                            	setStyle("-fx-background-color: #FB9494;" + "-fx-font-size: 16px;");
 	                            } else {
-	                                setStyle("");
+	                                setStyle("-fx-font-size: 16px;");
 	                            }
 	                        	
 	                        	setTextFill(Color.BLACK);

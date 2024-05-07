@@ -39,8 +39,8 @@ public class ReportPopupController implements Initializable{
 	@FXML
 	private Label warrantyStatusLabel;
 	
-	public static final String[] reportStatuses = {"Broken"};
-	public static final String[] reportSoftwareStatuses = {"Active","Inactive"};
+	public static final String[] reportStatuses = {"Broken","Under Maintenance","Ready To Use"};
+	public static final String[] reportSoftwareStatuses = {"Active" , "Inactive" ,"Under Maintenance", "Ready To Use" };
 	
 	private Asset oldAsset;
 	
@@ -82,9 +82,9 @@ public class ReportPopupController implements Initializable{
 		Date date = oldAsset.getAsset_purchase_date();
 		Asset new_asset = new Asset(oldAsset.getAsset_id(),category,type,model,status,room,date,warranty);
 		
-		((TechnicianController)Helper.currentProfessorLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, new_asset);
+		((TechnicianController)Helper.currentTechnicianLoader.getController()).getAllAssetsViewController().updateAsset(oldAsset, new_asset);
 		disposeWindow(event);
-		((TechnicianController)Helper.currentProfessorLoader.getController()).getDashboardViewController().refreshList();
+		((TechnicianController)Helper.currentTechnicianLoader.getController()).getDashboardViewController().refreshList();
 	}
 	
 	public void animatedInvalidInfolabel() {

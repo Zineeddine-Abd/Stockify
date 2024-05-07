@@ -178,7 +178,6 @@ public class TechnicianController implements Initializable{
 			//initialize sub scenes after inject their controllers
 			dashboardViewController.setItems();
 			
-			
 			//initialize views array
 			views = new Pane[]{dashboardView , allAssetsView,allRoomsView,settingsView};
 			recentViews.add(DASHBOARD_VIEW);
@@ -304,6 +303,7 @@ public class TechnicianController implements Initializable{
 			getDashboardViewController().numHardware.setText(String.valueOf(hardwaresCount));
 			getDashboardViewController().numSoftware.setText(String.valueOf(softwaresCount));
 			getDashboardViewController().numAssets.setText(String.valueOf(AssetsCount));
+			getDashboardViewController().refreshList();
 		}catch(NullPointerException e) {
 			
 			DB_Sessions.terminateCurrentSession(LoginController.getLoggedUser().getUser_id());

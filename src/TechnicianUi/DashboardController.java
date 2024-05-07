@@ -1,6 +1,7 @@
 package TechnicianUi;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import Components.Action;
@@ -93,6 +94,10 @@ public class DashboardController implements Initializable{
 			reportedAssetsList.setItems(reportedAssetsObs);
 			actionsObs = FXCollections.observableArrayList();
 			DB_Actions.refresh(actionsObs);
+			
+			FXCollections.sort(actionsObs, Comparator.comparing(Action::getAction_date));
+			FXCollections.reverse(actionsObs);
+			
 			recentActions.setItems(actionsObs);
 			
 			setCellFactories();
@@ -121,7 +126,7 @@ public class DashboardController implements Initializable{
 	                            } else if (item.getAsset_status().equals("Ready To Use") || item.getAsset_status().equals("Active")) {
 	                                setStyle("-fx-background-color: #B2FF66;" + "-fx-font-size: 16px;");
 	                            } else {
-	                                setStyle("");
+	                                setStyle("-fx-font-size: 16px;");
 	                            }
 	                        	
 	                        	setTextFill(Color.BLACK);
@@ -185,6 +190,9 @@ public class DashboardController implements Initializable{
 			
 			getrecentActionsObsList().clear();
 			DB_Actions.refresh(getrecentActionsObsList());
+			
+			FXCollections.sort(actionsObs, Comparator.comparing(Action::getAction_date));
+			FXCollections.reverse(actionsObs);
 		}
 		
 		public void triggerHardwarePane() {

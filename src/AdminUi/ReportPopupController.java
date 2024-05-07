@@ -114,8 +114,5 @@ public class ReportPopupController implements Initializable{
 			warrantyStatusLabel.setText("Valid!");
 			warrantyStatusLabel.setTextFill(Color.DARKGREEN);
 		}
-			
-		
-		
 	}
 }

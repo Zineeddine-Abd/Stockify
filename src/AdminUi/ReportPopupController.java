@@ -105,8 +105,10 @@ public class ReportPopupController implements Initializable{
 		LocalDate today = LocalDate.now();
 		
 		Period period = Period.between(assetDate, today);
-        int monthsDifference = period.getMonths();
+        int monthsDifference = period.getMonths() + period.getYears()*12;
 		
+        //System.out.println(monthsDifference);
+        
 		if(monthsDifference >= oldAsset.getAsset_warranty() || oldAsset.getAsset_warranty() == 0) {
 			warrantyStatusLabel.setText("Expired!");
 			warrantyStatusLabel.setTextFill(Color.RED);

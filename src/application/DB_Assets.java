@@ -29,9 +29,9 @@ public class DB_Assets extends DB_Utilities{
 						int asset_id = rs.getInt("asset_id");
 						String asset_category = rs.getString("asset_category");
 						String asset_type = rs.getString("asset_type");
-						String asset_model = rs.getString("asset_model");
 						String asset_status = rs.getString("asset_status");
 						String asset_room = rs.getString("asset_room");
+						String asset_model = rs.getString("asset_model");
 						Date asset_purchase_date = rs.getDate("asset_purchase_date");
 						int asset_warranty = rs.getInt("asset_warranty");
 						

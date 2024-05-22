@@ -453,7 +453,6 @@ public class AssetsTableController implements Initializable{
 				controller.getStatusChoiceBox().getItems().addAll(ReportPopupController.reportStatuses);
 			}
 			
-			
 			fillFormula = new Stage();
 			fillFormula.setResizable(false);
 			

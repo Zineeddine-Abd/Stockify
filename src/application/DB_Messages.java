@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import AdminUi.NewAssetController;
 import Components.Asset;
 import Components.Message;
 import javafx.collections.FXCollections;
@@ -83,11 +85,14 @@ public class DB_Messages extends DB_Utilities{
 						}
 					}
 					
-				for(Asset element : allAssetsObs) {
-					if(reportedAssetIDS.contains(element.getAsset_id())) {
-						allReportedAssets.add(element);
+					for(Asset element : allAssetsObs) {
+						if(element.getAsset_status().equals(NewAssetController.BROKEN) 
+							|| element.getAsset_status().equals(NewAssetController.INACTIVE) 
+							|| element.getAsset_status().equals(NewAssetController.UNDER_MAINTENANCE)) {
+							
+							allReportedAssets.add(element);
+						}
 					}
-				}
 				}
 				return allReportedAssets;
 			}

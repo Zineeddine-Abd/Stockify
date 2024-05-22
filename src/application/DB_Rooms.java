@@ -56,8 +56,6 @@ public class DB_Rooms extends DB_Utilities{
 			        	 last_id = generatedKeys.getInt(1);
 			             room.setRoom_id(last_id);
 			             obsList.add(room);
-			         } else {
-			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
 			    }
 				

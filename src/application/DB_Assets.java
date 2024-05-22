@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 public class DB_Assets extends DB_Utilities{
 	//id
     private static int last_id = 0;
+    public static boolean flag = false;
     
     public static void refresh(ObservableList<Asset> obsList) {
     	try(Connection con = DB_Utilities.getDataSource().getConnection()){
@@ -38,7 +39,9 @@ public class DB_Assets extends DB_Utilities{
 						
 						if(asset.getAsset_category().equals(Helper.HARDWARE)) {
 							Hardware hardware = DB_Hardwares.getHardware(asset);
-							obsList.add(hardware);
+							if(hardware != null) {								
+								obsList.add(hardware);
+							}
 						}else if(asset.getAsset_category().equals(Helper.SOFTWARE)) {
 							Software software = DB_Softwares.getSoftware(asset);
 							obsList.add(software);
@@ -82,10 +85,12 @@ public class DB_Assets extends DB_Utilities{
 			            	DB_Softwares.addSoftware((Software)asset);
 			            }
 			            
-						obsList.add(asset);
+			            if(!flag) {			            	
+			            	obsList.add(asset);
+			            }else {
+			            	flag = false;
+			            }
 			            
-			         } else {
-			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
 			    }
 				createActionForAsset(Helper.INSERTION_MODE, asset , recentActions);
@@ -109,7 +114,6 @@ public class DB_Assets extends DB_Utilities{
 						ps.executeUpdate();
 							
 						obsList.remove(asset);
-						System.out.println(asset.toString());
 						if(isTableEmpty("assets")) {					
 							resetSequenceTo1(con, "public.assets_asset_id_seq");
 						}

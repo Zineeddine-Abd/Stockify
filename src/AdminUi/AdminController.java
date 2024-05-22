@@ -392,16 +392,6 @@ public class AdminController implements Initializable{
 			int recentView = recentViews.pop();
 			forwardViews.add(recentView);
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
-			
-//			if(recentViews.peek() == 2) {
-//				String searchText = recentSearchText.pop();
-//				forwardSearchText.add(searchText);
-//				System.out.println("forwardSearchText Peek : " + forwardSearchText.peek());
-//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText(searchText);
-//			}
-//			else {
-//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
-//			}
 			selectView(recentViews.peek());
 		}
 	}
@@ -411,22 +401,6 @@ public class AdminController implements Initializable{
 			int recentView = forwardViews.pop();
 			recentViews.add(recentView);
 			((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
-			
-//			if(recentViews.peek() == 2) {
-//				String searchText;
-//				if(forwardSearchText.size() != 0) {
-//					System.out.println("in goForwardView : forwardSearchText Peek : " + forwardSearchText.peek());
-//					searchText = forwardSearchText.pop();
-//				}
-//				else {
-//					System.out.println("in goForwardView : recentSearchText Peek : " + recentSearchText.peek());
-//					searchText = recentSearchText.pop();	
-//				}
-//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText(searchText);
-//			}
-//			else {
-//				((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().searchTextField.setText("");
-//			}
 			selectView(recentViews.peek());
 		}
 	}

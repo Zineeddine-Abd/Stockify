@@ -68,8 +68,6 @@ public class DB_Users extends DB_Utilities{
 			             last_id = generatedKeys.getInt(1);
 			             user.setUser_id(last_id);
 			             obsList.add(user);
-			         } else {
-			             System.out.println("Failed to retrieve last inserted ID.");
 			         }
 			    }
 			}

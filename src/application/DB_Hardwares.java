@@ -45,7 +45,7 @@ public class DB_Hardwares extends DB_Utilities{
 				
 			}
 		}catch(SQLException e) {
-			e.printStackTrace();
+			DB_Assets.flag = true;
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}
@@ -82,14 +82,9 @@ public class DB_Hardwares extends DB_Utilities{
 						String serial_num = rs.getString("hardware_serial_number");
 						hard = new Hardware(asset,serial_num);
 					}
-					
-					if(hard == null) {
-						throw new NullPointerException();
-					}
 				}
 			}
 		} catch (SQLException | NullPointerException e) {
-			hard = new Hardware(asset, "");
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		

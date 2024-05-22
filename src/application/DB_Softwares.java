@@ -46,6 +46,7 @@ public class DB_Softwares extends DB_Utilities{
 				
 			}
 		}catch(SQLException e) {
+			DB_Assets.flag = true;
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 	}

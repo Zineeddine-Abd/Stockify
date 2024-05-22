@@ -30,10 +30,8 @@ public class DB_Utilities {
 			
 			dataSource.setLoginTimeout(2);
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (IOException  | SQLException e) {
+			Helper.displayErrorMessage("Error", e.getMessage());
 		}
 	}
 	

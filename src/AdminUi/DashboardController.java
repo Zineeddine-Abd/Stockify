@@ -89,17 +89,14 @@ public class DashboardController implements Initializable{
 		
 		public void setItems() {
 			//Reported Assets List:
+			setCellFactories();
+			
 			reportedAssetsObs = DB_Messages.getReportedAssets(((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().getAllAssetsObs());
 			reportedAssetsList.setItems(reportedAssetsObs);
 			actionsObs = FXCollections.observableArrayList();
+			
 			DB_Actions.refresh(actionsObs);
-			
-			FXCollections.sort(actionsObs, Comparator.comparing(Action::getAction_date));
-			FXCollections.reverse(actionsObs);
-			
 			recentActions.setItems(actionsObs);
-			
-			setCellFactories();
 			
 		}
 		

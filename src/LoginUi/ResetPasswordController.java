@@ -5,7 +5,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;

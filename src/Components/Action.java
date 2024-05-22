@@ -2,7 +2,6 @@ package Components;
 
 import java.sql.Date;
 
-import LoginUi.LoginController;
 
 public class Action {
 	private int action_id;

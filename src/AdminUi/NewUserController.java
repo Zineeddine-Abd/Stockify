@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import Components.User;
 import LoginUi.LoginController;
-import LoginUi.ResetPasswordController;
 import application.Helper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;

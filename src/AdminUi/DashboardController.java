@@ -1,6 +1,7 @@
 package AdminUi;
 
 import java.net.URL;
+import java.sql.Date;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
@@ -13,12 +14,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -93,11 +92,10 @@ public class DashboardController implements Initializable{
 			
 			reportedAssetsObs = DB_Messages.getReportedAssets(((AdminController)Helper.currentAdminLoader.getController()).getAllAssetsViewController().getAllAssetsObs());
 			reportedAssetsList.setItems(reportedAssetsObs);
-			actionsObs = FXCollections.observableArrayList();
 			
+			actionsObs = FXCollections.observableArrayList();
 			DB_Actions.refresh(actionsObs);
 			recentActions.setItems(actionsObs);
-			
 		}
 		
 		public void setCellFactories() {
@@ -186,10 +184,34 @@ public class DashboardController implements Initializable{
 			reportedAssetsList.setItems(reportedAssetsObs);
 			
 			getrecentActionsObsList().clear();
-			DB_Actions.refresh(getrecentActionsObsList());
 			
-			FXCollections.sort(actionsObs, Comparator.comparing(Action::getAction_date));
+			DB_Actions.refresh(getrecentActionsObsList());
+			sortActionList();
+		}
+		
+		private void sortActionList() {
+			
+			
+			FXCollections.sort(actionsObs, 	new Comparator<Action>() {
+				
+				@Override
+	            public int compare(Action act1, Action act2) {
+	                Date date1 = act1.getAction_date();
+	                Date date2 = act2.getAction_date();
+	                
+	                int dateComparison = date1.compareTo(date2);
+	                if (dateComparison != 0) {
+	                    return dateComparison;
+	                }
+	                
+	                Integer id1 = act1.getAction_id();
+	                Integer id2 = act2.getAction_id();
+	                
+	                return id1.compareTo(id2);
+	            }
+	        });
 			FXCollections.reverse(actionsObs);
+
 		}
 		
 		public void triggerHardwarePane() {

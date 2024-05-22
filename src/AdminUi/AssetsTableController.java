@@ -11,8 +11,6 @@ import Components.Asset;
 import Components.Hardware;
 import Components.Software;
 import application.DB_Assets;
-import application.DB_Hardwares;
-import application.DB_Softwares;
 import application.Helper;
 import application.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;

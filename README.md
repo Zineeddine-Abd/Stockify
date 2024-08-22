@@ -1,6 +1,13 @@
-![Banner](https://raw.githubusercontent.com/Zineeddine-Abd/Stockify/master/Stockify%20Banner.png?token=GHSAT0AAAAAACWKQX3Q356C3XMGWARRDRWSZWHMADA)
+![Banner](https://raw.githubusercontent.com/Zineeddine-Abd/Stockify/master/Stockify%20Banner.png?token=GHSAT0AAAAAACWKQX3QYIXI73TOM6LM6BL6ZWHMMCA)
 
 **Stockify** is an IT asset management system designed specifically for universities. Developed using pure Java and JavaFX, with Supabase integrated as our online centralized database, Stockify provides a comprehensive solution for managing IT assets efficiently.
+
+![Static Badge](https://img.shields.io/badge/Java-orange)
+![Static Badge](https://img.shields.io/badge/JavaFx-red)
+![Static Badge](https://img.shields.io/badge/SupaBase-green)
+![Static Badge](https://img.shields.io/badge/Session--Management-blue)
+![Static Badge](https://img.shields.io/badge/User--Authentication-yellow)
+
 
 ## Features
 
@@ -43,6 +50,8 @@
 4. **Manage Assets**: Add, remove, and update assets as needed.
 5. **Report Issues**: Report any broken assets and track their status.
 6. **Access Control**: Utilize different user roles to manage access levels.
+
+For detailed User-Manual, please check our <a href="https://sites.google.com/view/stockify-help/home?pli=1" target="_blank">Website</a> 
 
 ## Contributing
 

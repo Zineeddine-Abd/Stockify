@@ -145,7 +145,6 @@ public class NewUserController implements Initializable{
 			//but add it to the database using the previous users list :
 			ObservableList<User> allUsersObs = FXCollections.observableArrayList();
 			DB_Users.refresh(allUsersObs);
-			
 			DB_Users.addUser(allUsersObs, newUser);
 		}
 	}

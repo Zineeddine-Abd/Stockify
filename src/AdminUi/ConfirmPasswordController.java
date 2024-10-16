@@ -31,7 +31,6 @@ public class ConfirmPasswordController {
 		this.currentMode = mode;
 	}
 	
-	
 	public void confirmGivenPassword(ActionEvent event) {
 		String hashedPass = LoginController.hashPassword(passField.getText(), LoginController.getLoggedUser().getUser_salt());
 		

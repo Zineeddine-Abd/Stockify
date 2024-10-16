@@ -85,7 +85,7 @@
                   <Font name="Calibri Light" size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="50.0" layoutY="365.0" prefHeight="28.0" text="Forgot Your Password? ">
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="50.0" layoutY="351.0" prefHeight="28.0" text="Forgot Your Password? ">
                <font>
                   <Font size="14.0" />
                </font>
@@ -97,7 +97,7 @@
                   </Hyperlink>
                </graphic>
             </Label>
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="309.0" layoutY="365.0" prefHeight="28.0" text="Don't Have An Account?">
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="50.0" layoutY="379.0" prefHeight="28.0" text="Don't Have An Account?">
                <font>
                   <Font size="14.0" />
                </font>

@@ -26,6 +26,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javafx.event.EventHandler;
 import AdminUi.AdminController;
+import AdminUi.NewUserController;
 import Components.Credentials;
 import Components.Session;
 import Components.User;
@@ -85,6 +86,8 @@ public class LoginController implements Initializable{
 	public static final String[] permissions = {ADMIN,TECHNICIAN,PROFESSOR};
 	
 	@FXML
+	private Hyperlink signupLink;
+	@FXML
 	private Hyperlink forgotPasswordLink;
 	@FXML
 	private Button loginButton;
@@ -109,6 +112,7 @@ public class LoginController implements Initializable{
 	}
 	
 	private boolean fileExists = false;
+	public static boolean isSigningUp = false;
 	//************************************Methods:****************************************************************
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -574,6 +578,37 @@ public class LoginController implements Initializable{
 			}
 	 }
 	    
-	    
+	 public void popupSignUp(ActionEvent event) {
+		 Parent root;
+		 isSigningUp = true;
+			try {
+				AdminController.currentNewUserLoader = new FXMLLoader(getClass().getResource(AdminController.fxmlNewUser));
+				root = AdminController.currentNewUserLoader.load();
+				NewUserController controller = (NewUserController)AdminController.currentNewUserLoader.getController();
+				controller.setOldUser(null);
+				controller.setTitleLabelText("New User");
+				
+				
+				stage = new Stage();
+				stage.setResizable(false);
+				
+					
+				scene = new Scene(root);
+				scene.getStylesheets().add(this.getClass().getResource("/AdminUi/admin.css").toExternalForm());
+				
+				stage.setScene(scene);
+				stage.getIcons().add(Main.itAssetLogo);
+				
+				//make it as a dialog box
+				Stage parentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.initOwner(parentStage);
+				
+				stage.show();
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	 }
 	   
 }

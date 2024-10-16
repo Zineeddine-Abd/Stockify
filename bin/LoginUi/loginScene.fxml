@@ -97,6 +97,18 @@
                   </Hyperlink>
                </graphic>
             </Label>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="309.0" layoutY="365.0" prefHeight="28.0" text="Don't Have An Account?">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <Hyperlink fx:id="signupLink" graphicTextGap="0.0" onAction="#popupSignUp" prefHeight="26.0" prefWidth="59.0" text="Sign Up">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+               </graphic>
+            </Label>
          </children>
       </Pane>
    </children>

@@ -45,7 +45,7 @@
 ## Usage
 
 1. **Launch the Application**: Run the main JavaFX application class.
-2. **Create an Account**: enter thiese credentials :(a tetsting admin user credentials).
+2. **Create an Account**: Sign up to create an new account (This Step (Sign up) is only added for testing purposes).
 3. **Login**: Use your credentials to log in.
 4. **Manage Assets**: Add, remove, and update assets as needed.
 5. **Report Issues**: Report any broken assets and track their status.

@@ -41,6 +41,8 @@
 3. **Compile and run the application**:
     - Ensure you have Java and JavaFX installed.
     - Use your preferred IDE or command line to compile and run the project.
+  
+For detailed explanations about libraries and modules installation and management, please check our readme file in the lib directory.
 
 ## Usage
 

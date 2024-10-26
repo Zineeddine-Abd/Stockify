@@ -11,6 +11,7 @@ import java.util.List;
 import AdminUi.AdminController;
 import Components.Action;
 import Components.User;
+import LoginUi.LoginController;
 import javafx.collections.ObservableList;
 
 public class DB_Users extends DB_Utilities{
@@ -71,8 +72,7 @@ public class DB_Users extends DB_Utilities{
 			         }
 			    }
 			}
-		}catch(SQLException e) {
-			e.printStackTrace();
+		}catch(SQLException | NullPointerException e) {
 			Helper.displayErrorMessage("Error",e.getMessage());
 		}
 		createActionForUser(Helper.INSERTION_MODE, user);
@@ -182,8 +182,10 @@ public class DB_Users extends DB_Utilities{
 	}
 	
 	private static void createActionForUser(String action_type,User user) {
-		Action action = new Action(0, action_type, user.toString() , Helper.USER, java.sql.Date.valueOf(LocalDate.now()));
-		ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
-		DB_Actions.createAction(action,recentActions);
- }
+		if(!LoginController.isSigningUp) {			
+			Action action = new Action(0, action_type, user.toString() , Helper.USER, java.sql.Date.valueOf(LocalDate.now()));
+			ObservableList<Action> recentActions = ((AdminController)Helper.currentAdminLoader.getController()).getDashboardViewController().getrecentActionsObsList();
+			DB_Actions.createAction(action,recentActions);
+		}
+	}
 }

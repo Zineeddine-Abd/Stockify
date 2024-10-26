@@ -34,7 +34,7 @@
                <font>
                   <Font size="16.0" />
                </font></PasswordField>
-            <Button fx:id="loginButton" layoutX="142.0" layoutY="411.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="142.0" layoutY="414.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="40.0" prefWidth="256.0" style="-fx-background-color: #5A708A;" text="Login" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -42,12 +42,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <CheckBox fx:id="showPassBox" layoutX="50.0" layoutY="282.0" mnemonicParsing="false" onAction="#showPassword" prefHeight="25.0" prefWidth="167.0" text="Show Password">
+            <CheckBox fx:id="showPassBox" layoutX="50.0" layoutY="267.0" mnemonicParsing="false" onAction="#showPassword" prefHeight="25.0" prefWidth="167.0" text="Show Password">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="rememberMe" layoutX="50.0" layoutY="318.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Remember Me">
+            <CheckBox fx:id="rememberMe" layoutX="50.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Remember Me">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
@@ -85,12 +85,24 @@
                   <Font name="Calibri Light" size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="50.0" layoutY="365.0" prefHeight="28.0" text="Forgot Your Password? ">
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="50.0" layoutY="340.0" prefHeight="28.0" text="Forgot Your Password? ">
                <font>
                   <Font size="14.0" />
                </font>
                <graphic>
                   <Hyperlink fx:id="forgotPasswordLink" graphicTextGap="0.0" onAction="#popupForgotPassword" prefHeight="26.0" prefWidth="72.0" text="click here.">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+               </graphic>
+            </Label>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="50.0" layoutY="367.0" prefHeight="28.0" text="Don't Have An Account?">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <Hyperlink fx:id="signupLink" graphicTextGap="0.0" onAction="#popupSignUp" prefHeight="26.0" prefWidth="59.0" text="Sign Up">
                      <font>
                         <Font size="14.0" />
                      </font>

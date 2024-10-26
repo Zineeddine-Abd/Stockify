@@ -5,8 +5,11 @@ import java.util.ResourceBundle;
 
 import Components.User;
 import LoginUi.LoginController;
+import application.DB_Users;
 import application.Helper;
 import javafx.animation.FadeTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -135,7 +138,15 @@ public class NewUserController implements Initializable{
 	}
 	
 	private void newUser(User newUser) {
-		((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().addUser(newUser);
+		//if the user is signing up in the login page dont add this user to the users table cuz it aint even there :V
+		if(!LoginController.isSigningUp) {			
+			((AdminController)Helper.currentAdminLoader.getController()).getAllUsersViewController().addUser(newUser);
+		}else {
+			//but add it to the database using the previous users list :
+			ObservableList<User> allUsersObs = FXCollections.observableArrayList();
+			DB_Users.refresh(allUsersObs);
+			DB_Users.addUser(allUsersObs, newUser);
+		}
 	}
 	
 	private void updateUser(User newUser) {

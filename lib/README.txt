@@ -1,22 +1,19 @@
-first add those jar files:
-"fontawesomefx-commons-9.1.2.jar" and "fontawesomefx-fontawesome-4.7.0-9.1.2.jar"
-to classpath
-Right click on project ->
-Build path -> 
-Configure build path... ->
-Libraries (Tab) ->
-select classpath ->
-Add External JARs ->
-then go to "SUPER IMPORTANT JAR FILES FOR ICONS ADD TO CLASSPATH" folder ->
-Apply and Close
+*please copy this "lib" folder to your "C" disk part
+*and you need to add "JavaFX" user library (use the same library name) including java fx libraries
+*to add a user library click "window" menu, then "preferences", then search for "user libraries" , and add new one then add external jars to it
+*because we did not use a build automation tool (like maven) to work with on this project
+
 
 _________________________________________________________
-second if you face an issue: cannot open "loginScene.fxml" using Scene builder
+"Scene builder"
+
+
+if you face this issue: cannot open "loginScene.fxml" using Scene builder
 you can open another fxml file like "adminScene.fxml"
-then in LEFT SIDE you will see "Library", "Document" sections
+then in LEFT SIDE you will see "Library" & "Document" sections
 go to "Library" and click on the small setting icon ->
-JAR/FXML Manager -> 
-Search repositories ->
+"JAR/FXML Manager" -> 
+"Search repositories" ->
 type "fontawesomefx" in search box ->
 click on "Search" button ->
 choose "de.jensd:fontawesomefx-fontawesome" -> click Add JAR

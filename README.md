@@ -1,4 +1,4 @@
-![Banner](https://github.com/Zineeddine-Abd/Stockify/blob/master/Stockify%20Banner.png?raw=true)
+![Banner](./Stockify_Banner.png)
 
 **Stockify** is an IT asset management system designed specifically for universities. Developed using pure Java and JavaFX, with Supabase integrated as our online centralized database, Stockify provides a comprehensive solution for managing IT assets efficiently.
 
